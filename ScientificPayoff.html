@@ -8,15 +8,32 @@
     <script type="text/javascript" src="layui/layui.all.js"></script>
     <link rel="stylesheet"  href="layui/css/layui.css" type="text/css"/>
     <script src="https://vuejs.org/js/vue.js"></script>
-    <script>
-        console.log(123123123)
-    </script>
+
 </head>
 <body>
-<div class="layui-container">
+<div class="layui-layout layui-layout-admin" style="height: 65px;">
+    <div class="layui-header" style="height: 100%">
+        <div class="layui-logo" style="font-weight: bolder;"><h2>科研管理系统</h2></div>
+
+        <ul class="layui-nav layui-layout-right">
+            <li class="layui-nav-item">
+                <a href="javascript:;">
+                    <img src="http://t.cn/RCzsdCq" class="layui-nav-img">
+                    贤心
+                </a>
+                <dl class="layui-nav-child">
+                    <dd><a href="">基本资料</a></dd>
+                    <dd><a href="">安全设置</a></dd>
+                </dl>
+            </li>
+            <li class="layui-nav-item"><a href="">退了</a></li>
+        </ul>
+    </div>
+</div>
+<div class="layui-container" >
     <div class="layui-row">
         <div class="layui-col-md2">
-            <ul class="layui-nav layui-nav-tree layui-nav-side " >
+            <ul class="layui-nav layui-nav-tree layui-nav-side " style="margin-top: 65px;">
                 <li class="layui-nav-item layui-nav-itemed">
                     <a href="#">科研成果</a>
                     <dl class="layui-nav-child">
@@ -50,11 +67,12 @@
                             <div class="layui-input-block layui-input-inline" style="margin-left: 20px">
                                 <button class="layui-btn" lay-submit lay-filter="formDemo" >查询</button>
                             </div>
-
                         </div>
                     </form>
-
                 </div>
+                <fieldset class="layui-elem-field layui-field-title site-demo-button" style="margin-top: 30px;">
+                    <legend>科研成果</legend>
+                </fieldset>
                 <div class="layui-row grid-demo grid-demo-bg1">
                     <div class="layui-col-md12">
                         //判断当前用户 若为老师 则操作为管理下载查看 若为学生只可查看
@@ -85,7 +103,7 @@
                                 <td>1</td>
                                 <td>1</td>
                                 <td>1</td>
-                                <td><a href="#">查看</a></td>
+                                <td><button class="layui-btn layui-btn-normal">查看</button></td>
                             </tr>
                             <tr>
                                 <td>1</td>
@@ -95,21 +113,17 @@
                                 <td>1</td>
                                 <td>1</td>
                                 <td>1</td>
-                                <td><a href="#">查看</a></td>
+                                <td><button class="layui-btn layui-btn-normal">查看</button></td>
                             </tr>
                             </tbody>
                         </table>
-                        <button type="button" class="layui-btn" id="chooseFile"><i class="layui-icon">&#xe67c;</i>选择文件</button>
-                        &nbsp;&nbsp;文件名称: <span id="fileName"></span>
-                        <div style="height: 20px;"></div>
-                            <div class="layui-form-item" >
-                                <div class="layui-input-block layui-input-inline" style="margin-left: 0px">
-                                    <button type="button" class="layui-btn" id="uploadBtn"><i class="layui-icon">&#xe67c;</i>上传文件</button>
-                                </div>
-                                <div class="layui-progress layui-progress-big layui-input-inline" lay-showPercent="yes" lay-filter="progressBar"style="width: 500px;margin-top:10px;margin-left: -75px;">
-                                <div class="layui-progress-bar layui-bg-red" lay-percent="0%" ></div>
-                                </div>
-                            </div>
+                        <div class="layui-upload">
+                            <button type="button" class="layui-btn layui-btn-normal" id="choosefile">选择文件</button>
+                            <button type="button" class="layui-btn" id="upload">开始上传</button>
+                        </div>
+                        <div class="layui-upload-drag" id="dragToUpload" style="margin-top: 15px;">
+                            <i class="layui-icon"></i>
+                            <p>点击上传，或将文件拖拽到此处</p>
                         </div>
                     </div>
                 </div>
@@ -117,49 +131,48 @@
         </div>
     </div>
 </div>
-        <script>
-            $(document).ready(function () {
-                var ele = layui.element;
-                ele.render();
-            });
+</div>
+<script>
+    $(document).ready(function () {
+        var ele = layui.element;
+        ele.render();
+    });
 
-            layui.use('form', function(){
-                var form = layui.form;
-                //监听提交
-                form.on('submit(formDemo)', function(data){
-                    layer.msg(JSON.stringify(data.field));
-                    return false;
-                });
-                form.render();
-            });
-        </script>
+    layui.use('form', function(){
+        var form = layui.form;
+        //监听提交
+        form.on('submit(formDemo)', function(data){
+            layer.msg(JSON.stringify(data.field));
+            return false;
+        });
+        form.render();
+    });
+</script>
 <script type="text/javascript">
     var upload = layui.upload,
         element = layui.element;
     element.init();
-
-
+    //选完文件后不自动上传
     upload.render({
-        elem: '#chooseFile', // 文件选择
-        accept:'file',
-        url: '/fileUpload',
-        auto: false, // 设置不自动提交
-        bindAction: '#uploadBtn', // 提交按钮
-        percent:"50%",
-        progress: function(e , percent) {
-            console.log("进度：" + percent + '%');
-            element.progress('progressBar',percent  + '%');
-        },
-        choose: function(obj) {
-            obj.preview(function(index, file, result) {
-                $("#fileName").html(file.name);
-            });
-        },
-        done: function(res) {
+        elem: '#choosefile'
+        ,url: '/upload/'
+        ,auto: false
+        //,multiple: true
+        ,bindAction: '#upload'
+        ,done: function(res) {
             layer.msg(res.msg);
         },
         error: function(res) {
             layer.msg(res.msg);
+        }
+    });
+
+    //拖拽上传
+    upload.render({
+        elem: 'dragToUpload'
+        ,url: '/upload/'
+        ,done: function(res){
+            console.log(res)
         }
     });
 </script>

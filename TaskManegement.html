@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <title>TaskManagement</title>
+    <script src="jQuery/jquery-3.3.1.min%20(1).js"></script>
+    <script type="text/javascript" src="layui/layui.js"></script>
+    <script type="text/javascript" src="layui/layui.all.js"></script>
+    <link rel="stylesheet"  href="layui/css/layui.css" type="text/css"/>
+    <script src="https://vuejs.org/js/vue.js"></script>
+</head>
+<body>
+<div class="layui-layout layui-layout-admin" style="height: 65px;">
+    <div class="layui-header" style="height: 100%">
+        <div class="layui-logo" style="font-weight: bolder;"><h2>科研管理系统</h2></div>
+
+        <ul class="layui-nav layui-layout-right">
+            <li class="layui-nav-item">
+                <a href="javascript:;">
+                    <img src="http://t.cn/RCzsdCq" class="layui-nav-img">
+                    贤心
+                </a>
+                <dl class="layui-nav-child">
+                    <dd><a href="">基本资料</a></dd>
+                    <dd><a href="">安全设置</a></dd>
+                </dl>
+            </li>
+            <li class="layui-nav-item"><a href="">退了</a></li>
+        </ul>
+    </div>
+</div>
+<div class="layui-side layui-bg-black" >
+    <div class="layui-side-scroll">
+        <!-- 左侧导航区域（可配合layui已有的垂直导航） -->
+        <ul class="layui-nav layui-nav-tree layui-nav-side" style="margin-top: 65px;">
+            <li class="layui-nav-item layui-nav-itemed">
+                <a href="#">项目管理</a>
+                <dl class="layui-nav-child">
+                    <dd><a href="NationalTask.html" target="myframe">纵向课题</a></dd>
+                    <dd><a href="BusinessTask.html" target="myframe">横向课题</a></dd>
+                    <dd><a href="#" target="myframe">项目结题</a></dd>
+                    <dd><a href="#" target="myframe">报账</a></dd>
+                </dl>
+            </li>
+        </ul>
+    </div>
+</div>
+<!-- 界面显示区 -->
+<div class="main-content" >
+    <iframe src="" name="myframe" width="100%" height="800" frameborder="0" scrolling="yes" style="padding-top: 16px"></iframe>
+</div>
+<script>
+    /*左侧导航渲染*/
+    $(document).ready(function () {
+        var ele = layui.element;
+        ele.render();
+    });
+
+    layui.use('form', function(){
+        var form = layui.form;
+        //监听提交
+        form.on('submit(formDemo)', function(data){
+            layer.msg(JSON.stringify(data.field));
+            return false;
+        });
+        form.render();
+    });
+</script>
+<script>
+    function addUser() {
+        layer.open({
+            type: 2,
+            title: '添加用户',
+            content: 'addUser.html',
+            area: ['600px', '500px'],
+        });
+    }
+    //JavaScript代码区域
+    layui.use('element', function(){
+        var element = layui.element;
+    });
+</script>
+</body>
+</html>

@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>BusinessTask</title>
+    <script src="jQuery/jquery-3.3.1.min%20(1).js"></script>
+    <script type="text/javascript" src="layui/layui.js"></script>
+    <script type="text/javascript" src="layui/layui.all.js"></script>
+    <link rel="stylesheet"  href="layui/css/layui.css" type="text/css"/>
+    <script src="https://vuejs.org/js/vue.js"></script>
+</head>
+<body>
+<div class="layui-col-md10 layui-col-md-offset2">
+    <div class="layui-row grid-demo grid-demo-bg1">
+        <div class="layui-col-md12" style="height: 100px;">
+            <form class="layui-form" action="" style="margin-top: 30px;">
+                <div class="layui-form-item" >
+                    <div class="layui-input-block layui-input-inline" style="width: 200px;">
+                        <select name="city" lay-verify="required" >
+                            <option value="">请选择类别</option>
+                            <option value="0">软件应用</option>
+                            <option value="1">网站设计</option>
+                            <option value="2">APP设计</option>
+                            <option value="3">微信小游戏</option>
+                            <option value="4">微信小程序</option>
+                        </select>
+                    </div>
+                    <div class="layui-input-block layui-input-inline" style="margin-left: 20px">
+                        <input type="text" name="title" required  lay-verify="required" placeholder="请输入标题" class="layui-input" style="width: 200px;">
+
+                    </div>
+                    <div class="layui-input-block layui-input-inline" style="margin-left: 20px">
+                        <input type="text" name="leader" required  lay-verify="required" placeholder="请输入负责人" class="layui-input" style="width: 200px;">
+                    </div>
+
+                    <div class="layui-input-block layui-input-inline" style="margin-left: 20px">
+                        <button class="layui-btn" lay-submit lay-filter="formDemo" >查询</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+        <fieldset class="layui-elem-field layui-field-title site-demo-button" style="margin-top: 30px;">
+            <legend>横向课题</legend>
+        </fieldset>
+        <div class="layui-row grid-demo grid-demo-bg1">
+            <div class="layui-col-md12">
+                <div class="layui-form-item" style="margin: 25px 0">
+                    <button  class="layui-btn layui-btn-normal">
+                        <i class="layui-icon">&#xe608;</i> 新增
+                    </button>
+                    <button class="layui-btn" style="background-color: #2BD591;">查看已完成项目</button>
+                    <button class="layui-btn" >查看未完成项目</button>
+                </div>
+                <table class="layui-table" id="mytable">
+                    <colgroup>
+                        <col width="150">
+                        <col width="200">
+                        <col>
+                    </colgroup>
+                    <thead >
+                    <tr >
+                        <th lay-sort="true">项目ID</th>
+                        <th>用户ID</th>
+                        <th>部门ID</th>
+                        <th>类型ID</th>
+                        <th>项目名称</th>
+                        <th>项目状态</th>
+                        <th>项目负责人</th>
+                        <th>账单明细</th>
+                        <th>操作</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr>
+                        <td>1</td>
+                        <td>1</td>
+                        <td>1</td>
+                        <td>1</td>
+                        <td>1</td>
+                        <td>1</td>
+                        <td>1</td>
+                        <td>1</td>
+                        <td><button class="layui-btn layui-btn-normal">查看</button>
+                            <div class="site-demo-button layui-inline" id="delete" style="margin-bottom: 0;">
+                                <button data-method="notice" class="layui-btn layui-btn-danger">删除</button>
+                            </div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>1</td>
+                        <td>1</td>
+                        <td>1</td>
+                        <td>1</td>
+                        <td>1</td>
+                        <td>1</td>
+                        <td>1</td>
+                        <td>1</td>
+                        <td><button class="layui-btn layui-btn-normal">查看</button>
+                            <div class="site-demo-button layui-inline" id="delete" style="margin-bottom: 0;">
+                                <button data-method="notice" class="layui-btn layui-btn-danger">删除</button>
+                            </div>
+                        </td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+<script>
+    <!--表单渲染-->
+    $(document).ready(function () {
+        var ele = layui.element;
+        ele.render();
+    });
+    layui.use('form', function(){
+        var form = layui.form;
+        form.render();
+    });
+</script>
+<script>
+    /*表格渲染*/
+    var tableIns = table.render({
+            elem: '#mytable',
+            url: '/xxxx',//数据接口
+            page: true, //开启分页
+    });
+</script>
+<!--删除-->
+<script>
+    layui.use('layer', function(){ //独立版的layer无需执行这一句
+        var $ = layui.jquery, layer = layui.layer; //独立版的layer无需执行这一句
+
+        //触发事件
+        var active = {
+            notice: function(){
+                layer.open({
+                    type: 1
+                    ,title: false //不显示标题栏
+                    ,closeBtn: false
+                    ,area: '300px;'
+                    ,shade: 0.8
+                    ,id: 'LAY_layuipro' //设定一个id，防止重复弹出
+                    ,btn: ['确定', '取消']
+                    ,btnAlign: 'c'
+                    ,moveType: 1 //拖拽模式，0或者1
+                    ,content: '<div style="padding: 50px; line-height: 22px; background-color: #393D49; color: #fff; font-weight: 300;">确认删除吗？</div>'
+                    ,success: function(layero){
+                        var btn = layero.find('.layui-layer-btn');
+                        btn.find('.layui-layer-btn0').attr({
+                            href: '#' /*确认删除*/
+                            ,target: '_blank'
+                        });
+                    }
+                });
+            }
+        };
+        $('#delete .layui-btn').on('click', function(){
+            var othis = $(this), method = othis.data('method');
+            active[method] ? active[method].call(this, othis) : '';
+        });
+    });
+</script>
+</body>
+</html>
