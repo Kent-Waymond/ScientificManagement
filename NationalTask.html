@@ -103,10 +103,29 @@
                     </tr>
                     </tbody>
                 </table>
+                <div id="paging" style="text-align: center;"></div>
             </div>
         </div>
     </div>
 </div>
+
+<script>  //分页
+layui.use(['laypage', 'layer'], function(){
+    var laypage = layui.laypage
+        ,layer = layui.layer;
+
+    laypage.render({
+        elem: 'paging'
+        ,count: 100
+        ,layout: ['count', 'prev', 'page', 'next', 'limit', 'refresh', 'skip']
+        ,jump: function(obj){
+            console.log(obj)
+            console.log(obj.curr)  //当前页号
+            console.log(obj.limit); //得到每页显示的条数
+        }
+    });
+});
+</script>
 <script>
     <!--表单渲染-->
     $(document).ready(function () {
