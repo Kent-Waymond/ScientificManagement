@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>ProjectClosure</title>
+    <script src="jQuery/jquery-3.3.1.min%20(1).js"></script>
+    <script type="text/javascript" src="layui/layui.js"></script>
+    <script type="text/javascript" src="layui/layui.all.js"></script>
+    <link rel="stylesheet"  href="layui/css/layui.css" type="text/css"/>
+    <script src="https://vuejs.org/js/vue.js"></script>
+</head>
+<body>
+<div class="layui-col-md10 layui-col-md-offset2">
+    <div class="layui-row grid-demo grid-demo-bg1">
+        <fieldset class="layui-elem-field layui-field-title site-demo-button" style="margin-top: 30px;">
+            <legend>项目结题</legend>
+        </fieldset>
+        <blockquote class="layui-elem-quote"><h3>请选择上传方式</h3></blockquote>
+        <div class="layui-row grid-demo grid-demo-bg1">
+            <div class="layui-col-md12">
+                <div class="layui-upload" style="margin-top: 20px;">
+                    <button type="button" class="layui-btn layui-btn-normal" id="List">选择多文件</button>
+                    <div class="layui-upload-list">
+                        <table class="layui-table">
+                            <thead>
+                            <tr><th>文件名</th>
+                                <th>大小</th>
+                                <th>状态</th>
+                                <th>操作</th>
+                            </tr></thead>
+                            <tbody id="mylist"></tbody>
+                        </table>
+                    </div>
+                    <button type="button" class="layui-btn" id="testListAction">开始上传</button>
+                </div>
+                <!--分割线-->
+                <hr class="layui-bg-black" style="margin-top: 15px;">
+                <div class="layui-upload-drag" id="dragToUpload" style="margin-top: 15px;">
+                    <i class="layui-icon"></i>
+                    <p>点击上传，或将文件拖拽到此处</p>
+                </div>
+
+                <div class="layui-form-item" style="margin: 25px 0;text-align: center">
+                    <!--点击结题按钮后改变数据库状态-->
+                    <div class="site-demo-button" id="close">
+                     <button  data-method="notice" class="layui-btn layui-btn-normal layui-btn-lg">结题</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script>
+    layui.use('layer', function(){ //独立版的layer无需执行这一句
+        var $ = layui.jquery, layer = layui.layer; //独立版的layer无需执行这一句
+        //触发事件
+        var active = {
+            notice: function(){
+                layer.open({
+                    type: 1
+                    ,title: false //不显示标题栏
+                    ,closeBtn: false
+                    ,area: '300px;'
+                    ,shade: 0.8
+                    ,id: 'LAY_layuipro' //设定一个id，防止重复弹出
+                    ,btn: ['确认','取消']
+                    ,btnAlign: 'c'
+                    ,moveType: 1 //拖拽模式，0或者1
+                    ,content: '<div style="padding: 30px; line-height: 22px; color: black; font-weight: 500;text-align: center;"><h2>确认结题？</h2></div>'
+                    ,success: function(layero){
+                        var btn = layero.find('.layui-layer-btn');
+                        btn.find('.layui-layer-btn0').attr({
+                            href: '#'
+                            ,target: '_blank'
+                        });
+                    }
+                });
+            }
+        };
+
+        $('#close .layui-btn').on('click', function(){
+            var othis = $(this), method = othis.data('method');
+            active[method] ? active[method].call(this, othis) : '';
+        });
+
+    });
+</script>
+
+<script type="text/javascript">
+    var upload = layui.upload,
+        element = layui.element;
+    element.init();
+
+    //多文件上传
+    var ListView = $('#mylist')
+        ,uploadListIns = upload.render({
+        elem: '#List'
+        ,url: '/upload/'
+        ,accept: 'file'
+        ,multiple: true
+        ,auto: false
+        ,bindAction: '#testListAction'
+        ,choose: function(obj){
+            var files = this.files = obj.pushFile(); //将每次选择的文件追加到文件队列
+            //读取本地文件
+            obj.preview(function(index, file, result){
+                var tr = $(['<tr id="upload-'+ index +'">'
+                    ,'<td>'+ file.name +'</td>'
+                    ,'<td>'+ (file.size/1014).toFixed(1) +'kb</td>'
+                    ,'<td>等待上传</td>'
+                    ,'<td>'
+                    ,'<button class="layui-btn layui-btn-xs demo-reload layui-hide">重传</button>'
+                    ,'<button class="layui-btn layui-btn-xs layui-btn-danger demo-delete">删除</button>'
+                    ,'</td>'
+                    ,'</tr>'].join(''));
+
+                //单个重传
+                tr.find('.demo-reload').on('click', function(){
+                    obj.upload(index, file);
+                });
+
+                //删除
+                tr.find('.demo-delete').on('click', function(){
+                    delete files[index]; //删除对应的文件
+                    tr.remove();
+                    uploadListIns.config.elem.next()[0].value = ''; //清空 input file 值，以免删除后出现同名文件不可选
+                });
+
+                ListView.append(tr);
+            });
+        }
+        ,done: function(res, index, upload){
+            if(res.code == 0){ //上传成功
+                var tr = ListView.find('tr#upload-'+ index)
+                    ,tds = tr.children();
+                tds.eq(2).html('<span style="color: #5FB878;">上传成功</span>');
+                tds.eq(3).html(''); //清空操作
+                return delete this.files[index]; //删除文件队列已经上传成功的文件
+            }
+            this.error(index, upload);
+        }
+        ,error: function(index, upload){
+            var tr = ListView.find('tr#upload-'+ index)
+                ,tds = tr.children();
+            tds.eq(2).html('<span style="color: #FF5722;">上传失败</span>');
+            tds.eq(3).find('.demo-reload').removeClass('layui-hide'); //显示重传
+        }
+    });
+
+    //拖拽上传
+    upload.render({
+        elem: 'dragToUpload'
+        ,url: '/upload/'
+        ,done: function(res){
+            console.log(res)
+        }
+    });
+</script>
+</body>
+</html>
