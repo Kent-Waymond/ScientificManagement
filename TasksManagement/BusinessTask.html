@@ -3,10 +3,10 @@
 <head>
     <meta charset="UTF-8">
     <title>BusinessTask</title>
-    <script src="jQuery/jquery-3.3.1.min%20(1).js"></script>
-    <script type="text/javascript" src="layui/layui.js"></script>
-    <script type="text/javascript" src="layui/layui.all.js"></script>
-    <link rel="stylesheet"  href="layui/css/layui.css" type="text/css"/>
+    <script src="../jQuery/jquery-3.3.1.min%20(1).js"></script>
+    <script type="text/javascript" src="../layui/layui.js"></script>
+    <script type="text/javascript" src="../layui/layui.all.js"></script>
+    <link rel="stylesheet" href="../layui/css/layui.css" type="text/css"/>
     <script src="https://vuejs.org/js/vue.js"></script>
 </head>
 <body>
@@ -34,7 +34,7 @@
                     </div>
 
                     <div class="layui-input-block layui-input-inline" style="margin-left: 20px">
-                        <button class="layui-btn" lay-submit lay-filter="formDemo" >查询</button>
+                        <button class="layui-btn" lay-submit lay-filter="formDemo" ><i class="layui-icon layui-icon-search"></i>查询</button>
                     </div>
                 </div>
             </form>
@@ -81,9 +81,7 @@
                         <td>1</td>
                         <td>1</td>
                         <td><button class="layui-btn layui-btn-normal">查看</button>
-                            <div class="site-demo-button layui-inline" id="delete" style="margin-bottom: 0;">
-                                <button data-method="notice" class="layui-btn layui-btn-danger">删除</button>
-                            </div>
+                            <button data-method="notice" class="layui-btn layui-btn-danger delete">删除</button>
                         </td>
                     </tr>
                     <tr>
@@ -96,9 +94,7 @@
                         <td>1</td>
                         <td>1</td>
                         <td><button class="layui-btn layui-btn-normal">查看</button>
-                            <div class="site-demo-button layui-inline" id="delete" style="margin-bottom: 0;">
-                                <button data-method="notice" class="layui-btn layui-btn-danger">删除</button>
-                            </div>
+                            <button data-method="notice" class="layui-btn layui-btn-danger delete">删除</button>
                         </td>
                     </tr>
                     </tbody>
@@ -174,7 +170,7 @@ layui.use(['laypage', 'layer'], function(){
                 });
             }
         };
-        $('#delete .layui-btn').on('click', function(){
+        $('.delete ').on('click', function(){
             var othis = $(this), method = othis.data('method');
             active[method] ? active[method].call(this, othis) : '';
         });

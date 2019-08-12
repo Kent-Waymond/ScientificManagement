@@ -3,11 +3,11 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-    <title>TaskManagement</title>
-    <script src="jQuery/jquery-3.3.1.min%20(1).js"></script>
-    <script type="text/javascript" src="layui/layui.js"></script>
-    <script type="text/javascript" src="layui/layui.all.js"></script>
-    <link rel="stylesheet"  href="layui/css/layui.css" type="text/css"/>
+    <title>ScientificPayoff</title>
+    <script src="../jQuery/jquery-3.3.1.min%20(1).js"></script>
+    <script type="text/javascript" src="../layui/layui.js"></script>
+    <script type="text/javascript" src="../layui/layui.all.js"></script>
+    <link rel="stylesheet" href="../layui/css/layui.css" type="text/css"/>
     <script src="https://vuejs.org/js/vue.js"></script>
 </head>
 <body>
@@ -34,23 +34,23 @@
     <div class="layui-side-scroll">
         <!-- 左侧导航区域（可配合layui已有的垂直导航） -->
         <ul class="layui-nav layui-nav-tree layui-nav-side" style="margin-top: 65px;">
-            <li class="layui-nav-item layui-nav-itemed">
+            <li class="layui-nav-item ">
                 <a href="#">项目管理</a>
                 <dl class="layui-nav-child">
-                    <dd><a href="NationalTask.html" target="myframe">纵向课题</a></dd>
-                    <dd><a href="BusinessTask.html" target="myframe">横向课题</a></dd>
-                    <dd><a href="ProjectClosure.html" target="myframe">项目结题</a></dd>
+                    <dd><a href="../TasksManagement/NationalTask.html" target="myframe">纵向课题</a></dd>
+                    <dd><a href="../TasksManagement/BusinessTask.html" target="myframe">横向课题</a></dd>
+                    <dd><a href="../TasksManagement/ProjectClosure.html" target="myframe">项目结题</a></dd>
                     <dd><a href="#" target="myframe">报账</a></dd>
                 </dl>
             </li>
-            <li class="layui-nav-item ">
-                <a href="ScientificPayoff.html" target="myframe">科研成果</a>
+            <li class="layui-nav-item layui-nav-itemed">
+                <a href="Patent.html" target="myframe">科研成果</a>
                 <dl class="layui-nav-child">
-                    <dd><a href="#">专利</a></dd>
-                    <dd><a href="#">论文</a></dd>
-                    <dd><a href="#">软著</a></dd>
-                    <dd><a href="#">著作</a></dd>
-                    <dd><a href="#">实用新型</a></dd>
+                    <dd><a href="Patent.html" target="myframe">专利</a></dd>
+                    <dd><a href="Thesis.html" target="myframe">论文</a></dd>
+                    <dd><a href="SoftwareWork.html" target="myframe">软著</a></dd>
+                    <dd><a href="Writings.html" target="myframe">著作</a></dd>
+                    <dd><a href="#" target="myframe">实用新型</a></dd>
                 </dl>
             </li>
         </ul>
@@ -75,20 +75,6 @@
             return false;
         });
         form.render();
-    });
-</script>
-<script>
-    function addUser() {
-        layer.open({
-            type: 2,
-            title: '添加用户',
-            content: 'addUser.html',
-            area: ['600px', '500px'],
-        });
-    }
-    //JavaScript代码区域
-    layui.use('element', function(){
-        var element = layui.element;
     });
 </script>
 </body>
