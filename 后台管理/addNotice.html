@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>添加教师</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@3.3.7/dist/css/bootstrap.min.css"  crossorigin="anonymous">
+    <script src="https://cdn.staticfile.org/jquery/2.1.1/jquery.min.js"></script>
+
+    <link rel="stylesheet" href="https://cdn.staticfile.org/twitter-bootstrap/4.1.0/css/bootstrap.min.css">
+    <script src="https://cdn.staticfile.org/jquery/3.2.1/jquery.min.js"></script>
+    <script src="https://cdn.staticfile.org/popper.js/1.12.5/umd/popper.min.js"></script>
+    <script src="https://cdn.staticfile.org/twitter-bootstrap/4.1.0/js/bootstrap.min.js"></script>
+
+    <script src="https://cdn.bootcss.com/bootstrap-validator/0.5.3/js/bootstrapValidator.js"></script>
+    <link href="https://cdn.bootcss.com/bootstrap-validator/0.5.3/css/bootstrapValidator.css" rel="stylesheet">
+</head>
+<body>
+<form style="margin: 15px" id="form">
+    <div class="form-group">
+        <label for="content">公告内容：</label>
+        <textarea  type="text" class="form-control" id="content" rows="8" placeholder="请输入公告内容" name="content"></textarea>
+    </div>
+
+    <div class="form-group">
+        <label>是否发布到前台:</label>
+        <select class="form-control" name="status">
+            <option selected value="0401">是</option>
+            <option value="0402">否</option>
+        </select>
+    </div>
+
+    <button type="submit" class="btn btn-primary btn-block btn-lg" onclick="addNotice()" id="add">Submit</button>
+    <script>
+        function addNotice (){
+            alert("添加成功");
+            $.post('http://148.70.243.66:8888/api/addnotice',$('#form').serialize(),function (data) {
+
+            });
+        }
+        $('#form').on('keypress',function (event) {
+            if(event.keyCode==13){
+                $('#add').click();
+            }
+        });
+
+    </script>
+</form>
+</body>
+</html>
+<script>
+    $(function () {
+        $('#form').bootstrapValidator({
+            message: 'The postal code is not valid',
+            feedbackIcons: {
+                valid: 'glyphicon glyphicon-ok',
+                invalid: 'glyphicon glyphicon-remove',
+                validating: 'glyphicon glyphicon-refresh'
+            },
+            fields: {
+                content: {
+                    validators: {
+                        notEmpty: {
+                            message: "用户名不能为空"
+                        },
+
+                        regexp:{
+                            regexp:/^[^\s]*$/,
+                            message:'不能输入任何空白符'
+                        }
+
+                    }
+                },
+
+            }
+        });
+
+    })
+</script>
