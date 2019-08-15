@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <title>Title</title>
+    <link rel="stylesheet" href="../layui/layui-v2.5.4/layui/css/layui.css">
+
+</head>
+<body>
+
+<div class="layui-side layui-bg-black">
+    <div class="layui-side-scroll">
+        <!-- 左侧导航区域（可配合layui已有的垂直导航） -->
+        <ul class="layui-nav layui-nav-tree"  lay-filter="test">
+            <li class="layui-nav-item">
+                <a href="javascript:;">首页</a>
+            </li>
+            <li class="layui-nav-item">
+                <a href="systemSetting.html" target="mainBody">系统设置</a>
+            </li>
+            <li class="layui-nav-item layui-nav-itemed">
+                <a class="" href="javascript:;">用户管理</a>
+                <dl class="layui-nav-child">
+                    <dd><a href="teacher.html" target="mainBody">教师</a></dd>
+                    <dd><a href="student.html" target="mainBody">学生</a></dd>
+                    <dd><a href="admin.html" target="mainBody">管理员</a></dd>
+                </dl>
+            </li>
+            <li class="layui-nav-item">
+                <a href="javascript:;">财务管理</a>
+            </li>
+            <li class="layui-nav-item">
+                <a href="notice.html" target="mainBody">公告通知</a>
+            </li>
+            <li class="layui-nav-item">
+                <a class="" href="javascript:;">公共资源管理</a>
+                <dl class="layui-nav-child">
+                    <dd><a href="video.html" target="mainBody">视频</a></dd>
+                    <dd><a href="javascript:;">PPT</a></dd>
+                    <dd><a href="javascript:;">电子书</a></dd>
+                    <dd><a href="uploadFile.html" target="mainBody">上传资源</a></dd>
+                </dl>
+            </li>
+        </ul>
+    </div>
+</div>
+<script src="../layui/layui-v2.5.4/layui/layui.js"></script>
+<script>
+
+
+    function addUser() {
+        layer.open({
+            type: 2,
+            title: '添加用户',
+            content: 'addUser.html',
+            area: ['600px', '500px'],
+
+        });
+    }
+    //JavaScript代码区域
+    layui.use('element', function(){
+        var element = layui.element;
+
+    });
+</script>
+</body>
+</html>

@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <meta http-equiv="Access-Control-Allow-Origin" content="*" />
+    <title>公告通知</title>
+    <link rel="stylesheet" href="../layui/layui-v2.5.4/layui/css/layui.css">
+    <script src="../layui/layui-v2.5.4/layui/layui.js"></script>
+</head>
+<body>
+
+<div style="margin: 10px">
+    <div class="layui-btn-group demoTable" id="myToolbar" style="display: none">
+        <button class="layui-btn" lay-event="add">添加公告</button>
+        <button class="layui-btn layui-btn-danger" lay-event="delete">删除已选中的公告</button>
+    </div>
+
+    <table class="layui-table" id='noticeTable' lay-filter="noticeTable"></table>
+
+
+    <script src="../layui/layui-v2.5.4/layui/layui.js" charset="utf-8"></script>
+    <!-- 注意：如果你直接复制所有代码到本地，上述js路径需要改成你本地的 -->
+
+    <script type="text/html" id="checkboxTpl">
+        <!-- 这里的 checked 的状态只是演示 -->
+        <input id="change" type="checkbox" name={{d.aid}} value={{d.status==="0402"?"'0401'":"'0402'"}} title="发布" lay-filter="status" {{
+               d.status==="0401"?'checked':'' }}>
+    </script>
+
+    <script>
+        layui.use('table', function () {
+            var table = layui.table
+                , form = layui.form;
+            var $ = layui.$;
+            //加载表
+            $.ajax({
+                type: "get",
+                url: "http://148.70.243.66:8888/api/selectnotice",
+                contentType: "applica/x-www-form-urlencoded",
+                success: function (data) {
+                    table.render({
+                        elem: '#noticeTable'
+                        , data: data
+                        , cols: [[
+                            {type: 'numbers'}
+                            , {type: 'checkbox'}
+                            , {field: 'aid', title: 'ID', width: 100, sort: true}
+                            , {field: 'content', title: '内容', edit: 'text'}
+                            , {field: 'uploadtime', title: '上传时间', width: 300}
+                            , {field: 'status', title: '是否发布', templet: '#checkboxTpl', width: 200}
+                        ]]
+                        , page: true
+                        , toolbar: '#myToolbar'
+                    });
+                }
+            });
+            /*$.get('http://148.70.243.66:8888/api/selectnotice', function (data) {
+                console.log(data);
+                //加载表
+                table.render({
+                    elem: '#noticeTable'
+                    , data: data
+                    , cols: [[
+                        {type: 'numbers'}
+                        , {type: 'checkbox'}
+                        , {field: 'aid', title: 'ID', width: 100, sort: true}
+                        , {field: 'content', title: '内容', edit: 'text'}
+                        , {field: 'uploadtime', title: '上传时间', width: 300}
+                        , {field: 'status', title: '是否发布', templet: '#checkboxTpl', width: 200}
+                    ]]
+                    , page: true
+                    , toolbar: '#myToolbar'
+                });
+
+            });*/
+            //编辑信息
+            table.on('edit(noticeTable)', function(obj){
+                var value = obj.value //得到修改后的值
+                    ,data = obj.data //得到所在行所有键值
+                    ,field = obj.field; //得到字段
+                $.get("http://148.70.243.66:8888/api/editnoticecontent",{"aid":data.aid,"content":value},function (data) {
+
+                })
+            });
+            //添加、删除
+            table.on('toolbar(noticeTable)', function (obj) {
+                var checkStatus = table.checkStatus(obj.config.id)
+                    , data = checkStatus.data; //获取选中的数据
+                switch (obj.event) {
+                    case 'add':
+                        addNotice();
+                        break;
+                    case 'delete':
+                        if (data.length === 0) {
+                            layer.msg('请选择一行');
+                        } else {
+                            var idString = "[";
+                            for(var i=0;i<data.length;i++){
+                                if(i!=data.length-1){
+                                    idString+="{aid:"+data[i].aid+"},"
+                                }
+                                else{
+                                    idString+="{aid:"+data[i].aid+"}]"
+                                }
+                            }
+                            var idJson = eval('(' + idString + ')');
+                            var ids = [];
+                            for(var i=0;i<data.length;i++){
+
+                                ids.push(data[i].aid);
+                            }
+                            $.get('http://148.70.243.66:8888/api/deletenotice',{"ids":ids},function () {
+
+                                $.get('http://148.70.243.66:8888/api/selectnotice', function (data) {
+                                    //加载表
+                                    table.render({
+                                        elem: '#noticeTable'
+                                        , data: data
+                                        , cols: [[
+                                            {type: 'numbers'}
+                                            , {type: 'checkbox'}
+                                            , {field: 'aid', title: 'ID', width: 100, sort: true}
+                                            , {field: 'content', title: '内容', edit: 'text'}
+                                            , {field: 'uploadtime', title: '上传时间', width: 300}
+                                            , {field: 'status', title: '是否发布', templet: '#checkboxTpl', width: 200}
+                                        ]]
+                                        , page: true
+                                        , toolbar: '#myToolbar'
+                                    });
+
+                                });
+                            })
+                        }
+                        break;
+                }
+
+            });
+            //修改状态
+            form.on('checkbox(status)', function (obj) {
+                var data = obj.aid;
+                console.log(data);
+                $.get('http://148.70.243.66:8888/api/editnoticestatus',{"aid":this.name,"status":this.value},function (data) {
+
+                });
+                if (this.value === "0402") {
+                    this.value="0401";
+                    layer.tips('取消发布',obj.othis)
+                } else {
+                    this.value="0402";
+                    layer.tips('发布',obj.othis)
+                }
+
+            });
+        });
+        //添加公告
+        function addNotice() {
+            layer.open({
+                type: 2,
+                title: '添加公告',
+                content: 'addNotice.html',
+                area: ['500px', '500px'],
+                end:function () {
+                    var table = layui.table;
+                    var $ = layui.$;
+                    $.get('http://148.70.243.66:8888/api/selectnotice', function (data) {
+                        //加载表
+                        table.render({
+                            elem: '#noticeTable'
+                            , data: data
+                            , cols: [[
+                                {type: 'numbers'}
+                                , {type: 'checkbox'}
+                                , {field: 'aid', title: 'ID', width: 100, sort: true}
+                                , {field: 'content', title: '内容', edit: 'text'}
+                                , {field: 'uploadtime', title: '上传时间', width: 300}
+                                , {field: 'status', title: '是否发布', templet: '#checkboxTpl', width: 200}
+                            ]]
+                            , page: true
+                            , toolbar: '#myToolbar'
+                        });
+
+                    });
+                }
+            });
+        }
+    </script>
+</div>
+
+<script>
+    //JavaScript代码区域
+    layui.use('element', function () {
+        var element = layui.element;
+
+    });
+</script>
+</body>
+</html>

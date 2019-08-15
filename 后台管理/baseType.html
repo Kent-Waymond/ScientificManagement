@@ -1,0 +1,268 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <meta name="renderer" content="webkit">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <link rel="stylesheet" href="../layui/layui-v2.5.4/layui/css/layui.css" media="all">
+    <script src="../layui/layui-v2.5.4/layui/layui.js" charset="utf-8"></script>
+</head>
+<body>
+    <div style="margin: 10px">
+
+        <div class="demoTable" >
+            <span style="font-size: larger"><b>搜索基本类型ID：</b></span>
+            <div class="layui-inline">
+                <input class="layui-input" name="username" id="search" autocomplete="off">
+            </div>
+            <button class="layui-btn" data-type="reload" id="find">搜索</button>
+        </div>
+
+        <div class="layui-btn-group demoTable" id="myToolbar" style="display: none">
+            <button class="layui-btn layui-btn-sm" lay-event="add">添加</button>
+            <button class="layui-btn layui-btn-sm layui-btn-danger" lay-event="delete">批量删除</button>
+        </div>
+
+        <div id="addContainer" style="display: none">
+            <form class="layui-form" style="margin:30px" id="addBase">
+                <div class="layui-form-item">
+                    <label class="layui-form-label">码表编号</label>
+                    <div class="layui-input-block">
+                        <input class="layui-input" type="text" value="" style="width: 350px" name="bid" id="bid" required>
+                    </div>
+                </div>
+                <div class="layui-form-item">
+                    <label class="layui-form-label">分类名称</label>
+                    <div class="layui-input-block">
+                        <input class="layui-input" type="text" value="" style="width: 350px" name="bname" id="bname" required>
+                    </div>
+                </div>
+                <div class="layui-form-item">
+                    <label class="layui-form-label">备注</label>
+                    <div class="layui-input-block">
+                        <input class="layui-input" type="text" value="" style="width: 350px" name="memo" id="memo">
+                    </div>
+                </div>
+                <div class="layui-form-item" align="center">
+                    <button type="button" class="layui-btn layui-btn-radius layui-btn-normal" onclick="addBase()">确认添加</button>
+                </div>
+            </form>
+        </div>
+
+        <div id="editContainer" style="display: none">
+            <form class="layui-form" style="margin:30px" id="editBase">
+                <div class="layui-form-item">
+                    <label class="layui-form-label">码表编号</label>
+                    <div class="layui-input-block">
+                        <input class="layui-input" type="text" value="" style="width: 350px" name="bid" id="bids" required readonly>
+                    </div>
+                </div>
+                <div class="layui-form-item">
+                    <label class="layui-form-label">分类名称</label>
+                    <div class="layui-input-block">
+                        <input class="layui-input" type="text" value="" style="width: 350px" name="bname" id="bnames" required>
+                    </div>
+                </div>
+                <div class="layui-form-item">
+                    <label class="layui-form-label">备注</label>
+                    <div class="layui-input-block">
+                        <input class="layui-input" type="text" value="" style="width: 350px" name="memo" id="memos">
+                    </div>
+                </div>
+                <div class="layui-form-item" align="center">
+                    <button type="button" class="layui-btn layui-btn-radius layui-btn-normal" onclick="editBase()">提交修改</button>
+                </div>
+            </form>
+        </div>
+
+        <table class="layui-table"  id='baseTable' lay-filter="baseTable" style="margin-top: -5px"></table>
+
+        <script type="text/html" id="handle">
+            <a class="layui-btn layui-btn-xs layui-btn-danger" lay-event="del" id="delete">删除</a>
+            <a class="layui-btn layui-btn-xs layui-bg-orange" lay-event="edit" id="edit">编辑</a>
+            <a class="layui-btn layui-btn-xs " lay-event="query" id="query" target="rightBody">查询</a>
+        </script>
+        <script>
+            var addlay,editlay;
+            var http = 'http://148.70.243.66:8888';
+            layui.use('table', function() {
+                var table = layui.table
+                    , form = layui.form;
+                var $ = layui.$;
+
+                function loadData(data) {//渲染表
+                    table.render({
+                        elem: '#baseTable',
+                        data: data,
+                        cols:[[
+                            {type: 'checkbox'},
+                            {field: 'bid',title:'编号',sort:true},
+                            {field: 'bname',title:'基本类型名称'},
+                            {field: 'memo',title:'备注',width:100},
+                            {fixed: 'right',title:'操作',templet:'#handle',width:180,align:'center'}
+                        ]],
+                        page: true,
+                        toolbar: '#myToolbar'
+                    })
+                }
+                //加载表
+                function loadTable(){
+                    $.get(http+'/api/baseType/findAll',function (data) {
+                        loadData(data.data);
+                    });
+                }
+                loadTable();
+                //重载
+                $('#find').click(function () {
+                    var bid = $('#search').val();
+                    if (bid.length != 0) {
+                        $.post(http+'/api/baseType/findById', {"bid": bid}, function (data) {
+                            if(data.data==null){
+                                layer.msg('没有找到该基本类型')
+                            }
+                            else{
+                                var myData = [];
+                                myData.push(data.data);
+                                loadData(myData);
+                            }
+                        })
+                    } else {
+                        loadTable();
+                    }
+                });
+                //回车重载
+                $('#search').on('keypress',function (event) {
+                    if(event.keyCode==13){
+                        $('#find').click();
+                    }
+                });
+                //回车添加、编辑
+                $('#addContainer').on('keypress',function (event) {
+                    if(event.keyCode==13){
+                        addBase();
+                    }
+                });
+                $('#editContainer').on('keypress',function (event) {
+                    if(event.keyCode==13){
+                        editBase();
+                    }
+                });
+
+                //监听头工具栏事件（添加、批量删除）
+                table.on('toolbar(baseTable)', function(obj){
+                    var checkStatus = table.checkStatus(obj.config.id)
+                        ,data = checkStatus.data; //获取选中的数据
+                    switch(obj.event){
+                        case 'add':
+                            addlay = layer.open({
+                                type: 1,
+                                title: '添加基本类型',
+                                area: ['560px', '300px'],
+                                content: $('#addContainer'),
+                                end: function () {
+                                    loadTable();
+                                }
+                            });
+                            break;
+                        case 'delete':
+                            if(data.length === 0){
+                                layer.msg('请选择一行');
+                            } else {
+                                //删除
+                                var bids = "";
+                                for(var i=0;i<data.length;i++){
+                                    if(i!=data.length-1){
+                                        bids+=data[i].bid+",";
+                                    }
+                                    else{
+                                        bids+=data[i].bid
+                                    }
+                                }
+                                console.log(JSON.stringify(bids));
+                                $.post(http+'/api/baseType/deleteById',{"bids":bids},function () {
+                                    loadTable();
+                                })
+                            }
+                            break;
+                    }
+                });
+
+                //单个删除/编辑/查询
+                table.on('tool(baseTable)', function(obj) {
+                    var data = obj.data;
+                    //console.log(obj)
+                    if (obj.event === 'del') {
+                        layer.confirm('真的删除【' + data.bname + '】么', {title: '删除'}, function (index) {
+                            obj.del();
+                            var bids = [data.bid];
+                            $.post(http+'/api/baseType/deleteById', {"bids": data.bid}, function () {
+
+                            });
+                            layer.close(index);
+                        });
+                    }
+                    if(obj.event === 'edit'){
+                        var bids = $('#bids');
+                        var bnames = $('#bnames');
+                        var memos = $('#memos');
+                        bids.attr('value',data.bid);
+                        bnames.attr('value',data.bname);
+                        memos.attr('value',data.memo);
+                        editlay = layer.open({
+                            type:1,
+                            title: '编辑基本类型',
+                            area: ['560px', '300px'],
+                            content: $('#editContainer'),
+                            end: function () {
+                                loadTable();
+                            }
+                        })
+                    }
+                    if(obj.event === 'query'){
+                        //var a = $('#query');
+                        //a.attr('href','detailType.html?bid='+data.bid)
+                        this.href="detailType.html?bid="+data.bid;
+                    }
+                });
+            });
+
+            //提交添加表单
+            function addBase() {
+                var $ = layui.$;
+                var formData = $('#addBase').serialize();
+                $.post(http+'/api/baseType/insertBaseType',formData,function (data) {
+                    if(data.status==="success"){
+                        layer.msg('添加成功');
+                    }
+                    else{
+                        layer.msg(data.data.errMsg+' '+data.data.errCode);
+                    }
+                    layer.close(addlay);
+
+                })
+            }
+            //提交编辑表单
+            function editBase() {
+                var $ = layui.$;
+                var formData = $('#editBase').serialize();
+                /*$.post(http+'/api/baseType/updateById',formData,function () {
+                    layer.close(editlay);
+                })*/
+                $.ajax({
+                    type: "put",
+                    url: http+'/api/baseType/updateById',
+                    data: formData,
+                    success: function () {
+                        layer.close(editlay);
+                    },
+                    error: function (error) {
+                        layer.msg(error);
+                    }
+                })
+            }
+        </script>
+    </div>
+</body>
+</html>
