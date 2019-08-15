@@ -1,0 +1,343 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>教师管理</title>
+    <meta name="renderer" content="webkit">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <link rel="stylesheet" href="../layui/layui-v2.5.4/layui/css/layui.css" media="all">
+
+</head>
+<body>
+<div style="margin: 10px">
+
+    <div class="demoTable" >
+        <span style="font-size: larger"><b>搜索学生用户名：</b></span>
+        <div class="layui-inline">
+            <input class="layui-input" name="username" id="search" autocomplete="off">
+        </div>
+        <button class="layui-btn" data-type="reload" id="find">搜索</button>
+    </div>
+
+
+    <div class="layui-btn-group demoTable" id="myToolbar" style="display: none">
+        <button class="layui-btn" lay-event="add">添加学生</button>
+        <button class="layui-btn layui-btn-danger" lay-event="delete">删除已选中的学生</button>
+    </div>
+
+    <table class="layui-table"  id='teacherTable' lay-filter="teacherTable"></table>
+
+    <div id="formContainer" style="display: none">
+        <form class="layui-form" style="margin:10px" id="editStu">
+            <div class="layui-form-item">
+                <label class="layui-form-label">ID</label>
+                <div class="layui-input-block">
+                    <input class="layui-input" type="text" value="" style="width: 350px" name="uid" id="uid" readonly>
+                </div>
+            </div>
+            <div class="layui-form-item">
+                <label class="layui-form-label">用户名</label>
+                <div class="layui-input-block">
+                    <input class="layui-input" type="text" value="" style="width: 350px" name="username" id="username" required>
+                </div>
+            </div>
+            <div class="layui-form-item">
+                <label class="layui-form-label">密码</label>
+                <div class="layui-input-block">
+                    <input class="layui-input" type="text" value="" style="width: 350px" name="password" id="password" required>
+                </div>
+            </div>
+            <div class="layui-form-item">
+                <label class="layui-form-label">性别</label>
+                <div class="layui-input-block">
+                    <input class="layui-input" type="radio" value="0101" title="男" name="gender" id="boy">
+                    <input class="layui-input" type="radio" value="0102" title="女" name="gender" id="girl">
+                </div>
+            </div>
+            <div class="layui-form-item">
+                <label class="layui-form-label">角色</label>
+                <div class="layui-input-block"  style="width: 350px;">
+                    <select name="role" id="role">
+                        <option value="3" id="tea">教师</option>
+                        <option value="4" id="stu">学生</option>
+                        <option value="1" id="admin">管理员</option>
+                    </select>
+                </div>
+            </div>
+
+            <div class="layui-form-item" align="center">
+                <button type="button" class="layui-btn layui-btn-radius layui-btn-normal" onclick="editStudent()">提交修改</button>
+            </div>
+        </form>
+    </div>
+
+    <script src="../layui/layui-v2.5.4/layui/layui.js" charset="utf-8"></script>
+    <!-- 注意：如果你直接复制所有代码到本地，上述js路径需要改成你本地的 -->
+
+    <script type="text/html" id="del">
+        <a class="layui-btn layui-btn-xs layui-btn-danger" lay-event="del" id="delete">删除</a>
+        <a class="layui-btn layui-btn-xs layui-bg-orange" lay-event="edit" id="edit">编辑</a>
+    </script>
+
+
+    <script>
+        var myLayer;
+        var http = 'http://148.70.243.66:8888';
+        layui.use('table', function(){
+            var table = layui.table
+                ,form = layui.form;
+            var $ = layui.$;
+            //加载表
+            function loadTable() {
+
+                $.post(http+'/api/manager/queryAllUser',function (data) {
+                    var myData = [];
+                    if(data.data!=null){
+                        for(var i=0;i<data.data.length;i++){
+                            var a = data.data[i];
+                            if(a.user.roles[0].rid==4){
+                                myData.push({"uid":a.user.uid,"username":a.user.username,"password":a.user.password,"gender":a.user.gender,"genderid":a.genderid,"rid":a.user.roles[0].rid})
+                            }
+                        }
+
+                        table.render({
+                            elem: '#teacherTable'
+                            ,data: myData
+                            ,cols: [[
+                                {type: 'checkbox'}
+                                ,{field:'uid', title:'ID', unresize: true, sort: true}
+                                ,{field:'username', title:'用户名', templet: '#usernameTpl'}
+                                ,{field:'password', title:'密码'}
+                                ,{field:'gender', title:'性别'}
+                                ,{fixed:'right', title:'操作',templet:'#del',width:150,align:'center'}
+                            ]]
+                            ,page: true
+                            ,toolbar: '#myToolbar'
+                        });
+                    }
+                    else {
+                        layer.msg('暂时没有该类用户');
+                    }
+                });
+            }
+
+            loadTable();
+
+            //监听头工具栏事件（添加、批量删除）
+            table.on('toolbar(teacherTable)', function(obj){
+                var checkStatus = table.checkStatus(obj.config.id)
+                    ,data = checkStatus.data; //获取选中的数据
+                switch(obj.event){
+                    case 'add':
+                        addTeacher();
+                        break;
+                    case 'delete':
+                        if(data.length === 0){
+                            layer.msg('请选择一行');
+                        } else {
+                            //删除
+                            var listuid = [];
+                            for(var i=0;i<data.length;i++){
+                                listuid.push(data[i].uid)
+                            }
+                            $.post(http+'/api/manager/listDeleteByUid',{"listuid":listuid},function () {
+
+                            })
+                        }
+                        break;
+                }
+            });
+            //单个删除/编辑
+            table.on('tool(teacherTable)', function(obj){
+                var data = obj.data;
+                //console.log(obj)
+                if(obj.event === 'del'){
+                    layer.confirm('真的删除【'+data.username+'】么',{title:'删除'},function(index){
+                        obj.del();
+                        $.get(http+'/api/manager/deleteByUid',{"uid":data.uid},function () {
+
+                        });
+                        layer.close(index);
+                    });
+                }
+                if(obj.event === 'edit'){
+                    var uid = $('#uid');
+                    var username = $('#username');
+                    var password = $('#password');
+                    var boy = $('#boy');
+                    var girl = $('#girl');
+                    var tea = $('#tea');
+                    var stu = $('#stu');
+                    var admin = $('#admin');
+                    uid.attr('value',data.uid);
+                    username.attr('value',data.username);
+                    password.attr('value',data.password);
+                    if(data.genderid==="0101"){
+                        girl.attr('checked',false);
+                        boy.attr('checked',true);
+                    }
+                    else if(data.genderid==="0102"){
+                        boy.attr('checked',false);
+                        girl.attr('checked',true);
+                    }
+                    if(data.rid==3){
+                        stu.attr('selected',false);
+                        admin.attr('selected',false);
+                        tea.attr('selected',true)
+                    }
+                    else if(data.rid==4){
+                        admin.attr('selected',false);
+                        tea.attr('selected',false);
+                        stu.attr('selected',true)
+                    }
+                    else if(data.rid==1){
+                        tea.attr('selected',false);
+                        stu.attr('selected',false);
+                        admin.attr('selected',true)
+                    }
+                    myLayer = layer.open({
+                        type:1,
+                        title: '编辑信息',
+                        area: ['550px', '400px'],
+                        content: $('#formContainer'),
+                        end: function () {
+                            loadTable()
+                        }
+                    });
+                    form.render();
+                }
+            });
+            //重载
+            $('#find').click(function () {
+                var user = $('#search').val();
+                if(user.length!=0){
+                    $.post(http+'/api/manager/queryByDimUsername',{"username":user},function (data) {
+                        var myData = [],reloadData=[];
+                        if(data.data!=null){
+                            for(var i=0;i<data.data.length;i++){
+                                var a = data.data[i];
+                                if(a.user.roles[0].rid==4){
+                                    myData.push({"uid":a.user.uid,"username":a.user.username,"password":a.user.password,"gender":a.user.gender,"genderid":a.genderid,"rid":a.user.roles[0].rid})
+                                }
+                            }
+                            for(var i=0;i<myData.length;i++){
+                                if(myData[i].username===user){
+                                    reloadData.push(myData[i])
+                                }
+                            }
+                            if(reloadData!=null){
+                                table.render({
+                                    elem: '#teacherTable'
+                                    ,data: reloadData
+                                    ,cols: [[
+                                        {type: 'checkbox'}
+                                        ,{field:'uid', title:'ID', unresize: true, sort: true}
+                                        ,{field:'username', title:'用户名', templet: '#usernameTpl'}
+                                        ,{field:'password', title:'密码'}
+                                        ,{field:'gender', title:'性别'}
+                                        ,{fixed:'right', title:'操作',templet:'#del',width:150,align:'center'}
+                                    ]]
+                                    ,page: true
+                                    ,toolbar: '#myToolbar'
+                                });
+                            }
+                        }
+                        else {
+                            layer.msg('用户不存在');
+                        }
+
+                    })
+                }
+                else{
+                    loadTable();
+                }
+
+                /*table.reload('testReload', {
+                    page: {
+                        curr: 1 //重新从第 1 页开始
+                    },
+                    where: { //设定异步数据接口的额外参数，任意设
+                        key:{
+                            username: user
+                        }
+                    }
+                },'data');*/
+
+            });
+            //回车重载
+            $('#search').on('keypress',function (event) {
+                if(event.keyCode==13){
+                    $('#find').click();
+                }
+            });
+
+            /*//编辑信息
+            table.on('edit(teacherTable)', function(obj){
+                var value = obj.value //得到修改后的值
+                    ,data = obj.data //得到所在行所有键值
+                    ,field = obj.field; //得到字段
+                $.post("",{"uid":data.id,"username":data.username,"password":data.password,"gender":data.gender,"role":data.role},function (data) {
+                    alert(JSON.stringify(data));
+                })
+            });*/
+
+        });
+        //调出弹出层，添加教师
+        function addTeacher() {
+            layer.open({
+                type: 2,
+                title: '添加学生',
+                content: 'addStudent.html',
+                area: ['600px', '500px'],
+                end:function () {
+                    var table = layui.table;
+                    var $ = layui.$;
+                    $.post(http+'/api/manager/queryAllUser',function (data) {
+                        var myData = [];
+                        for(var i=0;i<data.data.length;i++){
+                            var a = data.data[i];
+                            if(a.user.roles[0].rid==4){
+                                myData.push({"uid":a.user.uid,"username":a.user.username,"password":a.user.password,"gender":a.user.gender,"genderid":a.genderid,"rid":a.user.roles[0].rid})
+                            }
+                        }
+
+                        table.render({
+                            elem: '#teacherTable'
+                            ,data: myData
+                            ,cols: [[
+                                {type: 'checkbox'}
+                                ,{field:'uid', title:'ID', unresize: true, sort: true}
+                                ,{field:'username', title:'用户名', templet: '#usernameTpl',edit: 'text'}
+                                ,{field:'password', title:'密码',edit: 'text'}
+                                ,{field:'gender', title:'性别'}
+                                ,{fixed:'right', title:'操作',templet:'#del',width:150,align:'center'}
+                            ]]
+                            ,page: true
+                            ,toolbar: '#myToolbar'
+                        });
+                    });
+                }
+            });
+        }
+
+        //提交编辑表单
+        function editStudent() {
+            var $ = layui.$;
+            var formData = $('#editStu').serialize();
+            $.post(http+'/api/manager/update',formData,function () {
+                layer.close(myLayer);
+            })
+        }
+    </script>
+</div>
+
+<script>
+    //JavaScript代码区域
+    layui.use('element', function(){
+        var element = layui.element;
+
+    });
+</script>
+</body>
+</html>
