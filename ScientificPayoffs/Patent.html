@@ -84,7 +84,27 @@
                     <legend>专利上传</legend>
                 </fieldset>
                 <div class="layui-upload" style="margin-top: 20px;">
-                    <button type="button" class="layui-btn layui-btn-normal" id="List">选择多文件</button>
+                    <form class="layui-form" action="" style="margin-top: 30px;" name="fm">
+                        <div class="layui-form-item">
+                            <div class="layui-input-block layui-input-inline" style="margin-left: 0px;">
+                                <select name="typeID" lay-verify="required" >
+                                    <option value="0201" selected>专利：0201</option>
+                                </select>
+                            </div>
+                            <div class="layui-input-block layui-input-inline" style="margin-left: 20px">
+                                <input type="text" name="type" required  lay-verify="required" placeholder="请输入专利类型" class="layui-input" >
+                            </div>
+                            <div class="layui-input-block layui-input-inline" style="margin-left: 20px">
+                                <input type="text" name="name" required  lay-verify="required" placeholder="请输入专利名称" class="layui-input" >
+                            </div>
+                            <div class="layui-input-block layui-input-inline" style="margin-left: 20px;">
+                                <input type="text" name="memo"  placeholder="备注" class="layui-input" >
+                            </div>
+                            <div class="layui-input-block layui-input-inline" style="margin-left: 0px;margin-top: 10px;">
+                                <button type="button" class="layui-btn layui-btn-normal" id="List" >选择多文件</button>
+                            </div>
+                        </div>
+                    </form>
                     <div class="layui-upload-list">
                         <table class="layui-table">
                             <thead>

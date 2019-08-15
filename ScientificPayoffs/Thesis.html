@@ -16,7 +16,7 @@
             <form class="layui-form" action="" style="margin-top: 30px;">
                 <div class="layui-form-item" >
                     <div class="layui-input-block layui-input-inline" style="width: 200px;">
-                        <select name="city" lay-verify="required" >
+                        <select name="type" lay-verify="required" >
                             <option value="">请选择类别</option>
                             <option value="0">专题型</option>
                             <option value="1">论辩型</option>
@@ -89,7 +89,30 @@
                     <legend>论文上传</legend>
                 </fieldset>
                 <div class="layui-upload" style="margin-top: 20px;">
-                    <button type="button" class="layui-btn layui-btn-normal" id="List">选择多文件</button>
+                    <form class="layui-form" action="" style="margin-top: 30px;" name="fm">
+                        <div class="layui-form-item">
+                            <div class="layui-input-block layui-input-inline" style="margin-left: 0px;">
+                                <select name="typeID" lay-verify="required" >
+                                    <option value="0202" selected>论文：0202</option>
+                                </select>
+                            </div>
+                            <div class="layui-input-block layui-input-inline" style="margin-left: 20px">
+                                <input type="text" name="type" required  lay-verify="required" placeholder="请输入论文类型" class="layui-input" >
+                            </div>
+                            <div class="layui-input-block layui-input-inline" style="margin-left: 20px">
+                                <input type="text" name="name" required  lay-verify="required" placeholder="请输入论文名称" class="layui-input" >
+                            </div>
+                            <div class="layui-input-block layui-input-inline" style="margin-left: 20px;">
+                                <input type="text" name="author" required  lay-verify="required" placeholder="请输入作者" class="layui-input" >
+                            </div>
+                            <div class="layui-input-block layui-input-inline" style="margin-left: 0px;margin-top: 10px;">
+                                <input type="text" name="memo"  placeholder="备注" class="layui-input" >
+                            </div>
+                            <div class="layui-input-block layui-input-inline" style="margin-left: 20px;margin-top: 10px;">
+                                <button type="button" class="layui-btn layui-btn-normal" id="List" >选择多文件</button>
+                            </div>
+                        </div>
+                    </form>
                     <div class="layui-upload-list">
                         <table class="layui-table">
                             <thead>
@@ -101,13 +124,41 @@
                             <tbody id="mylist"></tbody>
                         </table>
                     </div>
-                    <button type="button" class="layui-btn" id="testListAction">开始上传</button>
+                    <button type="button" class="layui-btn" id="testListAction" onclick="uploadfile(fm.typeID.value,fm.type.value,fm.name.value,fm.author.value,fm.memo.value)">开始上传</button>
                 </div>
             </div>
         </div>
     </div>
 </div>
 
+<script>
+    //获取uid
+    function fun() {
+        $.post("http://148.70.243.66:8888/userLogin",{username:"qwe",password:"qweasd"},function (data) {
+            /*                    alert(data)*/
+            console.log(data)
+            console.log(status)
+            console.log(data.uid)
+            return data.uid;
+        })
+    }
+    //上传接口
+    function uploadfile(typeID,type,name,author,memo) {
+        $.post("http://148.70.243.66:8888/api/dc/ThesisUpload",{TypeID:typeID,UID:"4a0cccb1a03c44a2b85d89b9b10462f0",Type:type,Name:name,Author:author,Memo:memo},function (data) {
+            /*                    alert(data)*/
+            console.log("upload"+data)
+            console.log(status)
+        })
+    }
+
+/*    function uploadfile(typeID,uID,type,name,author,memo) {
+        $.post("http://148.70.243.66:8888/api/dc/ThesisUpload",{TypeID:typeID,UID:uID,Type:type,Name:name,Author:author,Memo:memo},function (data) {
+            /!*                    alert(data)*!/
+            console.log("upload"+data)
+            console.log(status)
+        })
+    }*/
+</script>
 <script>  //分页
 layui.use(['laypage', 'layer'], function(){
     var laypage = layui.laypage
@@ -118,9 +169,9 @@ layui.use(['laypage', 'layer'], function(){
         ,count: 100
         ,layout: ['count', 'prev', 'page', 'next', 'limit', 'refresh', 'skip']
         ,jump: function(obj){
-            console.log(obj)
+/*            console.log(obj)
             console.log(obj.curr)  //当前页号
-            console.log(obj.limit); //得到每页显示的条数
+            console.log(obj.limit); //得到每页显示的条数*/
         }
     });
 });
