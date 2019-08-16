@@ -96,11 +96,20 @@
                                     <option value="0202" selected>论文：0202</option>
                                 </select>
                             </div>
-                            <div class="layui-input-block layui-input-inline" style="margin-left: 20px">
-                                <input type="text" name="ttype" required  lay-verify="required" placeholder="请输入论文类型" class="layui-input">
+                            <div class="layui-input-block layui-input-inline" style="display: none" >
+                                <input type="text" name="uid" required  lay-verify="required" >
                             </div>
                             <div class="layui-input-block layui-input-inline" style="margin-left: 20px">
-                                <input type="text" id="tname" required  lay-verify="required" placeholder="请输入论文名称" class="layui-input" >
+                                <select name="ttype" lay-verify="required" >
+                                    <option value="0">请选择论文类型</option>
+                                    <option value="专题型" >专题型</option>
+                                    <option value="论辩型" >论辩型</option>
+                                    <option value="综述型" >综述型</option>
+                                    <option value="综合型" >综合型</option>
+                                </select>
+                            </div>
+                            <div class="layui-input-block layui-input-inline" style="margin-left: 20px">
+                                <input type="text" name="tname" required  lay-verify="required" placeholder="请输入论文名称" class="layui-input" >
                             </div>
                             <div class="layui-input-block layui-input-inline" style="margin-left: 20px;">
                                 <input type="text" name="tauthor" required  lay-verify="required" placeholder="请输入作者" class="layui-input" >
@@ -121,8 +130,6 @@
 
 <script>
 
-    console.log($("tname").attr("value")+"222222222222222")
-
     <!--表单渲染-->
     $(document).ready(function () {
         var ele = layui.element;
@@ -133,37 +140,41 @@
         form.render();
     });
 
-
     var http = "http://148.70.243.66:8888";
 
-    //获取uid
-    function fun() {
-        // $.ajaxSettings.async = false;
-        $.post(http + "/userLogin",{username:"qwe",password:"qweasd"},function (result) {
-            /*                    alert(data)*/
-/*            console.log(result)
-            console.log(status)*/
-            return result.data.uid;
+   //获取uid
+    $("#choosefile").on('click',function (){
+ /*       $.ajaxSetup({
+            async: false
+        });*/
+        $.post(http+"/userLogin",{username:"qwe",password:"qweasd"},function (result) {
+            /*console.log(result.data.uid)
+            console.log(typeof result.data.uid)*/
+            fm.uid.value=""
+            fm.uid.value=result.data.uid
         })
-    }
-    console.log(String(fun())+"aaaaa")
+    })
+
     //文件上传
+    $("#upload").on('click',function () {
+        file.config.data = {
+            DID:fm.DID.value,
+            UID:fm.uid.value,
+            TTYPE:fm.ttype.value,
+            TNAME:fm.tname.value,
+            TAUTHOR:fm.tauthor.value,
+            MEMO:fm.tmemo.value
+        }
+    })
+    
     var upload = layui.upload,
         element = layui.element;
     element.init();
 
-    upload.render({
+   file = upload.render({
         elem: '#choosefile'
         ,url: http + "/api/dc/ThesisUpload"
-        ,data:{
-            DID:fm.DID.value,
-            UID:fun(),
-            TTYPE:fm.ttype.value,
-            TNAME:$("tname").attr("value"),
-            TAUTHOR:fm.tauthor.value,
-            MEMO:fm.tmemo.value,
-        },
-        accept: 'file' //允许上传的文件类型
+        ,accept: 'file' //允许上传的文件类型
         ,auto: false
         //,multiple: true
         ,bindAction: '#upload'
@@ -179,33 +190,6 @@
              })
         }
     })
-
-    
-    //上传接口
-  /*  function uploadfile(typeID,type,name,author,memo) {
-        console.log(typeID +"  "+type +"  "+name +"  "+author +"  "+memo +"  "+fun())
-
-        $.post(http + "/api/dc/ThesisUpload",{
-            DID:typeID,
-            UID:fun(),
-            TTYPE:type,
-            TNAME:name,
-            TAUTHOR:author,
-            MEMO:memo
-        },function (data) {
-            /!*                    alert(data)*!/
-            console.log("upload"+data)
-            console.log(status)
-        })
-    }
-*/
-/*    function uploadfile(typeID,uID,type,name,author,memo) {
-        $.post(http + "/api/dc/ThesisUpload",{TypeID:typeID,UID:uID,Type:type,Name:name,Author:author,Memo:memo},function (data) {
-            /!*                    alert(data)*!/
-            console.log("upload"+data)
-            console.log(status)
-        })
-    }*/
 
  //分页
 layui.use(['laypage', 'layer'], function(){

@@ -91,32 +91,103 @@
                     <form class="layui-form" action="" style="margin-top: 30px;" name="fm" >
                         <div class="layui-form-item">
                             <div class="layui-input-block layui-input-inline" style="margin-left: 0px;">
-                                <select name="typeID" lay-verify="required" >
+                                <select name="DID" lay-verify="required" >
                                     <option value="0204" selected>著作：0204</option>
                                 </select>
                             </div>
-                            <div class="layui-input-block layui-input-inline" style="margin-left: 20px">
-                                <input type="text" name="type" required  lay-verify="required" placeholder="请输入著作类型" class="layui-input" >
+                            <div class="layui-input-block layui-input-inline" style="display: none" >
+                                <input type="text" name="uid" required  lay-verify="required" >
                             </div>
                             <div class="layui-input-block layui-input-inline" style="margin-left: 20px">
-                                <input type="text" name="name" required  lay-verify="required" placeholder="请输入著作名称" class="layui-input" >
+                                <select name="wtype" lay-verify="required" >
+                                    <option value="0">请选择著作类型</option>
+                                    <option value="专著" >专著</option>
+                                    <option value="独著" >独著</option>
+                                    <option value="合著" >合著</option>
+                                </select>
+                            </div>
+                            <div class="layui-input-block layui-input-inline" style="margin-left: 20px">
+                                <input type="text" name="wname" required  lay-verify="required" placeholder="请输入著作名称" class="layui-input" >
                             </div>
                             <div class="layui-input-block layui-input-inline" style="margin-left: 20px;">
-                                <input type="text" name="author" required  lay-verify="required" placeholder="请输入作者" class="layui-input" >
+                                <input type="text" name="wauthor" required  lay-verify="required" placeholder="请输入作者" class="layui-input" >
                             </div>
                             <div class="layui-input-block layui-input-inline" style="margin-left: 0px;margin-top: 10px;width: 300px">
-                                <input type="text" name="memo"  placeholder="备注" class="layui-input" >
+                                <input type="text" name="wmemo"  placeholder="备注" class="layui-input" >
                             </div>
                         </div>
                     </form>
                     <button type="button" class="layui-btn layui-btn-normal" id="choosefile">选择文件</button>
-                    <button type="button" class="layui-btn" id="upload" onclick="uploadfile(fm.typeID.value,fm.type.value,fm.name.value,fm.author.value,fm.memo.value)">开始上传</button>
+                    <button type="button" class="layui-btn" id="upload" >开始上传</button>
                 </div>
             </div>
         </div>
     </div>
 </div>
-<script>  //分页
+<script>
+
+    <!--表单渲染-->
+    $(document).ready(function () {
+        var ele = layui.element;
+        ele.render();
+    });
+    layui.use('form', function(){
+        var form = layui.form;
+        form.render();
+    });
+
+    var http = "http://148.70.243.66:8888";
+
+    //获取uid
+    $("#choosefile").on('click',function (){
+        /*       $.ajaxSetup({
+                   async: false
+               });*/
+        $.post(http+"/userLogin",{username:"qwe",password:"qweasd"},function (result) {
+            /*console.log(result.data.uid)
+            console.log(typeof result.data.uid)*/
+            fm.uid.value="";
+            fm.uid.value=result.data.uid
+        })
+    })
+
+    //文件上传
+    $("#upload").on('click',function () {
+        file.config.data = {
+            DID:fm.DID.value,
+            UID:fm.uid.value,
+            WTYPE:fm.wtype.value,
+            WNAME:fm.wname.value,
+            WAUTHOR:fm.wauthor.value,
+            MEMO:fm.wmemo.value
+        }
+    })
+
+    var upload = layui.upload,
+        element = layui.element;
+    element.init();
+
+    file = upload.render({
+        elem: '#choosefile'
+        ,url: http + "/api/dc/WritingsUpload"
+        ,accept: 'file' //允许上传的文件类型
+        ,auto: false
+        //,multiple: true
+        ,bindAction: '#upload'
+        ,done: function(res){
+            console.log(res)  //返回对象数据
+        },
+        choose:function (obj) {
+            return obj.preview(function(index, file, result){
+                /*console.log(index);*/ //得到文件索引     
+                /*alert($("type").val())
+                console.log(file); //得到文件对象，其中 file.name是文件名 */
+                return file
+            })
+        }
+    })
+
+//分页
 var http = "http://148.70.243.66:8888";
 
 layui.use(['laypage', 'layer'], function(){
@@ -134,16 +205,6 @@ layui.use(['laypage', 'layer'], function(){
         }
     });
 });
-
-    <!--表单渲染-->
-    $(document).ready(function () {
-        var ele = layui.element;
-        ele.render();
-    });
-    layui.use('form', function(){
-        var form = layui.form;
-        form.render();
-    });
 
     <!--删除-->
     layui.use('layer', function(){ //独立版的layer无需执行这一句
@@ -182,22 +243,6 @@ layui.use(['laypage', 'layer'], function(){
                 $('.delete').addClass('layui-hide');*/
     });
 
-
-    //文件上传
-    var upload = layui.upload,
-        element = layui.element;
-    element.init();
-
-    upload.render({
-        elem: '#choosefile'
-        ,url: '/upload/'
-        ,auto: false
-        //,multiple: true
-        ,bindAction: '#upload'
-        ,done: function(res){
-            console.log(res)
-        }
-    });
 </script>
 </body>
 </html>

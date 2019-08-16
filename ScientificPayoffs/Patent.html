@@ -10,6 +10,7 @@
     <script src="https://vuejs.org/js/vue.js"></script>
 </head>
 <body>
+
 <div class="layui-col-md10 layui-col-md-offset2" style="width: 1100px">
     <div class="layui-row grid-demo grid-demo-bg1">
         <div class="layui-col-md12" style="height: 100px;">
@@ -87,30 +88,98 @@
                     <form class="layui-form" action="" style="margin-top: 30px;" name="fm">
                         <div class="layui-form-item">
                             <div class="layui-input-block layui-input-inline" style="margin-left: 0px;">
-                                <select name="typeID" lay-verify="required" >
+                                <select name="DID" lay-verify="required" >
                                     <option value="0201" selected>专利：0201</option>
                                 </select>
                             </div>
-                            <div class="layui-input-block layui-input-inline" style="margin-left: 20px">
-                                <input type="text" name="type" required  lay-verify="required" placeholder="请输入专利类型" class="layui-input" >
+                            <div class="layui-input-block layui-input-inline" style="display: none" >
+                                <input type="text" name="uid" required  lay-verify="required" >
                             </div>
                             <div class="layui-input-block layui-input-inline" style="margin-left: 20px">
-                                <input type="text" name="name" required  lay-verify="required" placeholder="请输入专利名称" class="layui-input" >
+                                <select name="ptype" lay-verify="required" >
+                                    <option value="0">请选择专利类型</option>
+                                    <option value="实用型" >实用型</option>
+                                    <option value="新型" >新型</option>
+                                </select>
+                            </div>
+                            <div class="layui-input-block layui-input-inline" style="margin-left: 20px">
+                                <input type="text" name="pname" required  lay-verify="required" placeholder="请输入专利名称" class="layui-input" >
                             </div>
                             <div class="layui-input-block layui-input-inline" style="margin-left: 20px;">
-                                <input type="text" name="memo"  placeholder="备注" class="layui-input">
+                                <input type="text" name="pmemo"  placeholder="备注" class="layui-input">
                             </div>
                         </div>
                     </form>
                     <button type="button" class="layui-btn layui-btn-normal" id="choosefile">选择文件</button>
-                    <button type="button" class="layui-btn" id="upload" onclick="uploadfile(fm.typeID.value,fm.type.value,fm.name.value,fm.author.value,fm.memo.value)">开始上传</button>
+                    <button type="button" class="layui-btn" id="upload" >开始上传</button>
                 </div>
             </div>
         </div>
     </div>
 </div>
 
-<script>  //分页
+<script>
+    <!--表单渲染-->
+    $(document).ready(function () {
+        var ele = layui.element;
+        ele.render();
+    });
+    layui.use('form', function(){
+        var form = layui.form;
+        form.render();
+    });
+
+    var http = "http://148.70.243.66:8888";
+
+    //获取uid
+    $("#choosefile").on('click',function (){
+        /*       $.ajaxSetup({
+                   async: false
+               });*/
+        $.post(http+"/userLogin",{username:"qwe",password:"qweasd"},function (result) {
+            /*console.log(result.data.uid)
+            console.log(typeof result.data.uid)*/
+            fm.uid.value=""
+            fm.uid.value=result.data.uid
+        })
+    })
+
+    //文件上传
+    $("#upload").on('click',function () {
+        file.config.data = {
+            DID:fm.DID.value,
+            UID:fm.uid.value,
+            PTYPE:fm.ptype.value,
+            PNAME:fm.pname.value,
+            MEMO:fm.pmemo.value
+        }
+    })
+
+    var upload = layui.upload,
+        element = layui.element;
+    element.init();
+
+    file = upload.render({
+        elem: '#choosefile'
+        ,url: http + "/api/dc/patentUpload"
+        ,accept: 'file' //允许上传的文件类型
+        ,auto: false
+        //,multiple: true
+        ,bindAction: '#upload'
+        ,done: function(res){
+            console.log(res)  //返回对象数据
+        },
+        choose:function (obj) {
+            return obj.preview(function(index, file, result){
+                /*console.log(index);*/ //得到文件索引     
+                /*alert($("type").val())
+                console.log(file); //得到文件对象，其中 file.name是文件名 */
+                return file
+            })
+        }
+    })
+
+    //分页
 layui.use(['laypage', 'layer'], function(){
     var laypage = layui.laypage
         ,layer = layui.layer;
@@ -126,20 +195,7 @@ layui.use(['laypage', 'layer'], function(){
         }
     });
 });
-</script>
-<script>
-    <!--表单渲染-->
-    $(document).ready(function () {
-        var ele = layui.element;
-        ele.render();
-    });
-    layui.use('form', function(){
-        var form = layui.form;
-        form.render();
-    });
-</script>
 <!--删除-->
-<script>
     layui.use('layer', function(){ //独立版的layer无需执行这一句
         var $ = layui.jquery, layer = layui.layer; //独立版的layer无需执行这一句
 
@@ -175,23 +231,7 @@ layui.use(['laypage', 'layer'], function(){
         $('.edit').addClass('layui-hide');
         $('.delete').addClass('layui-hide');*/
     });
-</script>
-<script type="text/javascript">
-    var upload = layui.upload,
-        element = layui.element;
-    element.init();
 
-    //文件上传
-    upload.render({
-        elem: '#choosefile'
-        ,url: '/upload/'
-        ,auto: false
-        //,multiple: true
-        ,bindAction: '#upload'
-        ,done: function(res){
-            console.log(res)
-        }
-    });
 </script>
 </body>
 </html>

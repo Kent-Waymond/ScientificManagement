@@ -12,25 +12,22 @@
         <!-- title of site -->
         <title>登录</title>
 
+        <script src="../assets/js/jquery.js"></script>
+        <script type="text/javascript" src="../layui/layui.js"></script>
+        <script type="text/javascript" src="../layui/layui.all.js"></script>
+        <link rel="stylesheet" href="../layui/css/layui.css" type="text/css"/>
         <!-- For favicon png -->
 		<link rel="shortcut icon" type="image/icon" href="../assets/logo/favicon.png"/>
-       
         <!--font-awesome.min.css-->
         <link rel="stylesheet" href="../assets/css/font-awesome.min.css">
-		
 		<!--animate.css-->
         <link rel="stylesheet" href="../assets/css/animate.css">
-		
         <!--bootstrap.min.css-->
         <link rel="stylesheet" href="../assets/css/bootstrap.min.css">
-
-        
         <!--style.css-->
         <link rel="stylesheet" href="../assets/css/style.css">
-        
         <!--responsive.css-->
         <link rel="stylesheet" href="../assets/css/responsive.css">
-        
         <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
         <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
 		
@@ -130,15 +127,13 @@
 		<!-- signin end -->
 		<section class="signin popup-in">
 			<div class="container">
-
 				<div class="sign-content popup-in-content">
 					<div class="popup-in-txt">
 						<h2>登录</h2>
-						
 						<div class="row">
 							<div class="col-sm-12">
 								<div class="signin-form">
-									<form action="../TasksManagement/TaskManegement.html" name="fm" >
+									<form  name="fm" action="../TasksManagement/TaskManegement.html">
 										<div class="form-group">
 										    <label >用户名</label>
 										    <input type="text" class="form-control" name="username" placeholder="请输入正确的用户名">
@@ -147,43 +142,32 @@
 											<label >密码</label>
 										    <input type="password" class="form-control" name="password" id="password" placeholder="请输入正确的密码">
 										</div><!--/.form-group -->
-									</form><!--/form -->
-								</div><!--/.signin-form -->
+
+                                <div class="signin-password">
+                                    <div class="awesome-checkbox-list">
+                                        <ul class="unstyled centered">
+                                            <li>
+                                                <input class="styled-checkbox" id="styled-checkbox-2" type="checkbox" value="value2">
+                                                <label for="styled-checkbox-2">记住密码</label>
+                                            </li>
+
+                                            <li>
+                                                <a href="#">忘记用户名和密码？</a>
+                                            </li>
+
+                                        </ul>
+                                    </div><!--/.awesome-checkbox-list -->
+                                </div><!--/.signin-password -->
+                                <div class="signin-footer">
+                                    <input type="button" value="登录" id="logininput" class="btn signin_btn" onclick=javascrtpt:fun(fm.username.value,fm.password.value)>
+                                    <p>
+                                        尚未注册？
+                                        <a href="../Login/popupsignup.html">注册</a >
+                                    </p>
+                                </div><!--/.signin-footer -->
+                                    </form><!--/form -->
+                                </div><!--/.signin-form -->
 							</div><!--/.col -->
-						</div><!--/.row -->
-						
-						<div class="row">
-							<div class="col-sm-12">
-								<div class="signin-password">
-									<div class="awesome-checkbox-list">
-										<ul class="unstyled centered">
-											<li>
-											    <input class="styled-checkbox" id="styled-checkbox-2" type="checkbox" value="value2">
-											    <label for="styled-checkbox-2">记住密码</label>
-											</li>
-
-											<li>
-											    <a href="#">忘记用户名和密码？</a>
-											</li>
-
-										</ul>
-									</div><!--/.awesome-checkbox-list -->
-								</div><!--/.signin-password -->
-							</div><!--/.col -->
-						</div><!--/.row -->
-
-						<div class="row">
-							<div class="col-sm-12">
-								<div class="signin-footer">
-									<button id="logininput" type="button" class="btn signin_btn" onclick="fun(fm.username.value,fm.password.value)">
-									登录
-									</button>
-									<p>
-										尚未注册？
-										<a href="../Login/popupsignup.html">注册</a >
-									</p>
-								</div><!--/.signin-footer -->
-							</div><!--/.col-->
 						</div><!--/.row -->
 					</div><!-- .popup-in-txt -->
 				</div><!--/.sign-content -->
@@ -208,7 +192,11 @@
 /*                    alert(data)*/
                     console.log(data)
                     console.log(status)
-                    alert("登录成功！")
+                    layui.use('layer', function(){
+                        var layer = layui.layer;
+                        layer.alert("<h3 style='color:black'>" + '登录成功! '  + "</h3>",{title:"温馨提示"});
+                    });
+                    window.location.href="../TasksManagement/TaskManegement.html";
                 })
             }
 		</script>
