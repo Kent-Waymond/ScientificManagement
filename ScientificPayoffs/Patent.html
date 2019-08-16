@@ -10,7 +10,7 @@
     <script src="https://vuejs.org/js/vue.js"></script>
 </head>
 <body>
-<div class="layui-col-md10 layui-col-md-offset2">
+<div class="layui-col-md10 layui-col-md-offset2" style="width: 1100px">
     <div class="layui-row grid-demo grid-demo-bg1">
         <div class="layui-col-md12" style="height: 100px;">
             <form class="layui-form" action="" style="margin-top: 30px;">
@@ -100,23 +100,10 @@
                             <div class="layui-input-block layui-input-inline" style="margin-left: 20px;">
                                 <input type="text" name="memo"  placeholder="备注" class="layui-input">
                             </div>
-                            <div class="layui-input-block layui-input-inline" style="margin-left: 0px;margin-top: 10px;">
-                                <button type="button" class="layui-btn layui-btn-normal" id="List" >选择多文件</button>
-                            </div>
                         </div>
                     </form>
-                    <div class="layui-upload-list">
-                        <table class="layui-table">
-                            <thead>
-                            <tr><th>文件名</th>
-                                <th>大小</th>
-                                <th>状态</th>
-                                <th>操作</th>
-                            </tr></thead>
-                            <tbody id="mylist"></tbody>
-                        </table>
-                    </div>
-                    <button type="button" class="layui-btn" id="testListAction">开始上传</button>
+                    <button type="button" class="layui-btn layui-btn-normal" id="choosefile">选择文件</button>
+                    <button type="button" class="layui-btn" id="upload" onclick="uploadfile(fm.typeID.value,fm.type.value,fm.name.value,fm.author.value,fm.memo.value)">开始上传</button>
                 </div>
             </div>
         </div>
@@ -194,59 +181,15 @@ layui.use(['laypage', 'layer'], function(){
         element = layui.element;
     element.init();
 
-    //多文件上传
-    var ListView = $('#mylist')
-        ,uploadListIns = upload.render({
-        elem: '#List'
+    //文件上传
+    upload.render({
+        elem: '#choosefile'
         ,url: '/upload/'
-        ,accept: 'file'
-        ,multiple: true
         ,auto: false
-        ,bindAction: '#testListAction'
-        ,choose: function(obj){
-            var files = this.files = obj.pushFile(); //将每次选择的文件追加到文件队列
-            //读取本地文件
-            obj.preview(function(index, file, result){
-                var tr = $(['<tr id="upload-'+ index +'">'
-                    ,'<td>'+ file.name +'</td>'
-                    ,'<td>'+ (file.size/1014).toFixed(1) +'kb</td>'
-                    ,'<td>等待上传</td>'
-                    ,'<td>'
-                    ,'<button class="layui-btn layui-btn-xs demo-reload layui-hide">重传</button>'
-                    ,'<button class="layui-btn layui-btn-xs layui-btn-danger demo-delete">删除</button>'
-                    ,'</td>'
-                    ,'</tr>'].join(''));
-
-                //单个重传
-                tr.find('.demo-reload').on('click', function(){
-                    obj.upload(index, file);
-                });
-
-                //删除
-                tr.find('.demo-delete').on('click', function(){
-                    delete files[index]; //删除对应的文件
-                    tr.remove();
-                    uploadListIns.config.elem.next()[0].value = ''; //清空 input file 值，以免删除后出现同名文件不可选
-                });
-
-                ListView.append(tr);
-            });
-        }
-        ,done: function(res, index, upload){
-            if(res.code == 0){ //上传成功
-                var tr = ListView.find('tr#upload-'+ index)
-                    ,tds = tr.children();
-                tds.eq(2).html('<span style="color: #5FB878;">上传成功</span>');
-                tds.eq(3).html(''); //清空操作
-                return delete this.files[index]; //删除文件队列已经上传成功的文件
-            }
-            this.error(index, upload);
-        }
-        ,error: function(index, upload){
-            var tr = ListView.find('tr#upload-'+ index)
-                ,tds = tr.children();
-            tds.eq(2).html('<span style="color: #FF5722;">上传失败</span>');
-            tds.eq(3).find('.demo-reload').removeClass('layui-hide'); //显示重传
+        //,multiple: true
+        ,bindAction: '#upload'
+        ,done: function(res){
+            console.log(res)
         }
     });
 </script>

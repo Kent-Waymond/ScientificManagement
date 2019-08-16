@@ -4,13 +4,13 @@
     <meta charset="UTF-8">
     <title>Thesis</title>
     <script src="../jQuery/jquery-3.3.1.min%20(1).js"></script>
+    <script src="../assets/js/jquery.js"></script>
     <script type="text/javascript" src="../layui/layui.js"></script>
     <script type="text/javascript" src="../layui/layui.all.js"></script>
     <link rel="stylesheet" href="../layui/css/layui.css" type="text/css"/>
-    <script src="https://vuejs.org/js/vue.js"></script>
 </head>
 <body>
-<div class="layui-col-md10 layui-col-md-offset2">
+<div class="layui-col-md10 layui-col-md-offset2" style="width: 1100px">
     <div class="layui-row grid-demo grid-demo-bg1">
         <div class="layui-col-md12" style="height: 100px;">
             <form class="layui-form" action="" style="margin-top: 30px;">
@@ -38,7 +38,7 @@
         </fieldset>
         <div class="layui-row grid-demo grid-demo-bg1">
             <div class="layui-col-md12">
-                <table class="layui-table" id="mytable">
+                <table class="layui-table" id="mytable" style="margin: 20px">
                     <colgroup>
                         <col width="150">
                         <col width="200">
@@ -78,7 +78,7 @@
                         <td>1</td>
                         <td><button class="layui-btn"><i class="layui-icon layui-icon-about"></i>查看</button>
                             <button data-method="notice"  class="layui-btn edit" ><i class="layui-icon layui-icon-edit"></i>编辑</button>
-                            <button data-method="notice"  class="layui-btn layui-btn-normal  download" ><i class="layui-icon layui-icon-download-circle"></i>下载</button>
+                            <button data-method="notice"  class="layui-btn layui-btn-normal  download" onclick="downloadfile()"><i class="layui-icon layui-icon-download-circle"></i>下载</button>
                             <button data-method="notice"  class=" layui-btn layui-btn-danger delete"><i class="layui-icon layui-icon-delete"></i>删除</button>
                         </td>
                     </tr>
@@ -88,43 +88,31 @@
                 <fieldset class="layui-elem-field layui-field-title site-demo-button" style="margin-top: 30px;">
                     <legend>论文上传</legend>
                 </fieldset>
-                <div class="layui-upload" style="margin-top: 20px;">
+                <div class="layui-upload" style="margin:20px;">
                     <form class="layui-form" action="" style="margin-top: 30px;" name="fm">
                         <div class="layui-form-item">
                             <div class="layui-input-block layui-input-inline" style="margin-left: 0px;">
-                                <select name="typeID" lay-verify="required" >
+                                <select name="DID" lay-verify="required" >
                                     <option value="0202" selected>论文：0202</option>
                                 </select>
                             </div>
                             <div class="layui-input-block layui-input-inline" style="margin-left: 20px">
-                                <input type="text" name="type" required  lay-verify="required" placeholder="请输入论文类型" class="layui-input" >
+                                <input type="text" name="ttype" required  lay-verify="required" placeholder="请输入论文类型" class="layui-input">
                             </div>
                             <div class="layui-input-block layui-input-inline" style="margin-left: 20px">
-                                <input type="text" name="name" required  lay-verify="required" placeholder="请输入论文名称" class="layui-input" >
+                                <input type="text" id="tname" required  lay-verify="required" placeholder="请输入论文名称" class="layui-input" >
                             </div>
                             <div class="layui-input-block layui-input-inline" style="margin-left: 20px;">
-                                <input type="text" name="author" required  lay-verify="required" placeholder="请输入作者" class="layui-input" >
+                                <input type="text" name="tauthor" required  lay-verify="required" placeholder="请输入作者" class="layui-input" >
                             </div>
-                            <div class="layui-input-block layui-input-inline" style="margin-left: 0px;margin-top: 10px;">
-                                <input type="text" name="memo"  placeholder="备注" class="layui-input" >
-                            </div>
-                            <div class="layui-input-block layui-input-inline" style="margin-left: 20px;margin-top: 10px;">
-                                <button type="button" class="layui-btn layui-btn-normal" id="List" >选择多文件</button>
+                            <div class="layui-input-block layui-input-inline" style="margin-left: 0px;margin-top: 10px;width: 300px">
+                                <input type="text" name="tmemo"  placeholder="备注" class="layui-input" >
                             </div>
                         </div>
                     </form>
-                    <div class="layui-upload-list">
-                        <table class="layui-table">
-                            <thead>
-                            <tr><th>文件名</th>
-                                <th>大小</th>
-                                <th>状态</th>
-                                <th>操作</th>
-                            </tr></thead>
-                            <tbody id="mylist"></tbody>
-                        </table>
-                    </div>
-                    <button type="button" class="layui-btn" id="testListAction" onclick="uploadfile(fm.typeID.value,fm.type.value,fm.name.value,fm.author.value,fm.memo.value)">开始上传</button>
+                    <button type="button" class="layui-btn layui-btn-normal" id="choosefile">选择文件</button>
+                    <button type="button" class="layui-btn" id="upload" >开始上传</button>
+                    <!--onclick="uploadfile(fm.typeID.value,fm.type.value,fm.name.value,fm.author.value,fm.memo.value)"-->
                 </div>
             </div>
         </div>
@@ -132,34 +120,94 @@
 </div>
 
 <script>
+
+    console.log($("tname").attr("value")+"222222222222222")
+
+    <!--表单渲染-->
+    $(document).ready(function () {
+        var ele = layui.element;
+        ele.render();
+    });
+    layui.use('form', function(){
+        var form = layui.form;
+        form.render();
+    });
+
+
+    var http = "http://148.70.243.66:8888";
+
     //获取uid
     function fun() {
-        $.post("http://148.70.243.66:8888/userLogin",{username:"qwe",password:"qweasd"},function (data) {
+        // $.ajaxSettings.async = false;
+        $.post(http + "/userLogin",{username:"qwe",password:"qweasd"},function (result) {
             /*                    alert(data)*/
-            console.log(data)
-            console.log(status)
-            console.log(data.uid)
-            return data.uid;
+/*            console.log(result)
+            console.log(status)*/
+            return result.data.uid;
         })
     }
+    console.log(String(fun())+"aaaaa")
+    //文件上传
+    var upload = layui.upload,
+        element = layui.element;
+    element.init();
+
+    upload.render({
+        elem: '#choosefile'
+        ,url: http + "/api/dc/ThesisUpload"
+        ,data:{
+            DID:fm.DID.value,
+            UID:fun(),
+            TTYPE:fm.ttype.value,
+            TNAME:$("tname").attr("value"),
+            TAUTHOR:fm.tauthor.value,
+            MEMO:fm.tmemo.value,
+        },
+        accept: 'file' //允许上传的文件类型
+        ,auto: false
+        //,multiple: true
+        ,bindAction: '#upload'
+        ,done: function(res){
+            console.log(res)  //返回对象数据
+        },
+        choose:function (obj) {
+            return obj.preview(function(index, file, result){     
+                /*console.log(index);*/ //得到文件索引     
+                /*alert($("type").val())
+                console.log(file); //得到文件对象，其中 file.name是文件名 */
+                return file    
+             })
+        }
+    })
+
+    
     //上传接口
-    function uploadfile(typeID,type,name,author,memo) {
-        $.post("http://148.70.243.66:8888/api/dc/ThesisUpload",{TypeID:typeID,UID:"4a0cccb1a03c44a2b85d89b9b10462f0",Type:type,Name:name,Author:author,Memo:memo},function (data) {
-            /*                    alert(data)*/
+  /*  function uploadfile(typeID,type,name,author,memo) {
+        console.log(typeID +"  "+type +"  "+name +"  "+author +"  "+memo +"  "+fun())
+
+        $.post(http + "/api/dc/ThesisUpload",{
+            DID:typeID,
+            UID:fun(),
+            TTYPE:type,
+            TNAME:name,
+            TAUTHOR:author,
+            MEMO:memo
+        },function (data) {
+            /!*                    alert(data)*!/
             console.log("upload"+data)
             console.log(status)
         })
     }
-
+*/
 /*    function uploadfile(typeID,uID,type,name,author,memo) {
-        $.post("http://148.70.243.66:8888/api/dc/ThesisUpload",{TypeID:typeID,UID:uID,Type:type,Name:name,Author:author,Memo:memo},function (data) {
+        $.post(http + "/api/dc/ThesisUpload",{TypeID:typeID,UID:uID,Type:type,Name:name,Author:author,Memo:memo},function (data) {
             /!*                    alert(data)*!/
             console.log("upload"+data)
             console.log(status)
         })
     }*/
-</script>
-<script>  //分页
+
+ //分页
 layui.use(['laypage', 'layer'], function(){
     var laypage = layui.laypage
         ,layer = layui.layer;
@@ -175,20 +223,8 @@ layui.use(['laypage', 'layer'], function(){
         }
     });
 });
-</script>
-<script>
-    <!--表单渲染-->
-    $(document).ready(function () {
-        var ele = layui.element;
-        ele.render();
-    });
-    layui.use('form', function(){
-        var form = layui.form;
-        form.render();
-    });
-</script>
+
 <!--删除-->
-<script>
     layui.use('layer', function(){ //独立版的layer无需执行这一句
         var $ = layui.jquery, layer = layui.layer; //独立版的layer无需执行这一句
 
@@ -224,67 +260,7 @@ layui.use(['laypage', 'layer'], function(){
                 $('.edit').addClass('layui-hide');
                 $('.delete').addClass('layui-hide');*/
     });
-</script>
-<script type="text/javascript">
-    var upload = layui.upload,
-        element = layui.element;
-    element.init();
-
-    //多文件上传
-    var ListView = $('#mylist')
-        ,uploadListIns = upload.render({
-        elem: '#List'
-        ,url: '/upload/'
-        ,accept: 'file'
-        ,multiple: true
-        ,auto: false
-        ,bindAction: '#testListAction'
-        ,choose: function(obj){
-            var files = this.files = obj.pushFile(); //将每次选择的文件追加到文件队列
-            //读取本地文件
-            obj.preview(function(index, file, result){
-                var tr = $(['<tr id="upload-'+ index +'">'
-                    ,'<td>'+ file.name +'</td>'
-                    ,'<td>'+ (file.size/1014).toFixed(1) +'kb</td>'
-                    ,'<td>等待上传</td>'
-                    ,'<td>'
-                    ,'<button class="layui-btn layui-btn-xs demo-reload layui-hide">重传</button>'
-                    ,'<button class="layui-btn layui-btn-xs layui-btn-danger demo-delete">删除</button>'
-                    ,'</td>'
-                    ,'</tr>'].join(''));
-
-                //单个重传
-                tr.find('.demo-reload').on('click', function(){
-                    obj.upload(index, file);
-                });
-
-                //删除
-                tr.find('.demo-delete').on('click', function(){
-                    delete files[index]; //删除对应的文件
-                    tr.remove();
-                    uploadListIns.config.elem.next()[0].value = ''; //清空 input file 值，以免删除后出现同名文件不可选
-                });
-
-                ListView.append(tr);
-            });
-        }
-        ,done: function(res, index, upload){
-            if(res.code == 0){ //上传成功
-                var tr = ListView.find('tr#upload-'+ index)
-                    ,tds = tr.children();
-                tds.eq(2).html('<span style="color: #5FB878;">上传成功</span>');
-                tds.eq(3).html(''); //清空操作
-                return delete this.files[index]; //删除文件队列已经上传成功的文件
-            }
-            this.error(index, upload);
-        }
-        ,error: function(index, upload){
-            var tr = ListView.find('tr#upload-'+ index)
-                ,tds = tr.children();
-            tds.eq(2).html('<span style="color: #FF5722;">上传失败</span>');
-            tds.eq(3).find('.demo-reload').removeClass('layui-hide'); //显示重传
-        }
-    });
+    
 </script>
 </body>
 </html>
