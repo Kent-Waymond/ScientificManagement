@@ -119,24 +119,25 @@
 
     var http = "http://148.70.243.66:8888";
 
-    //获取uid
+/*    //获取uid
     $("#choosefile").on('click',function (){
-        /*       $.ajaxSetup({
+        /!*       $.ajaxSetup({
                    async: false
-               });*/
+               });*!/
         $.post(http+"/userLogin",{username:"qwe",password:"qweasd"},function (result) {
-            /*console.log(result.data.uid)
-            console.log(typeof result.data.uid)*/
+
+            /!*console.log(result.data.uid)
+            console.log(typeof result.data.uid)*!/
             fm.uid.value=""
             fm.uid.value=result.data.uid
         })
-    })
+    })*/
 
     //文件上传
     $("#upload").on('click',function () {
         file.config.data = {
             DID:fm.DID.value,
-            UID:fm.uid.value,
+            UID:window.sessionStorage.getItem("uid"),
             SAUTHOR:fm.sauthor.value,
             SNAME:fm.sname.value,
             MEMO:fm.smemo.value

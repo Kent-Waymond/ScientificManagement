@@ -192,11 +192,16 @@
 /*                    alert(data)*/
                     console.log(data)
                     console.log(status)
-                    layui.use('layer', function(){
-                        var layer = layui.layer;
-                        layer.alert("<h3 style='color:black'>" + '登录成功! '  + "</h3>",{title:"温馨提示"});
-                    });
-                    window.location.href="../TasksManagement/TaskManegement.html";
+					/*console.log(data.status =="success")*/
+					if(data.status =="success"){
+					    window.sessionStorage.setItem("uid",data.data.uid);
+					    window.sessionStorage.setItem("username",un);
+						layui.use('layer', function(){
+							var layer = layui.layer;
+							layer.alert("<h3 style='color:black'>" + '登录成功! '  + "</h3>",{title:"温馨提示"});
+						});
+						window.location.href="../TasksManagement/TaskManegement.html";
+                    }
                 })
             }
 		</script>
