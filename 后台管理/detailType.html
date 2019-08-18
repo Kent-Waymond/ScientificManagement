@@ -12,9 +12,8 @@
 <body>
 <div style="margin: 10px">
     <div class="demoTable" >
-        <span style="font-size: larger"><b>搜索详细类型ID：</b></span>
         <div class="layui-inline">
-            <input class="layui-input" name="username" id="search" autocomplete="off">
+            <input class="layui-input" name="username" id="search" autocomplete="off" placeholder="搜索详细类型ID：">
         </div>
         <button class="layui-btn" data-type="reload" id="find">搜索</button>
     </div>
@@ -120,11 +119,11 @@
                     data: data,
                     cols:[[
                         {type: 'checkbox'},
-                        {field: 'bid',title:'基本类型编号',width:130},
-                        {field: 'did',title:'详细类型编号',sort:true,width:130},
-                        {field: 'dname',title:'详细类型名称',width:150},
-                        {field: 'memo',title:'备注',width: 120},
-                        {fixed: 'right',title:'操作',templet:'#handle',width:130,align:'center'}
+                        {field: 'bid',title:'基本类型'},
+                        {field: 'did',title:'详细类型编号',sort:true},
+                        {field: 'dname',title:'详细类型名称'},
+                        {field: 'memo',title:'备注'},
+                        {fixed: 'right',title:'操作',templet:'#handle',align:'center'}
                     ]],
                     page: true,
                     toolbar: '#myToolbar'
@@ -138,9 +137,20 @@
             }
 
             function loadTableByBid(bid){
-                $.post(http+'/api/DetailType/findByBID',{"bid":bid},function (data) {
+                /*$.post(http+'/api/DetailType/findByBID',{"bid":bid},function (data) {
                     loadData(data.data);
-                });
+                });*/
+                $.ajax({
+                    type:'post',
+                    url: http+'/api/DetailType/findByBID',
+                    data: {"bid":bid},
+                    success: function (data) {
+                        loadData(data.data);
+                    },
+                    error: function (error) {
+                        layer.msg(error);
+                    }
+                })
             }
             if(!getbid){
                 loadTable();
@@ -193,7 +203,7 @@
                         addlay = layer.open({
                             type: 1,
                             title: '添加详细类型',
-                            area: ['560px', '450px'],
+                            area: ['80%', '70%'],
                             content: $('#addContainer'),
                             end: function () {
                                 loadTable();
@@ -246,7 +256,7 @@
                     editlay = layer.open({
                         type:1,
                         title: '编辑基本类型',
-                        area: ['560px', '450px'],
+                        area: ['80%', '70%'],
                         content: $('#editContainer'),
                         end: function () {
                             loadTable();
