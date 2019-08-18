@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>教师管理</title>
+    <title>管理员管理</title>
     <meta name="renderer" content="webkit">
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
@@ -13,9 +13,8 @@
 <div style="margin: 10px">
 
     <div class="demoTable" >
-        <span style="font-size: larger"><b>搜索管理员用户名：</b></span>
         <div class="layui-inline">
-            <input class="layui-input" name="username" id="search" autocomplete="off">
+            <input class="layui-input" name="username" id="search" autocomplete="off" placeholder="搜索用户名">
         </div>
         <button class="layui-btn" data-type="reload" id="find">搜索</button>
     </div>
@@ -33,31 +32,33 @@
             <div class="layui-form-item">
                 <label class="layui-form-label">ID</label>
                 <div class="layui-input-block">
-                    <input class="layui-input" type="text" value="" style="width: 350px" name="uid" id="uid" readonly>
+                    <input class="layui-input" type="text" value="" style="width: 80%" name="uid" id="uid" readonly>
                 </div>
             </div>
             <div class="layui-form-item">
                 <label class="layui-form-label">用户名</label>
                 <div class="layui-input-block">
-                    <input class="layui-input" type="text" value="" style="width: 350px" name="username" id="username" required>
+                    <input class="layui-input" type="text" value="" style="width: 80%" name="username" id="username" required>
                 </div>
             </div>
             <div class="layui-form-item">
                 <label class="layui-form-label">密码</label>
                 <div class="layui-input-block">
-                    <input class="layui-input" type="text" value="" style="width: 350px" name="password" id="password" required>
+                    <input class="layui-input" type="text" value="" style="width: 80%" name="password" id="password" required>
                 </div>
             </div>
             <div class="layui-form-item">
                 <label class="layui-form-label">性别</label>
-                <div class="layui-input-block">
-                    <input class="layui-input" type="radio" value="0101" title="男" name="gender" id="boy">
-                    <input class="layui-input" type="radio" value="0102" title="女" name="gender" id="girl">
+                <div class="layui-input-block" style="width: 63%">
+                    <select name="gender" id="gender">
+                        <option value="0101" id="boy">男</option>
+                        <option value="0102" id="girl">女</option>
+                    </select>
                 </div>
             </div>
             <div class="layui-form-item">
                 <label class="layui-form-label">角色</label>
-                <div class="layui-input-block"  style="width: 350px;">
+                <div class="layui-input-block"  style="width: 63%">
                     <select name="role" id="role">
                         <option value="3" id="tea">教师</option>
                         <option value="4" id="stu">学生</option>
@@ -175,12 +176,10 @@
                     username.attr('value',data.username);
                     password.attr('value',data.password);
                     if(data.genderid==="0101"){
-                        girl.attr('checked',false);
-                        boy.attr('checked',true);
+                        $('#gender').val("0101")
                     }
                     else if(data.genderid==="0102"){
-                        boy.attr('checked',false);
-                        girl.attr('checked',true);
+                        $('#gender').val("0102")
                     }
                     if(data.rid==3){
                         stu.attr('selected',false);
@@ -200,7 +199,7 @@
                     myLayer = layer.open({
                         type:1,
                         title: '编辑信息',
-                        area: ['550px', '400px'],
+                        area: ['42%', '60%'],
                         content: $('#formContainer'),
                         end: function () {
                             loadTable()
@@ -289,8 +288,8 @@
             layer.open({
                 type: 2,
                 title: '添加教师',
-                content: 'addTeacher.html',
-                area: ['600px', '500px'],
+                content: 'addAdmin.html',
+                area: ['50%', '75%'],
                 end:function () {
                     var table = layui.table;
                     var $ = layui.$;
