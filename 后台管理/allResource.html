@@ -1,0 +1,257 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <title>视频资源管理</title>
+    <link rel="stylesheet" href="../layui/layui-v2.5.4/layui/css/layui.css">
+    <script src="../layui/layui-v2.5.4/layui/layui.js"></script>
+</head>
+<body>
+
+<div style="margin: 10px;">
+    <div class="demoTable">
+        <div class="layui-inline">
+            <input class="layui-input" name="username" id="search" autocomplete="off" placeholder="根据上传者搜索">
+        </div>
+        <button class="layui-btn" data-type="reload" id="find">搜索</button>
+    </div>
+
+    <div class="layui-btn-group demoTable" id="myToolbar" style="display: none">
+        <button class="layui-btn layui-btn-sm" lay-event="upload">上传资源</button>
+        <span class="layui-breadcrumb" style="margin-left: 20px" lay-event="choose">
+            <a lay-event="choose" style="font-size: 16px;">全部文件</a>
+            <a class="kind" style="font-size: 16px;" id="0701" lay-event="choose">PPT</a>
+            <a class="kind" style="font-size: 16px;" id="0702" lay-event="choose">视频</a>
+            <a class="kind" style="font-size: 16px;" id="0703" lay-event="choose">Word文件</a>
+            <a class="kind" style="font-size: 16px;" id="0704" lay-event="choose">Excel文件</a>
+            <a class="kind" style="font-size: 16px;" id="0705" lay-event="choose">图片</a>
+            <a class="kind" style="font-size: 16px;" id="0706" lay-event="choose">其他</a>
+        </span>
+    </div>
+
+    <div id="formContainer" style="display: none;margin-top: 30px">
+        <form class="layui-form" style="margin:10px" id="uploadForm">
+            <div class="layui-form-item">
+                <label class="layui-form-label">选择文件</label>
+                <div class="layui-input-block">
+                    <button type="button" class="layui-btn" id="myFile" name="file">选择文件</button>
+                    <span id="file" style="color: #009E94"></span>
+                </div>
+            </div>
+            <div class="layui-form-item">
+                <label class="layui-form-label">文件类型</label>
+                <div class="layui-input-block">
+                    <select id="tid" class="layui-select">
+                        <option value="0701">PPT</option>
+                        <option value="0702">视频</option>
+                        <option value="0703">Word文件</option>
+                        <option value="0704">Excel文件</option>
+                        <option value="0705">图片</option>
+                        <option value="0706">其他</option>
+                    </select>
+                </div>
+            </div>
+
+            <div class="layui-form-item">
+                <label class="layui-form-label">文件名</label>
+                <div class="layui-input-block">
+                    <input class="layui-input" type="text" value="" style="width: 80%" name="rname" id="rname" required>
+                </div>
+            </div>
+
+            <div class="layui-form-item">
+                <label class="layui-form-label">备注</label>
+                <div class="layui-input-block">
+                    <input class="layui-input" type="text" value="" style="width: 80%" name="memo" id="memo">
+                </div>
+            </div>
+            <div class="layui-form-item" align="center">
+                <button type="button" class="layui-btn layui-btn-radius layui-btn-normal" id="beginUp">开始上传</button>
+            </div>
+        </form>
+    </div>
+
+    <table class="layui-table" id='videoTable' lay-filter="videoTable"></table>
+
+    <script src="../layui/layui-v2.5.4/layui/layui.js" charset="utf-8"></script>
+
+    <script type="text/html" id="downLoad">
+        <a class="layui-btn layui-btn-xs layui-bg-orange" lay-event="downLoad" id="down">下载</a>
+        <a class="layui-btn layui-btn-xs layui-btn-danger" lay-event="del" id="del">删除</a>
+    </script>
+
+    <script>
+        var http = 'http://148.70.243.66:8888';
+        var upLay;
+        var uid = sessionStorage.getItem('uid');
+        layui.use(['table','upload'], function () {
+            var table = layui.table
+                , form = layui.form;
+            var upload = layui.upload;
+
+            var $ = layui.$;
+            var tid = $('#tid');
+            var rname = $('#rname');
+            var memo = $('#memo');
+            var file;
+
+            $('#beginUp').on('click',function () {
+                //layer.msg(tid.val());
+                file.config.data = {"uid":uid,"tid":tid.val(),"rname":rname.val(),"memo":memo.val()};
+            });
+
+            function upfile(){
+                 file = upload.render({
+                    elem: '#myFile'
+                    ,url: http+'/api/resource/upload'
+                    ,data: {"uid":uid,"tid":tid.val(),"rname":rname.val(),"memo":memo.val()}
+                    ,auto: false
+                    ,accept: 'file'
+                    ,bindAction: '#beginUp'
+                    ,choose: function (obj) {
+                        console.log(obj);
+                        obj.preview(function (index, files, result) {
+                            rname.val(files.name);
+                            $('#file').html(files.name);
+                        });
+                    }
+                    ,done: function(res){
+                        layer.close(upLay);
+                    }
+                });
+            }
+            upfile();
+            //渲染表格
+            function loadData(data){
+                table.render({
+                    elem: '#videoTable'
+                    , data: data
+                    , cols: [[
+                          {type: 'checkbox'}
+                        , {field: 'rname', title: '文件名'}
+                        , {field: 'userName', title: '上传者'}
+                        , {field: 'uploadTime', title: '上传时间',sort: true}
+                        , {field: 'memo', title: '备注'}
+                        , {field: 'uuid', title: '下载', templet: '#downLoad', width: 150}
+                    ]]
+                    , page: true
+                    , toolbar: '#myToolbar'
+                });
+            }
+            //加载表格
+            function loadTable(){
+                $.get(http+'/api/resource/findResource',function (data) {
+                    loadData(data.data);
+                });
+            }
+            loadTable();
+
+            //监听头工具栏事件
+            table.on('toolbar(videoTable)', function (obj) {
+                var checkStatus = table.checkStatus(obj.config.id)
+                    , data = checkStatus.data; //获取选中的数据
+                switch (obj.event) {
+                    case 'upload':
+                        upLay = layer.open({
+                            type:1,
+                            title: '上传资源',
+                            area: ['40%','400px'],
+                            content: $('#formContainer'),
+                            end: function () {
+                                loadTable();
+                            }
+                        });
+                        break;
+                    case 'choose':
+                        $.get(http+'/api/resource/findResource',{"tid":this.id},function (data) {
+                            loadData(data.data);
+                        });
+                }
+
+            });
+            //下载/删除
+            table.on('tool(videoTable)', function (obj) {
+                var data = obj.data;
+                //console.log(obj)
+                if (obj.event === 'downLoad') {
+                    var uuid = data.uuid;
+                    this.href=http+'/api/resource/downLoadResource?uuid='+uuid;
+
+                }
+                if (obj.event === 'del'){
+                    obj.del();
+                    $.post(http+'/api/resource/deleteResource',{"uuids":data.uuid},function () {
+
+                    })
+                }
+            });
+
+            //重载
+            $('#find').click(function () {
+                var user = $('#search').val();
+                $.get('../json/data_2.json',function (data) {
+                    var reloadData = [];
+                    for(var i=0;i<data.length;i++){
+                        if(data[i].uploadUser === user){
+                            reloadData.push(data[i]);
+                        }
+                    }
+                    if(reloadData.length!=0){
+                        table.render({
+                            elem: '#videoTable'
+                            , data: reloadData
+                            , cols: [[
+                                {type: 'numbers',}
+                                , {type: 'checkbox'}
+                                , {field: 'id', title: 'ID', unresize: true, sort: true, width: 50}
+                                , {field: 'fileName', title: '文件名', templet: '#usernameTpl', edit: 'text'}
+                                , {field: 'uploadUser', title: '上传者'}
+                                , {field: 'uploadTime', title: '上传时间'}
+                                , {field: 'url', title: '下载', templet: '#downLoad', width: 100}
+                            ]]
+                            , page: true
+                            , toolbar: '#myToolbar'
+                        });
+                    }
+                    else{
+                        table.render({
+                            elem: '#videoTable'
+                            , data: data
+                            , cols: [[
+                                {type: 'numbers',}
+                                , {type: 'checkbox'}
+                                , {field: 'id', title: 'ID', unresize: true, sort: true}
+                                , {field: 'fileName', title: '文件名', templet: '#usernameTpl', edit: 'text'}
+                                , {field: 'uploadUser', title: '上传者'}
+                                , {field: 'uploadTime', title: '上传时间'}
+                                , {field: 'url', title: '下载', templet: '#downLoad'}
+                            ]]
+                            , page: true
+                            , toolbar: '#myToolbar'
+                        });
+                    }
+                })
+
+            });
+            //绑定回车事件
+            $('#search').on('keypress', function (event) {
+                if (event.keyCode == 13) {
+                    $('#find').click();
+                }
+            });
+        });
+
+    </script>
+</div>
+
+
+<script>
+    //JavaScript代码区域
+    layui.use('element', function () {
+        var element = layui.element;
+
+    });
+</script>
+</body>
+</html>

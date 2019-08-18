@@ -13,9 +13,8 @@
     <div style="margin: 10px">
 
         <div class="demoTable" >
-            <span style="font-size: larger"><b>搜索基本类型ID：</b></span>
             <div class="layui-inline">
-                <input class="layui-input" name="username" id="search" autocomplete="off">
+                <input class="layui-input" name="username" id="search" autocomplete="off" placeholder="搜索基本类型ID：">
             </div>
             <button class="layui-btn" data-type="reload" id="find">搜索</button>
         </div>
@@ -30,19 +29,19 @@
                 <div class="layui-form-item">
                     <label class="layui-form-label">码表编号</label>
                     <div class="layui-input-block">
-                        <input class="layui-input" type="text" value="" style="width: 350px" name="bid" id="bid" required>
+                        <input class="layui-input" type="text" value="" style="width: 80%" name="bid" id="bid" required>
                     </div>
                 </div>
                 <div class="layui-form-item">
                     <label class="layui-form-label">分类名称</label>
                     <div class="layui-input-block">
-                        <input class="layui-input" type="text" value="" style="width: 350px" name="bname" id="bname" required>
+                        <input class="layui-input" type="text" value="" style="width: 80%" name="bname" id="bname" required>
                     </div>
                 </div>
                 <div class="layui-form-item">
                     <label class="layui-form-label">备注</label>
                     <div class="layui-input-block">
-                        <input class="layui-input" type="text" value="" style="width: 350px" name="memo" id="memo">
+                        <input class="layui-input" type="text" value="" style="width: 80%" name="memo" id="memo">
                     </div>
                 </div>
                 <div class="layui-form-item" align="center">
@@ -56,19 +55,19 @@
                 <div class="layui-form-item">
                     <label class="layui-form-label">码表编号</label>
                     <div class="layui-input-block">
-                        <input class="layui-input" type="text" value="" style="width: 350px" name="bid" id="bids" required readonly>
+                        <input class="layui-input" type="text" value="" style="width: 80%" name="bid" id="bids" required readonly>
                     </div>
                 </div>
                 <div class="layui-form-item">
                     <label class="layui-form-label">分类名称</label>
                     <div class="layui-input-block">
-                        <input class="layui-input" type="text" value="" style="width: 350px" name="bname" id="bnames" required>
+                        <input class="layui-input" type="text" value="" style="width: 80%" name="bname" id="bnames" required>
                     </div>
                 </div>
                 <div class="layui-form-item">
                     <label class="layui-form-label">备注</label>
                     <div class="layui-input-block">
-                        <input class="layui-input" type="text" value="" style="width: 350px" name="memo" id="memos">
+                        <input class="layui-input" type="text" value="" style="width: 80%" name="memo" id="memos">
                     </div>
                 </div>
                 <div class="layui-form-item" align="center">
@@ -100,8 +99,8 @@
                             {type: 'checkbox'},
                             {field: 'bid',title:'编号',sort:true},
                             {field: 'bname',title:'基本类型名称'},
-                            {field: 'memo',title:'备注',width:100},
-                            {fixed: 'right',title:'操作',templet:'#handle',width:180,align:'center'}
+                            {field: 'memo',title:'备注'},
+                            {fixed: 'right',title:'操作',templet:'#handle',align:'center',width:180}
                         ]],
                         page: true,
                         toolbar: '#myToolbar'
@@ -213,7 +212,7 @@
                         editlay = layer.open({
                             type:1,
                             title: '编辑基本类型',
-                            area: ['560px', '300px'],
+                            area: ['90%', '50%'],
                             content: $('#editContainer'),
                             end: function () {
                                 loadTable();

@@ -13,9 +13,8 @@
 <div style="margin: 10px">
 
     <div class="demoTable" >
-        <span style="font-size: larger"><b>搜索教师用户名：</b></span>
         <div class="layui-inline">
-            <input class="layui-input" name="username" id="search" autocomplete="off">
+            <input class="layui-input" name="username" id="search" autocomplete="off" placeholder="搜索用户名">
         </div>
         <button class="layui-btn" data-type="reload" id="find">搜索</button>
     </div>
@@ -33,31 +32,34 @@
             <div class="layui-form-item">
                 <label class="layui-form-label">ID</label>
                 <div class="layui-input-block">
-                    <input class="layui-input" type="text" value="" style="width: 350px" name="uid" id="uid" readonly>
+                    <input class="layui-input" type="text" value="" style="width: 80%" name="uid" id="uid" readonly>
                 </div>
             </div>
             <div class="layui-form-item">
                 <label class="layui-form-label">用户名</label>
                 <div class="layui-input-block">
-                    <input class="layui-input" type="text" value="" style="width: 350px" name="username" id="username" required>
+                    <input class="layui-input" type="text" value="" style="width: 80%" name="username" id="username" required>
                 </div>
             </div>
             <div class="layui-form-item">
                 <label class="layui-form-label">密码</label>
                 <div class="layui-input-block">
-                    <input class="layui-input" type="text" value="" style="width: 350px" name="password" id="password" required>
+                    <input class="layui-input" type="text" value="" style="width: 80%" name="password" id="password" required>
                 </div>
             </div>
             <div class="layui-form-item">
                 <label class="layui-form-label">性别</label>
-                <div class="layui-input-block">
-                    <input class="layui-input" type="radio" value="0101" title="男" name="gender" id="boy">
-                    <input class="layui-input" type="radio" value="0102" title="女" name="gender" id="girl">
+                <div class="layui-input-block" style="width: 63%">
+                    <select name="gender" id="gender">
+                        <option value="0101" id="boy">男</option>
+                        <option value="0102" id="girl">女</option>
+                    </select>
+
                 </div>
             </div>
             <div class="layui-form-item">
                 <label class="layui-form-label">角色</label>
-                <div class="layui-input-block"  style="width: 350px;">
+                <div class="layui-input-block"  style="width: 63%">
                     <select name="role" id="role">
                         <option value="3" id="tea">教师</option>
                         <option value="4" id="stu">学生</option>
@@ -110,10 +112,11 @@
                                 ,{field:'username', title:'用户名', templet: '#usernameTpl'}
                                 ,{field:'password', title:'密码'}
                                 ,{field:'gender', title:'性别'}
-                                ,{fixed:'right', title:'操作',templet:'#del',width:150,align:'center'}
+                                ,{fixed:'right', title:'操作',templet:'#del',align:'center'}
                             ]]
                             ,page: true
                             ,toolbar: '#myToolbar'
+
                         });
                     }
                     else {
@@ -169,10 +172,10 @@
 
                         });*/
                         $.ajax({
-                            type:"DELETE",
+                            type:"post",
                             data: {"uid":data.uid},
                             url: http+'/api/manager/deleteByUid',
-                            contentType: "application/json;charset=UTF-8",
+                            contentType: "application/x-www-form-urlencoded",
                             success: function () {
                                 console.log('删除成功');
                             },
@@ -196,12 +199,10 @@
                     username.attr('value',data.username);
                     password.attr('value',data.password);
                     if(data.genderid==="0101"){
-                        girl.attr('checked',false);
-                        boy.attr('checked',true);
+                        $('#gender').val("0101")
                     }
                     else if(data.genderid==="0102"){
-                        boy.attr('checked',false);
-                        girl.attr('checked',true);
+                        $('#gender').val("0102")
                     }
                     if(data.rid==3){
                         stu.attr('selected',false);
@@ -221,10 +222,11 @@
                     myLayer = layer.open({
                         type:1,
                         title: '编辑信息',
-                        area: ['550px', '400px'],
+                        area: ['42%', '60%'],
                         content: $('#formContainer'),
                         end: function () {
-                            loadTable()
+                            loadTable();
+                            layer.msg("boy"+boy.checked()+"  "+"girl"+girl.checked());
                         }
                     });
                     form.render();
@@ -254,11 +256,11 @@
                                     ,data: reloadData
                                     ,cols: [[
                                         {type: 'checkbox'}
-                                        ,{field:'uid', title:'ID', unresize: true, sort: true}
+                                        ,{field:'uid', title:'ID', unresize: true, sort: true,hidden:true}
                                         ,{field:'username', title:'用户名', templet: '#usernameTpl'}
                                         ,{field:'password', title:'密码'}
                                         ,{field:'gender', title:'性别'}
-                                        ,{fixed:'right', title:'操作',templet:'#del',width:150,align:'center'}
+                                        ,{fixed:'right', title:'操作',templet:'#del',align:'center'}
                                     ]]
                                     ,page: true
                                     ,toolbar: '#myToolbar'
@@ -311,7 +313,7 @@
                 type: 2,
                 title: '添加教师',
                 content: 'addTeacher.html',
-                area: ['600px', '500px'],
+                area: ['50%', '75%'],
                 end:function () {
                     var table = layui.table;
                     var $ = layui.$;
@@ -329,11 +331,11 @@
                             ,data: myData
                             ,cols: [[
                                 {type: 'checkbox'}
-                                ,{field:'uid', title:'ID', unresize: true, sort: true}
+                                ,{field:'uid', title:'ID', unresize: true, sort: true,hidden:true}
                                 ,{field:'username', title:'用户名', templet: '#usernameTpl',edit: 'text'}
                                 ,{field:'password', title:'密码',edit: 'text'}
                                 ,{field:'gender', title:'性别'}
-                                ,{fixed:'right', title:'操作',templet:'#del',width:150,align:'center'}
+                                ,{fixed:'right', title:'操作',templet:'#del',align:'center'}
                             ]]
                             ,page: true
                             ,toolbar: '#myToolbar'
