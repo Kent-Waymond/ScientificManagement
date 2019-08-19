@@ -64,6 +64,12 @@
                 </div>
             </div>
             <div class="layui-form-item">
+                <label class="layui-form-label">所属基本类型</label>
+                <div class="layui-input-block">
+                    <input class="layui-input" type="text" value="" style="width: 350px" name="bid" id="bnames" required>
+                </div>
+            </div>
+            <div class="layui-form-item">
                 <label class="layui-form-label">详细类型编号</label>
                 <div class="layui-input-block">
                     <input class="layui-input" type="text" value="" style="width: 350px" name="did" id="dids" required readonly>
@@ -119,14 +125,16 @@
                     data: data,
                     cols:[[
                         {type: 'checkbox'},
-                        {field: 'bid',title:'基本类型'},
+                        {field: 'bid',title:'基本类型编号',hide: true},
+                        {field: 'bname',title:'基本类型'},
                         {field: 'did',title:'详细类型编号',sort:true},
-                        {field: 'dname',title:'详细类型名称'},
+                        {field: 'dname',title:'详细类型'},
                         {field: 'memo',title:'备注'},
                         {fixed: 'right',title:'操作',templet:'#handle',align:'center'}
                     ]],
                     page: true,
-                    toolbar: '#myToolbar'
+                    toolbar: '#myToolbar',
+
                 })
             }
             //加载表
@@ -246,17 +254,19 @@
                 }
                 if(obj.event === 'edit'){
                     var bids = $('#bids');
+                    var bnames = $('#bnames');
                     var dids = $('#dids');
                     var dnames = $('#dnames');
                     var memos = $('#memos');
                     bids.attr('value',data.bid);
+                    bnames.attr('value',data.bname);
                     dids.attr('value',data.did);
                     dnames.attr('value',data.dname);
                     memos.attr('value',data.memo);
                     editlay = layer.open({
                         type:1,
                         title: '编辑基本类型',
-                        area: ['80%', '70%'],
+                        area: ['80%', '75%'],
                         content: $('#editContainer'),
                         end: function () {
                             loadTable();
