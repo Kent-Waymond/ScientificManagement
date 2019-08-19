@@ -53,31 +53,7 @@
                         <th>操作</th>
                     </tr>
                     </thead>
-                    <tbody>
-                    <tr>
-                        <td>1</td>
-                        <td>1</td>
-                        <td>1</td>
-                        <td>1</td>
-                        <td>1</td>
-                        <td><button class="layui-btn"><i class="layui-icon layui-icon-about"></i>查看</button>   <!--见数据操作-->
-                            <button data-method="notice"  class="layui-btn edit" ><i class="layui-icon layui-icon-edit"></i>编辑</button>
-                            <button data-method="notice"  class="layui-btn layui-btn-normal  download" ><i class="layui-icon layui-icon-download-circle"></i>下载</button>
-                            <button data-method="notice"  class=" layui-btn layui-btn-danger delete"><i class="layui-icon layui-icon-delete"></i>删除</button>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>1</td>
-                        <td>1</td>
-                        <td>1</td>
-                        <td>1</td>
-                        <td>1</td>
-                        <td><button class="layui-btn"><i class="layui-icon layui-icon-about"></i>查看</button>
-                            <button data-method="notice"  class="layui-btn edit" ><i class="layui-icon layui-icon-edit"></i>编辑</button>
-                            <button data-method="notice"  class="layui-btn layui-btn-normal  download" ><i class="layui-icon layui-icon-download-circle"></i>下载</button>
-                            <button data-method="notice"  class=" layui-btn layui-btn-danger delete"><i class="layui-icon layui-icon-delete"></i>删除</button>
-                        </td>
-                    </tr>
+                    <tbody id="mybody">
                     </tbody>
                 </table>
                 <div id="paging" style="text-align: center;"></div>
@@ -131,20 +107,32 @@
 
     var http = "http://148.70.243.66:8888";
 
-/*
-    //获取uid
-    $("#choosefile").on('click',function (){
-        /!*       $.ajaxSetup({
-                   async: false
-               });*!/
-        $.post(http+"/userLogin",{username:"qwe",password:"qweasd"},function (result) {
-            /!*console.log(result.data.uid)
-            console.log(typeof result.data.uid)*!/
-            fm.uid.value=""
-            fm.uid.value=result.data.uid
+    function showtable(){
+          $.get(http+"/api/dc/findPatent",function (result) {
+            console.log(result)
+            console.log(result.data.length)
+              var str = ''
+
+            for (var i=0;i<result.data.length;i++){
+                str += '<tr>';
+                var tds = '<td>' + result.data[i].did + '</td>'
+                    + '<td>' + result.data[i].uid + '</td>'
+                    + '<td>' + result.data[i].ptype + '</td>'
+                    + '<td>' + result.data[i].pname + '</td>'
+                    + '<td>' + result.data[i].memo + '</td>'
+                + '<td><button class="layui-btn"><i class="layui-icon layui-icon-about"></i>查看</button>' +
+                    '                            <button data-method="notice"  class="layui-btn edit" ><i class="layui-icon layui-icon-edit"></i>编辑</button>' +
+                    '                            <button data-method="notice"  class="layui-btn layui-btn-normal  download" ><i class="layui-icon layui-icon-download-circle"></i>下载</button>' +
+                    '                            <button data-method="notice"  class=" layui-btn layui-btn-danger delete"><i class="layui-icon layui-icon-delete"></i>删除</button>' +
+                    '                        </td>';
+                str += tds ;
+                str += '</tr>';
+            }
+
+              $("#mybody").html(str)
         })
-    })
-*/
+    }
+    window.onload = showtable;
 
     //文件上传
     $("#upload").on('click',function () {
