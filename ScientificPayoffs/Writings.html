@@ -13,10 +13,10 @@
 <div class="layui-col-md10 layui-col-md-offset2" style="width: 1100px">
     <div class="layui-row grid-demo grid-demo-bg1">
         <div class="layui-col-md12" style="height: 100px;">
-            <form class="layui-form" action="" style="margin-top: 30px;">
+            <form class="layui-form" name="form" style="margin-top: 30px;">
                 <div class="layui-form-item" >
                     <div class="layui-input-block layui-input-inline" style="width: 200px;">
-                        <select name="city" lay-verify="required" >
+                        <select name="type" lay-verify="required" >
                             <option value="">请选择类别</option>
                             <option value="0">专著</option>
                             <option value="1">独著</option>
@@ -25,6 +25,9 @@
                     </div>
                     <div class="layui-input-block layui-input-inline" style="margin-left: 20px">
                         <input type="text" name="title" required  lay-verify="required" placeholder="请输入标题" class="layui-input" style="width: 200px;">
+                    </div>
+                    <div class="layui-input-block layui-input-inline" style="margin-left: 20px">
+                        <input type="text" name="author" required  lay-verify="required" placeholder="请输入作者" class="layui-input" style="width: 200px;">
                     </div>
                     <div class="layui-input-block layui-input-inline" style="margin-left: 20px">
                         <button class="layui-btn" lay-submit lay-filter="formDemo" ><i class="layui-icon layui-icon-search"></i>查询</button>
@@ -40,10 +43,10 @@
                 <table class="layui-table" id="mytable">
                     <thead >
                     <tr >
-                        <th lay-data="{field:'stock',sort: true,align:'center'}">类型ID</th>
-                        <th lay-data="{field:'stock',sort: true,align:'center'}">上传人ID</th>
-                        <th lay-data="{field:'stock',sort: true,align:'center'}">著作类型</th>
                         <th lay-data="{field:'stock',sort: true,align:'center'}">著作名称</th>
+                        <th lay-data="{field:'stock',sort: true,align:'center'}">著作类型</th>
+                        <th lay-data="{field:'stock',sort: true,align:'center'}" style="display: none">类型ID</th>
+                        <th lay-data="{field:'stock',sort: true,align:'center'}">上传人ID</th>
                         <th>作者</th>
                         <th>备注</th>
                         <th>操作</th>
@@ -107,6 +110,7 @@
 
     var http = "http://148.70.243.66:8888";
 
+    //首次加载表格
     function showtable(){
         $.get(http+"/api/dc/findWritings",function (result) {
             console.log(result)
@@ -115,17 +119,17 @@
 
             for (var i=0;i<result.data.length;i++){
                 str += '<tr>';
-                var tds = '<td>' + result.data[i].did + '</td>'
-                    + '<td>' + result.data[i].uid + '</td>'
+                var tds = '<td>' + result.data[i].wname + '</td>'
                     + '<td>' + result.data[i].wtype + '</td>'
-                    + '<td>' + result.data[i].wname + '</td>'
+                    + '<td style="display: none">' + result.data[i].did + '</td>'
+                    + '<td>' + result.data[i].uid + '</td>'
                     + '<td>' + result.data[i].wauthor + '</td>'
                     + '<td>' + result.data[i].memo + '</td>'
-                    + '<td><button class="layui-btn"><i class="layui-icon layui-icon-about"></i>查看</button>' +
-                    '                            <button data-method="notice"  class="layui-btn edit" ><i class="layui-icon layui-icon-edit"></i>编辑</button>' +
-                    '                            <button data-method="notice"  class="layui-btn layui-btn-normal  download" ><i class="layui-icon layui-icon-download-circle"></i>下载</button>' +
-                    '                            <button data-method="notice"  class=" layui-btn layui-btn-danger delete"><i class="layui-icon layui-icon-delete"></i>删除</button>' +
-                    '                        </td>';
+                    + '<td>' +
+                    '<button data-method="notice"  class="layui-btn edit" ><i class="layui-icon layui-icon-edit"></i>编辑</button>' +
+                    '<button data-method="notice"  class="layui-btn layui-btn-normal  download" ><i class="layui-icon layui-icon-download-circle"></i>相关文件下载</button>' +
+                    '<button data-method="notice"  class=" layui-btn layui-btn-danger delete" onclick="del(`'+result.data[i].uuid+'`)"><i class="layui-icon layui-icon-delete"></i>删除</button>' +
+                    '</td>';
                 str += tds ;
                 str += '</tr>';
             }
@@ -134,42 +138,31 @@
         })
     }
     window.onload = showtable;
-    <!--删除-->
-    layui.use('layer', function(){ //独立版的layer无需执行这一句
-        var $ = layui.jquery, layer = layui.layer; //独立版的layer无需执行这一句
 
-        //触发事件
-        var active = {
-            notice: function(){
-                layer.open({
-                    type: 1
-                    ,title: false //不显示标题栏
-                    ,closeBtn: false
-                    ,area: '300px;'
-                    ,shade: 0.8
-                    ,id: 'LAY_layuipro' //设定一个id，防止重复弹出
-                    ,btn: ['确定', '取消']
-                    ,btnAlign: 'c'
-                    ,moveType: 1 //拖拽模式，0或者1
-                    ,content: '<div style="padding: 50px; line-height: 22px; background-color: #393D49; color: #fff; font-weight: 300;">确认删除吗？</div>'
-                    ,success: function(layero){
-                        var btn = layero.find('.layui-layer-btn');
-                        btn.find('.layui-layer-btn0').attr({
-                            href: '#' /*确认删除*/
-                            ,target: '_blank'
-                        });
-                    }
-                });
-            }
-        };
-        $('.delete ').on('click', function(){
-            var othis = $(this), method = othis.data('method');
-            active[method] ? active[method].call(this, othis) : '';
+
+
+    <!--删除-->
+    layui.use('layer', function(){
+        var $ = layui.jquery;
+    });
+    function del(uuid){
+        /*  console.log(uuid)*/
+        layer.confirm("确认删除?", { title: "Tips" }, function (index) {
+            $.post(http+"/api/dc/writingsDeleteByUuid", { uuid: uuid}, function (data)
+            {
+                layer.msg(data.msg,{icon:-1,shade:0.3,offset: '40%',time:2000});
+                //layer.close(index); //如果设定了yes回调，需进行手工关闭
+                setTimeout(function(){
+                    //刷新
+                    location.reload();
+                },500);
+            });
         });
+
         /*        //如果没当前用户为学生，则隐藏编辑和删除按钮
                 $('.edit').addClass('layui-hide');
                 $('.delete').addClass('layui-hide');*/
-    });
+    }
 
     //文件上传
     $("#upload").on('click',function () {
@@ -195,15 +188,15 @@
         //,multiple: true
         ,bindAction: '#upload'
         ,done: function(res){
+            layui.use('layer', function(){
+                var layer = layui.layer;
+                layer.alert("<h2 style='color:black'>" + '上传成功！' + "</h2>",{title: "Tips"});
+                setTimeout(function(){
+                    //刷新
+                    location.reload();
+                },1000);
+            });
             console.log(res)  //返回对象数据
-        },
-        choose:function (obj) {
-            return obj.preview(function(index, file, result){
-                /*console.log(index);*/ //得到文件索引     
-                /*alert($("type").val())
-                console.log(file); //得到文件对象，其中 file.name是文件名 */
-                return file
-            })
         }
     })
 
