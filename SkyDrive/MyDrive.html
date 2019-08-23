@@ -22,7 +22,7 @@
                 <form class="layui-form" action="" style="margin-top: 30px;" name="form" >
                     <div class="layui-form-item" >
                         <div class="layui-input-block layui-input-inline" style="margin-left: 20px;">
-                           <input type="text" name="filename" required  lay-verify="required" placeholder="请输入新文件名" class="layui-input" style="width: 200px;">
+                           <input type="text" name="filename" required  lay-verify="required" placeholder="请输入文件夹名" class="layui-input" style="width: 200px;">
                         </div>
                         <div class="layui-input-block layui-input-inline" style="margin-left: 20px">
                             <select name="newdir" lay-verify="required" id="newdir">
@@ -35,6 +35,7 @@
                         </div>
                     </div>
                 </form>
+ <!--               <a href="#"  id="myback">返回</a>-->
                 <table class="layui-table" id="mytable" style="margin: 20px;">
                     <thead>
                     <tr >
@@ -102,8 +103,8 @@
                 /*console.log(result.data[0])*/
             var str = ''
             for (var i=0;i<result.data.length;i++){
-                str += '<tr onclick="FindFile(`'+result.data[i].dirId+'`)">';
-                var tds = ' <td><img src="../image/file.png" alt=""></td>'
+                str += '<tr ondblclick="FindFile(`'+result.data[i].dirId+'`)">';
+                var tds = ' <td><img src="../image/dir.png" alt=""></td>'
                     + '<td>' + result.data[i].dirName + '</td>'
                     + '<td>' + "" + '</td>'
                     + '<td>' + "" + '</td>'
@@ -113,8 +114,8 @@
                 str += tds ;
                 str += '</tr>';
             }
-
             $("#mybody").html(str)
+
             var dirstr = ''
             dirstr += ' <option>'+"请选择文件夹"+'</option>';
             for (var i=0;i<result.data.length;i++){
@@ -134,29 +135,56 @@
     function FindFile(dirid) {
 
         $.post(http+"/api/netDisk/findDirAndFile",{dirId:dirid},function(result){
-            console.log(result.data[0])
-
+            console.log(result.data.dirs)
+            console.log(result.data.files)
+/*            $(document).ready(function(){
+                $("#myback").click(function(){
+                    back(result.data.files[0].parentDirId)
+                });
+            });*/
             var tablestr = ''
-            for (var i=0;i<result.data.length;i++){
-                tablestr += '<tr onclick="FindFile(`'+result.data[i].dirId+'`)">';
-                var tds = ' <td><img src="../image/file.png" alt=""></td>'
-                    + '<td>' + result.data[i].dirName + '</td>'
+            for (var i=0;i<result.data.dirs.length;i++){
+                tablestr += '<tr ondblclick="FindFile(`'+result.data.dirs[i].dirId+'`)">';
+                var dirtds = ' <td><img src="../image/dir.png" alt=""></td>'
+                    + '<td>' + result.data.dirs[i].dirName + '</td>'
                     + '<td>' + "" + '</td>'
                     + '<td>' + "" + '</td>'
-                    + '<td>' + result.data[i].createTime + '</td>'
+                    + '<td>' + result.data.dirs[i].createTime + '</td>'
                     + '<td><button data-method="notice"  class="layui-btn layui-btn-normal  download" ><i class="layui-icon layui-icon-download-circle"></i>下载</button>' +
-                    '<button data-method="notice"  class=" layui-btn layui-btn-danger delete" onclick="delDir(`'+result.data[i].dirId+'`)"><i class="layui-icon layui-icon-delete"></i>删除</button>' +
+                    '<button data-method="notice"  class=" layui-btn layui-btn-danger delete" onclick="delDir(`'+result.data.dirs[i].dirId+'`)"><i class="layui-icon layui-icon-delete"></i>删除</button>' +
                     '</td>';
-                tablestr += tds ;
+                tablestr += dirtds ;
+                tablestr += '</tr>';
+            }
+            for (var i=0;i<result.data.files.length;i++){
+                if(result.data.files[i].fileType == null){
+                    result.data.files[i].fileType ="";
+                }else if(result.data.files[i].fileSize ==null){
+                    result.data.files[i].fileSize ="";
+                }
+            }
+            for (var i=0;i<result.data.files.length;i++){
+                tablestr += '<tr onclick="FindFile(`'+result.data.files[i].fileDirId+'`)">';
+                var filetds = ' <td><img src="../image/file.png" alt=""></td>'
+                    + '<td>' + result.data.files[i].fileName + '</td>'
+                    + '<td>' + result.data.files[i].fileType + '</td>'
+                    + '<td>' + result.data.files[i].fileSize + '</td>'
+                    + '<td>' + result.data.files[i].fileUploadTime + '</td>'
+                    + '<td><button data-method="notice"  class="layui-btn layui-btn-normal  download" ><i class="layui-icon layui-icon-download-circle"></i>下载</button>' +
+                    '<button data-method="notice"  class=" layui-btn layui-btn-danger delete" onclick="delFile(`'+result.data.files[i].fileId+'`)"><i class="layui-icon layui-icon-delete"></i>删除</button>' +
+                    '</td>';
+                tablestr += filetds ;
                 tablestr += '</tr>';
             }
             $("#mybody").html(tablestr)
+
             var dirstr = ''
             dirstr += ' <option>'+"请选择文件夹"+'</option>';
-            for (var i=0;i<result.data.length;i++){
-                var ops = ' <option value='+result.data[i].dirId+'>'+ result.data[i].dirName +'</option>'
+            for (var i=0;i<result.data.dirs.length;i++){
+                var ops = ' <option value='+result.data.dirs[i].dirId+'>'+ result.data.dirs[i].dirName +'</option>'
                 dirstr += ops
             }
+            /*console.log(dirstr)*/
             $("#mydir").html(dirstr)
             $("#newdir").html(dirstr)
             layui.use('form', function(){//需要再次渲染form才能在界面显示
@@ -165,7 +193,10 @@
             });
         })
     }
-
+/*    //返回上一级
+    function back(pid) {
+        FindFile(pid);
+    }*/
     //创建新文件夹
     function newDir(){
         $.post(http+"/api/netDisk/createDir",{dirName:form.filename.value,parentDirId:form.newdir.value,dirUserId:"7e375a16732e49038366e88f8191e21e"},function(result){
@@ -174,8 +205,23 @@
     }
     //删除文件夹
     function delDir(dirID){
-        layer.confirm("确认删除?", { title: "Tips" }, function (index) {
+        layer.confirm("确认删除此文件夹及所有文件信息?", { title: "Tips" }, function (index) {
             $.post(http+"/api/netDisk/delDir", { dirId: dirID}, function (data)
+            {
+                layer.msg(data.msg,{icon:-1,shade:0.3,offset: '40%',time:2000});
+                //layer.close(index); //如果设定了yes回调，需进行手工关闭
+                setTimeout(function(){
+                    //刷新
+                    location.reload();
+                },500);
+            });
+        });
+    }
+    //删除指定文件
+    function delFile(fileID){
+        console.log(fileID)
+        layer.confirm("确认删除?", { title: "Tips" }, function (index) {
+            $.post(http+"/api/netDisk/delFile", { fileId:fileID}, function (data)
             {
                 layer.msg(data.msg,{icon:-1,shade:0.3,offset: '40%',time:2000});
                 //layer.close(index); //如果设定了yes回调，需进行手工关闭
@@ -204,26 +250,27 @@
     var upload = layui.upload,
         element = layui.element;
     element.init();
+    element.render();
 
-       file = upload.render({
-            elem: '#chooseFile'
-            , url: http+'/api/netDisk/uploadFile'
-            , auto: false
-            , accept: 'file' //允许上传的文件类型
-            //,multiple: true
-            , bindAction: 'uploadFile'
-           ,done: function(res){
-               layui.use('layer', function(){
-                   var layer = layui.layer;
-                   layer.alert("<h2 style='color:black'>" + '上传成功！' + "</h2>",{title: "Tips"});
-                   setTimeout(function(){
-                       //刷新
-                       location.reload();
-                   },1000);
-               });
-               console.log(res)  //返回对象数据
-           }
-        });
+    file = upload.render({
+        elem: '#chooseFile'
+        ,url: http + "/api/netDisk/uploadFile"
+        ,accept: 'file' //允许上传的文件类型
+        ,auto: false
+        //,multiple: true
+        ,bindAction: '#uploadFile'
+        ,done: function(res){
+            layui.use('layer', function(){
+                var layer = layui.layer;
+                layer.alert("<h2 style='color:black'>" + '上传成功！' + "</h2>",{title: "Tips"});
+                setTimeout(function(){
+                    //刷新
+                    location.reload();
+                },1000);
+            });
+            console.log(res)  //返回对象数据
+        }
+    })
 
     //分页
     layui.use(['laypage', 'layer'], function(){

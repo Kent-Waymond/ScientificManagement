@@ -16,22 +16,17 @@
             <form class="layui-form" name="form" style="margin-top: 30px;">
                 <div class="layui-form-item" >
                     <div class="layui-input-block layui-input-inline" style="width: 200px;">
-                        <select name="type" lay-verify="required" >
-                            <option value="">请选择类别</option>
-                            <option value="0">专题型</option>
-                            <option value="1">论辩型</option>
-                            <option value="2">综述型</option>
-                            <option value="3">综合型</option>
+                        <select name="type"  id="mytype">
                         </select>
                     </div>
                     <div class="layui-input-block layui-input-inline" style="margin-left: 20px">
-                        <input type="text" name="title" required  lay-verify="required" placeholder="请输入名称" class="layui-input" style="width: 200px;">
+                        <input type="text" name="title" placeholder="请输入名称" class="layui-input" style="width: 200px;">
                     </div>
                     <div class="layui-input-block layui-input-inline" style="margin-left: 20px">
-                        <input type="text" name="author" required  lay-verify="required" placeholder="请输入作者" class="layui-input" style="width: 200px;">
+                        <input type="text" name="author"  placeholder="请输入作者" class="layui-input" style="width: 200px;">
                     </div>
                     <div class="layui-input-block layui-input-inline" style="margin-left: 20px">
-                        <button class="layui-btn" lay-submit lay-filter="formDemo" onclick="del(w)"><i class="layui-icon layui-icon-search"></i>查询</button>
+                        <button class="layui-btn" type="button"  onclick="conditionSearch()"><i class="layui-icon layui-icon-search"></i>查询</button>
                     </div>
                 </div>
             </form>
@@ -44,16 +39,16 @@
                 <table class="layui-table" id="mytable" style="margin: 20px">
                     <thead >
                     <tr >
-                        <th lay-data="{field:'stock',sort: true,align:'center'}">论文名称</th>
-                        <th lay-data="{field:'stock',sort: true,align:'center'}">论文类型</th>
+                        <th lay-data="{field:'stock',sort: true,align:'center'}" style="text-align: center;">论文名称</th>
+                        <th lay-data="{field:'stock',sort: true,align:'center'}" style="text-align: center;">论文类型</th>
                         <th lay-data="{field:'stock',sort: true,align:'center'}" style="display: none">类型ID</th>
-                        <th lay-data="{field:'stock',sort: true,align:'center'}">上传人ID</th>
-                        <th>作者</th>
-                        <th>备注</th>
-                        <th>操作</th>
+                        <th lay-data="{field:'stock',sort: true,align:'center'}" style="text-align: center;">上传人</th>
+                        <th style="text-align: center;">作者</th>
+                        <th style="text-align: center;">备注</th>
+                        <th style="text-align: center;">操作</th>
                     </tr>
                     </thead>
-                    <tbody>
+                    <tbody id="mybody" align="center">
                     </tbody>
                 </table>
                 <div id="paging" style="text-align: center;"></div >
@@ -63,7 +58,7 @@
                 <div class="layui-upload" style="margin:20px;">
                     <form class="layui-form" action="" style="margin-top: 30px;" name="fm">
                         <div class="layui-form-item">
-                            <div class="layui-input-block layui-input-inline" style="margin-left: 0px;">
+                            <div class="layui-input-block layui-input-inline" style="display: none">
                                 <select name="DID" lay-verify="required" >
                                     <option value="0202" selected>论文：0202</option>
                                 </select>
@@ -71,7 +66,7 @@
                             <div class="layui-input-block layui-input-inline" style="display: none" >//uid
                                 <input type="text" name="uid" required  lay-verify="required" >
                             </div>
-                            <div class="layui-input-block layui-input-inline" style="margin-left: 20px">
+                            <div class="layui-input-block layui-input-inline" style="margin-left: 0px">
                                 <select name="ttype" lay-verify="required" >
                                     <option value="0">请选择论文类型</option>
                                     <option value="专题型" >专题型</option>
@@ -86,7 +81,7 @@
                             <div class="layui-input-block layui-input-inline" style="margin-left: 20px;">
                                 <input type="text" name="tauthor" required  lay-verify="required" placeholder="请输入作者" class="layui-input" >
                             </div>
-                            <div class="layui-input-block layui-input-inline" style="margin-left: 0px;margin-top: 10px;width: 300px">
+                            <div class="layui-input-block layui-input-inline" style="margin-left: 20px;width: 300px">
                                 <input type="text" name="tmemo"  placeholder="备注" class="layui-input" >
                             </div>
                         </div>
@@ -115,38 +110,102 @@
     var http = "http://148.70.243.66:8888";
 
     function showtable(){
-        $.get(http+"/api/dc/findThesis",function (result) {
+        $.get(http+"/api/dc/findThesis",{ttype:form.type.value,tname:form.title.value,tauthor:form.author.value},function (result) {
             console.log(result)
-            console.log(result.data.length)
-
+            for (var i=0;i<result.data.length;i++){
+                if(result.data[i].MEMO == null){
+                    result.data[i].MEMO ="";
+                }
+            }
             var str = ''
             for (var i=0;i<result.data.length;i++){
-                str += `<tr>`;
-                var tds = `<td>` + result.data[i].tname + `</td>`
-                    + `<td>` + result.data[i].ttype + `</td>`
-                    + '<td style="display: none">' + result.data[i].did + '</td>'
-                    + `<td>` + result.data[i].uid + `</td>`
-                    + `<td>` + result.data[i].tauthor + `</td>`
-                    + `<td>` + result.data[i].memo + `</td>`
-                    + `<td>`+
-                    `<button  class="layui-btn edit" ><i class="layui-icon layui-icon-edit"></i>编辑</button>` +
-                    `<button  class="layui-btn layui-btn-normal  download" ><i class="layui-icon layui-icon-download-circle"></i>相关文件下载</button>` +
-                    `<button  class=" layui-btn layui-btn-danger delete" onclick="del('`+result.data[i].uuid+`')"><i class="layui-icon layui-icon-delete"></i>删除</button>` +
-                    `</td>`;
+                str += '<tr>';
+                var tds = '<td>' + result.data[i].TNAME + '</td>'
+                    + '<td>' + result.data[i].TTYPE + '</td>'
+                    + '<td style="display: none">' + result.data[i].DID + '</td>'
+                    + '<td>' + result.data[i].UID + '</td>'
+                    + '<td>' + result.data[i].TAUTHOR + '</td>'
+                    + '<td>' + result.data[i].MEMO + '</td>'
+                    + '<td>' +
+                 /*   '<button data-method="notice"  class="layui-btn edit" ><i class="layui-icon layui-icon-edit"></i>编辑</button>' +*/
+                    '<button data-method="notice"  class="layui-btn layui-btn-normal  download" onclick="downloadFile(`'+result.data[i].UUID+'`)"><i class="layui-icon layui-icon-download-circle"></i>相关文件下载</button>' +
+                    '<button data-method="notice"  class=" layui-btn layui-btn-danger delete" onclick="del(`'+result.data[i].UUID+'`)"><i class="layui-icon layui-icon-delete"></i>删除</button>' +
+                    '</td>';
                 str += tds ;
-                str += `</tr>`;
+                str += '</tr>';
             }
-
             $("#mybody").html(str)
+
+            var selectStr = ''
+            var arr = []
+            selectStr += ' <option>'+"请选择论文类型"+'</option>';
+            for (var i=0;i<result.data.length;i++){
+                if(arr.indexOf(result.data[i].TTYPE) == -1){
+                    arr.push(result.data[i].TTYPE)
+                    var ops = ' <option value='+result.data[i].TTYPE+'>'+ result.data[i].TTYPE +'</option>'
+                    selectStr += ops
+                }
+            }
+            $("#mytype").html(selectStr)
+            layui.use('form', function(){//需要再次渲染form才能在界面显示
+                var form = layui.form;
+                form.render();
+            });
         })
     }
     window.onload = showtable;
 
+
     //条件（模糊）查询
     function conditionSearch(){
-        $get(http+"/api/dc/findThesis",{ttype:form.type.value,tname:form.title.value,tauthor:form.author.value},function (result) {
-            
+        console.log(form.type.value)
+        console.log(form.title.value)
+        console.log(form.author.value)
+        $.get(http+"/api/dc/findThesis",{ttype:form.type.value,tname:form.title.value,tauthor:form.author.value},function (result) {
+            console.log(result)
+            console.log(form.type.value)
+            if(result.data.length>0){
+                for (var i=0;i<result.data.length;i++){
+                    if(result.data[i].MEMO == null){
+                        result.data[i].MEMO ="";
+                    }
+                }
+                var str1 = ''
+                for (var i=0;i<result.data.length;i++){
+                    str1 += '<tr>';
+                    var ctds = '<td>' + result.data[i].TNAME + '</td>'
+                        + '<td>' + result.data[i].TTYPE + '</td>'
+                        + '<td style="display: none">' + result.data[i].DID + '</td>'
+                        + '<td>' + result.data[i].UID + '</td>'
+                        + '<td>' + result.data[i].TAUTHOR + '</td>'
+                        + '<td>' + result.data[i].MEMO + '</td>'
+                        + '<td>' +
+                       /* '<button data-method="notice"  class="layui-btn edit" ><i class="layui-icon layui-icon-edit"></i>编辑</button>' +*/
+                        '<button data-method="notice"  class="layui-btn layui-btn-normal  download" onclick="downloadFile(`'+result.data[i].UUID+'`)"><i class="layui-icon layui-icon-download-circle"></i>相关文件下载</button>' +
+                        '<button data-method="notice"  class=" layui-btn layui-btn-danger delete" onclick="del(`'+result.data[i].UUID+'`)"><i class="layui-icon layui-icon-delete"></i>删除</button>' +
+                        '</td>';
+                    str1 += ctds ;
+                    str1 += '</tr>';
+                }
+                $("#mybody").html(str1)
+            }else{
+                var tips = '<tr align="center">'+'<td colspan="6">'+" 没有符合条件的信息！"+'</td>'+'</tr>'
+                $("#mybody").html(tips)
+            }
         })
+    }
+
+    //下载相关文件
+    function downloadFile(UUID){
+            layer.confirm("确认下载？", { title: "Tips" }, function (index) {
+                $.get(http+"/api/dc/thesisDownload",{uuid:UUID},function (result) {
+                    {
+                        layer.msg(result.msg, {icon: -1, shade: 0.3, offset: '40%', time: 2000});
+                        console.log(result)
+                        //layer.close(index); //如果设定了yes回调，需进行手工关闭
+                    }
+                });
+            });
     }
 
     <!--删除-->
@@ -237,8 +296,6 @@ layui.use(['laypage', 'layer'], function(){
         }
     });
 });
-
-    
 </script>
 </body>
 </html>

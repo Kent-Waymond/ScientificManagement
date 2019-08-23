@@ -16,13 +16,13 @@
             <form class="layui-form" name="form" style="margin-top: 30px;">
                 <div class="layui-form-item" >
                     <div class="layui-input-block layui-input-inline" style="margin-left: 110px">
-                        <input type="text" name="title" required  lay-verify="required" placeholder="请输入标题" class="layui-input" style="width: 200px;">
+                        <input type="text" name="title"  placeholder="请输入名称" class="layui-input" style="width: 200px;">
                     </div>
                     <div class="layui-input-block layui-input-inline" style="margin-left: 20px">
-                        <input type="text" name="author" required  lay-verify="required" placeholder="请输入作者" class="layui-input" style="width: 200px;">
+                        <input type="text" name="author"  placeholder="请输入作者" class="layui-input" style="width: 200px;">
                     </div>
                     <div class="layui-input-block layui-input-inline" style="margin-left: 20px">
-                        <button class="layui-btn" lay-submit lay-filter="formDemo" ><i class="layui-icon layui-icon-search"></i>查询</button>
+                        <button class="layui-btn" type="button" onclick="conditionSearch()"><i class="layui-icon layui-icon-search"></i>查询</button>
                     </div>
                 </div>
             </form>
@@ -35,15 +35,15 @@
                 <table class="layui-table" id="mytable">
                     <thead >
                     <tr >
-                        <th lay-data="{field:'stock',sort: true,align:'center'}">论文名称</th>
+                        <th lay-data="{field:'stock',sort: true,align:'center'}" style="text-align: center;">论文名称</th>
                         <th lay-data="{field:'stock',sort: true,align:'center'}" style="display: none;">类型ID</th>
-                        <th lay-data="{field:'stock',sort: true,align:'center'}">上传人ID</th>
-                        <th>作者</th>
-                        <th>备注</th>
-                        <th>操作</th>
+                        <th lay-data="{field:'stock',sort: true,align:'center'}" style="text-align: center;">上传人</th>
+                        <th style="text-align: center;">作者</th>
+                        <th style="text-align: center;">备注</th>
+                        <th style="text-align: center;">操作</th>
                     </tr>
                     </thead>
-                    <tbody id="mybody">
+                    <tbody id="mybody" align="center">
                     </tbody>
                 </table>
                 <div id="paging" style="text-align: center;"></div>
@@ -53,7 +53,7 @@
                 <div class="layui-upload" style="margin-top: 20px;">
                     <form class="layui-form" action="" style="margin-top: 30px;" name="fm">
                         <div class="layui-form-item">
-                            <div class="layui-input-block layui-input-inline" style="margin-left: 0px;">
+                            <div class="layui-input-block layui-input-inline" style="display: none;">
                                 <select name="DID" lay-verify="required" >
                                     <option value="0203" selected>软著：0203</option >
                                 </select>
@@ -61,7 +61,7 @@
                             <div class="layui-input-block layui-input-inline" style="display: none" >
                                 <input type="text" name="uid" required  lay-verify="required" >
                             </div>
-                            <div class="layui-input-block layui-input-inline" style="margin-left: 20px">
+                            <div class="layui-input-block layui-input-inline" style="margin-left: 0px">
                                 <input type="text" name="sname" required  lay-verify="required" placeholder="请输入软著名称" class="layui-input" >
                             </div>
                             <div class="layui-input-block layui-input-inline" style="margin-left: 20px;">
@@ -97,19 +97,24 @@
         $.get(http+"/api/dc/findSoftware_work",function (result) {
             console.log(result)
             console.log(result.data.length)
+            for (var i=0;i<result.data.length;i++){
+                if(result.data[i].MEMO == null){
+                    result.data[i].MEMO ="";
+                }
+            }
             var str = ''
 
             for (var i=0;i<result.data.length;i++){
                 str += '<tr>';
-                var tds = '<td>' + result.data[i].sname + '</td>'
-                    + '<td style="display: none">' + result.data[i].did + '</td>'
-                    + '<td>' + result.data[i].uid + '</td>'
-                    + '<td>' + result.data[i].sauthor + '</td>'
-                    + '<td>' + result.data[i].memo + '</td>'
+                var tds = '<td>' + result.data[i].SNAME + '</td>'
+                    + '<td style="display: none">' + result.data[i].DID + '</td>'
+                    + '<td>' + result.data[i].UID + '</td>'
+                    + '<td>' + result.data[i].SAUTHOR + '</td>'
+                    + '<td>' + result.data[i].MEMO + '</td>'
                     + '<td>' +
-                    '<button data-method="notice"  class="layui-btn edit" ><i class="layui-icon layui-icon-edit"></i>编辑</button>' +
-                    '<button data-method="notice"  class="layui-btn layui-btn-normal  download" ><i class="layui-icon layui-icon-download-circle"></i>相关文件下载</button>' +
-                    '<button data-method="notice"  class=" layui-btn layui-btn-danger delete" onclick="del(`'+result.data[i].uuid+'`)"><i class="layui-icon layui-icon-delete"></i>删除</button>' +
+                  /*  '<button data-method="notice"  class="layui-btn edit" ><i class="layui-icon layui-icon-edit"></i>编辑</button>' +*/
+                    '<button data-method="notice"  class="layui-btn layui-btn-normal  download" onclick="downloadFile(`'+result.data[i].UUID+'`)"><i class="layui-icon layui-icon-download-circle"></i>相关文件下载</button>' +
+                    '<button data-method="notice"  class=" layui-btn layui-btn-danger delete" onclick="del(`'+result.data[i].UUID+'`)"><i class="layui-icon layui-icon-delete"></i>删除</button>' +
                     '</td>';
                 str += tds ;
                 str += '</tr>';
@@ -119,6 +124,54 @@
         })
     }
     window.onload = showtable;
+
+    //条件（模糊）查询
+    function conditionSearch(){
+        $.get(http+"/api/dc/findSoftware_work",{sname:form.title.value,sauthor:form.author.value},function (result) {
+            console.log(result)
+            if(result.data.length>0){
+                for (var i=0;i<result.data.length;i++){
+                    if(result.data[i].MEMO == null){
+                        result.data[i].MEMO ="";
+                    }
+                }
+                var str1 = ''
+                for (var i=0;i<result.data.length;i++){
+                    str1 += '<tr>';
+                    var ctds = '<td>' + result.data[i].SNAME + '</td>'
+                        + '<td style="display: none">' + result.data[i].DID + '</td>'
+                        + '<td>' + result.data[i].UID + '</td>'
+                        + '<td>' + result.data[i].SAUTHOR + '</td>'
+                        + '<td>' + result.data[i].MEMO + '</td>'
+                        + '<td>' +
+             /*           '<button data-method="notice"  class="layui-btn edit" ><i class="layui-icon layui-icon-edit"></i>编辑</button>' +*/
+                        '<button data-method="notice"  class="layui-btn layui-btn-normal  download" onclick="downloadFile(`'+result.data[i].UUID+'`)"><i class="layui-icon layui-icon-download-circle"></i>相关文件下载</button>' +
+                        '<button data-method="notice"  class=" layui-btn layui-btn-danger delete" onclick="del(`'+result.data[i].UUID+'`)"><i class="layui-icon layui-icon-delete"></i>删除</button>' +
+                        '</td>';
+                    str1 += ctds ;
+                    str1 += '</tr>';
+                }
+                $("#mybody").html(str1)
+            }else{
+                var tips = '<tr align="center">'+'<td colspan="6">'+" 没有符合条件的信息！"+'</td>'+'</tr>'
+                $("#mybody").html(tips)
+            }
+        })
+    }
+
+    //下载相关文件
+    function downloadFile(UUID){
+        layer.confirm("确认下载？", { title: "Tips" }, function (index) {
+            $.get(http+"/api/dc/software_workDownload",{uuid:UUID},function (result) {
+                {
+                    layer.msg(result.msg, {icon: -1, shade: 0.3, offset: '40%', time: 2000});
+                    console.log(result)
+                    //layer.close(index); //如果设定了yes回调，需进行手工关闭
+                }
+            });
+        });
+    }
+
     <!--删除-->
     layui.use('layer', function(){
         var $ = layui.jquery;

@@ -17,16 +17,9 @@
 
         <ul class="layui-nav layui-layout-right">
             <li class="layui-nav-item">
-                <a href="javascript:;">
-                    <img src="http://t.cn/RCzsdCq" class="layui-nav-img">
-                    贤心
-                </a>
-                <dl class="layui-nav-child">
-                    <dd><a href="">基本资料</a></dd>
-                    <dd><a href="">安全设置</a></dd>
-                </dl>
+                <a id="myname"></a>
             </li>
-            <li class="layui-nav-item"><a href="">退了</a></li>
+            <li class="layui-nav-item"><a href="../Login/login.html">退出</a></li>
         </ul>
     </div>
 </div>
@@ -63,6 +56,8 @@
     <iframe src="" name="myframe" width="100%" height="800" frameborder="0" scrolling="yes" style="padding-top: 16px"></iframe>
 </div>
 <script>
+    var usr = window.sessionStorage.getItem("username");
+    $("#myname").text(usr)
     /*左侧导航渲染*/
     $(document).ready(function () {
         var ele = layui.element;
