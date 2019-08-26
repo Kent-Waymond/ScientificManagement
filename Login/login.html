@@ -188,20 +188,30 @@
 		<script>
 			//登录
             function fun(un,pwd) {
-                $.post("http://148.70.243.66:8888/userLogin",{username:un,password:pwd},function (data) {
-/*                    alert(data)*/
-                    console.log(data)
+                $.post("http://148.70.243.66:8888/userLogin",{username:un,password:pwd},function (result) {
+/*                    alert(result)*/
+                    console.log(result)
                     console.log(status)
-					/*console.log(data.status =="success")*/
-					if(data.status =="success"){
-					    window.sessionStorage.setItem("uid",data.data.uid);
+					/*console.log(result.status =="success")*/
+					if(result.status =="success"){
+					    window.sessionStorage.setItem("uid",result.data.uid);
 					    window.sessionStorage.setItem("username",un);
 						layui.use('layer', function(){
 							var layer = layui.layer;
 							layer.alert("<h3 style='color:black'>" + '登录成功! '  + "</h3>",{title:"温馨提示"});
 						});
 						window.location.href="../TasksManagement/TaskManegement.html";
-                    }
+                    }else if(result.data.errCode == 10002){
+                        layui.use('layer', function(){
+                            var layer = layui.layer;
+                            layer.alert("<h3 style='color:black'>" + '该用户不存在! '  + "</h3>",{title:"温馨提示"});
+                        });
+					}else{
+                        layui.use('layer', function(){
+                            var layer = layui.layer;
+                            layer.alert("<h3 style='color:black'>" + '密码错误！ '  + "</h3>",{title:"温馨提示"});
+                        });
+					}
                 })
             }
 		</script>
