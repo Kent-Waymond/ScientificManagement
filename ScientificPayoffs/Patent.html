@@ -185,7 +185,7 @@
 
     //下载相关文件
     function downloadFile(UUID){
-        layer.confirm("确认下载？", { title: "Tips" }, function (index) {
+        layer.confirm("确认下载？", { title: "Tips" ,btn: ['确定','取消']}, function (index) {
             $.get(http+"/api/dc/patentDownload",{uuid:UUID},function (result) {
                 {
                     layer.msg(result.msg, {icon: -1, shade: 0.3, offset: '40%', time: 2000});
@@ -202,7 +202,7 @@
     });
     function del(uuid){
         /*  console.log(uuid)*/
-        layer.confirm("确认删除?", { title: "Tips" }, function (index) {
+        layer.confirm("确认删除?", { title: "Tips",btn: ['确定','取消'] }, function (index) {
             $.post(http+"/api/dc/patentDeleteByUuid", { uuid: uuid}, function (data)
             {
                 layer.msg(data.msg,{icon:-1,shade:0.3,offset: '40%',time:2000});
