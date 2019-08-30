@@ -14,7 +14,7 @@
     <div class="layui-row grid-demo grid-demo-bg1">
         <div class="layui-col-md12" style="height: 100px;">
             <fieldset class="layui-elem-field layui-field-title site-demo-button" style="margin-top: 30px;">
-                <legend>个人网盘</legend>
+                <legend id="personalSize">个人网盘</legend>
             </fieldset>
         </div>
         <div class="layui-row grid-demo grid-demo-bg1">
@@ -35,7 +35,7 @@
                         </div>
                     </div>
                 </form>
-                <a href="#"  id="myback" onclick="back()">返回根目录</a>
+               <!-- <a href="#"  id="myback" onclick="back()">返回根目录</a>-->
                 <table class="layui-table" id="mytable" style="margin: 10px  20px 20px 0px;">
                     <thead>
                     <tr >
@@ -52,7 +52,7 @@
                 </table>
                 <div id="paging" style="text-align: center;"></div >
                 <fieldset class="layui-elem-field layui-field-title site-demo-button" style="margin-top: 30px;">
-                    <legend>论文上传</legend>
+                    <legend>文件上传</legend>
                 </fieldset>
                 <div class="layui-upload" >
                     <form class="layui-form" action="" style="margin-top: 30px;" name="fm">
@@ -99,7 +99,7 @@
     function FindRootDir(){
         /*var uid = window.sessionStorage.getItem("uid");
         console.log(uid)*/
-        $.post(http+"/api/netDisk/findRootDir",{userId:"7e375a16732e49038366e88f8191e21e"},function(result){
+        $.post(http+"/api/netDisk/findRootDir",{userId:window.sessionStorage.getItem("uid")},function(result){
                 /*console.log(result.data[0])*/
             var str = ''
             for (var i=0;i<result.data.length;i++){
@@ -129,6 +129,13 @@
                 var form = layui.form;
                 form.render();
             });
+        })
+        $.get(http+"/api/netDisk/getNetDiskSizeInfo",{userId:window.sessionStorage.getItem("uid")},function(result){
+            console.log(result.data.sizeAll+"1111111111111")
+            var str = ''
+            str = convertSize(result.data.sizeUse) + " / " + convertSize(result.data.sizeAll);
+
+            $("#personalSize").html("个人网盘  "+str)
         })
     }
     window.onload = FindRootDir;
@@ -209,8 +216,8 @@
     //文件大小格式化
     function convertSize(mySize){
         var csize = mySize.match(/(\S*)kb/)[1];
-        var mysize =  parseInt(csize)
-        console.log(mysize)
+        var mysize =  parseInt(csize*1024)
+        /*console.log(mysize)*/
         var size = "";
         if( mysize < 0.1 * 1024 ){ //如果小于0.1KB转化成B
             size = mysize.toFixed(2) + "B";
@@ -243,14 +250,14 @@
     }
     //创建新文件夹
     function newDir(){
-        $.post(http+"/api/netDisk/createDir",{dirName:form.filename.value,parentDirId:form.newdir.value,dirUserId:"7e375a16732e49038366e88f8191e21e"},function(result){
+        $.post(http+"/api/netDisk/createDir",{dirName:form.filename.value,parentDirId:form.newdir.value,dirUserId:window.sessionStorage.getItem("uid")},function(result){
             console.log(result)
         })
     }
     //删除文件夹
     function delDir(dirID){
         layer.confirm("确认删除此文件夹及所有文件信息?", { title: "Tips" ,btn: ['确定','取消']}, function (index) {
-            $.post(http+"/api/netDisk/delDir", { dirId: dirID}, function (data)
+            $.post(http+"/api/netDisk/delDir", { dirId: dirID,userId:window.sessionStorage.getItem("uid")}, function (data)
             {
                 layer.msg(data.msg,{icon:-1,shade:0.3,offset: '40%',time:2000});
                 //layer.close(index); //如果设定了yes回调，需进行手工关闭
@@ -265,7 +272,7 @@
     function delFile(fileID){
         console.log(fileID)
         layer.confirm("确认删除?", { title: "Tips",btn: ['确定','取消'] }, function (index) {
-            $.post(http+"/api/netDisk/delFile", { fileId:fileID}, function (data)
+            $.post(http+"/api/netDisk/delFile", { fileId:fileID,userId:window.sessionStorage.getItem("uid")}, function (data)
             {
                 layer.msg(data.msg,{icon:-1,shade:0.3,offset: '40%',time:2000});
                 //layer.close(index); //如果设定了yes回调，需进行手工关闭
@@ -285,7 +292,7 @@
         console.log(fm.memo.value)
         file.config.data = {
             fileName:fm.filename.value,
-            fileUploadUserId:"7e375a16732e49038366e88f8191e21e",/*window.sessionStorage.getItem("uid"),*/ //利用sessionstorage获取uid
+            fileUploadUserId:window.sessionStorage.getItem("uid"),//利用sessionstorage获取uid
             fileDirId:fm.mydir.value,
             fileType:fm.memo.value
         }
@@ -304,14 +311,21 @@
         //,multiple: true
         ,bindAction: '#uploadFile'
         ,done: function(res){
-            layui.use('layer', function(){
-                var layer = layui.layer;
-                layer.alert("<h2 style='color:black'>" + '上传成功！' + "</h2>",{title: "Tips"});
-                setTimeout(function(){
-                    //刷新
-                    location.reload();
-                },1000);
-            });
+            if(res.status =="fail"){
+                layui.use('layer', function(){
+                    var layer = layui.layer;
+                    layer.alert("<h2 style='color:black'>" + res.data.errMsg + "</h2>",{title: "Tips"});
+                });
+            }else if(res.status =="success"){
+                layui.use('layer', function () {
+                    var layer = layui.layer;
+                    layer.alert("<h2 style='color:black'>" + '上传成功！' + "</h2>", {title: "Tips"});
+                    setTimeout(function () {
+                        //刷新
+                        location.reload();
+                    }, 1000);
+                });
+            }
             console.log(res)  //返回对象数据
         }
     })
@@ -323,7 +337,7 @@
 
         laypage.render({
             elem: 'paging'
-            ,count: 100
+            ,count: 10
             ,layout: ['count', 'prev', 'page', 'next', 'limit', 'refresh', 'skip']
             ,jump: function(obj){
                 /*            console.log(obj)
