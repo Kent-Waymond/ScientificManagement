@@ -35,95 +35,20 @@
 			<script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
 			<script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
         <![endif]-->
+
 		<script src="../assets/js/jquery.js"></script>
+		<script src="http://api.asilu.com/cdn/jquery.js,jquery.backstretch.min.js" type="text/javascript"></script>
 
 		<!--bootstrap.min.js-->
 		<script src="../assets/js/bootstrap.min.js"></script>
 
 		<!--Custom JS-->
 		<script src="../assets/js/custom.js"></script>
-		<style>
-			.capslock{
-				padding:0 2px 2px 26px;
-				position:absolute;
-				margin: 0 0 0 60px;
-				width:130px;
-				height:30px;
-				line-height:30px;
-				display:none;
-				overflow:hidden;
-				z-index:4;
-				color:#124fed;
-				/*background: url(imgs/capslock.png) no-repeat;*/
-			}
-		</style>
-		<script>
-            $(document).ready(function(){
-                /*$("#logininput").on('click.login',function(){
-                    login();
-                });*/
 
-                //密码大写输入提示
-                function capitalTip(password){
-                    $('#' + password).after('<div class="capslock" id="capital_password"><span>大写锁定已开启</span></div>');
-                    var capital = false; //聚焦初始化，防止刚聚焦时点击Caps按键提示信息显隐错误
-
-                    // 获取大写提示的标签，并提供大写提示显示隐藏的调用接口
-                    var capitalTip = {
-                        $elem: $('#capital_'+password),
-                        toggle: function (s) {
-                            if(s === 'none'){
-                                this.$elem.hide();
-                            }else if(s === 'block'){
-                                this.$elem.show();
-                            }else if(this.$elem.is(':hidden')){
-                                this.$elem.show();
-                            }else{
-                                this.$elem.hide();
-                            }
-                        }
-                    }
-                    $('#' + password).on('keydown.caps',function(e){
-                        if (e.keyCode === 20 && capital) { // 点击Caps大写提示显隐切换
-                            capitalTip.toggle();
-                        }
-                    }).on('focus.caps',function(){capital = false}).on('keypress.caps',function(e){capsLock(e)}).on('blur.caps',function(e){
-
-                        //输入框失去焦点，提示隐藏
-                        capitalTip.toggle('none');
-                    });
-                    function capsLock(e){
-                        var keyCode = e.keyCode || e.which;// 按键的keyCode
-                        var isShift = e.shiftKey || keyCode === 16 || false;// shift键是否按住
-                        if(keyCode === 9){
-                            capitalTip.toggle('none');
-                        }else{
-                            //指定位置的字符的 Unicode 编码 , 通过与shift键对于的keycode，就可以判断capslock是否开启了
-                            // 90 Caps Lock 打开，且没有按住shift键
-                            if (((keyCode >= 65 && keyCode <= 90) && !isShift) || ((keyCode >= 97 && keyCode <= 122) && isShift)) {
-                                // 122 Caps Lock打开，且按住shift键
-                                capitalTip.toggle('block'); // 大写开启时弹出提示框
-                                capital = true;
-                            } else {
-                                capitalTip.toggle('none');
-                                capital = true;
-                            }
-                        }
-                    }
-                };
-
-                //调用提示
-                capitalTip('password');
-
-            })
-		</script>
     </head>
 	
 	<body>
-		<!--[if lte IE 9]>
-            <p class="browserupgrade">You are using an <strong>outdated</strong> browser. Please <a href="https://browsehappy.com/">upgrade your browser</a> to improve your experience and security.</p>
-        <![endif]-->
-		
+
 		<!-- signin end -->
 		<section class="signin popup-in">
 			<div class="container">
@@ -142,27 +67,10 @@
 											<label >密码</label>
 										    <input type="password" class="form-control" name="password" id="password" placeholder="请输入正确的密码">
 										</div><!--/.form-group -->
-
-                                <div class="signin-password">
-                                    <div class="awesome-checkbox-list">
-                                        <ul class="unstyled centered">
-                                            <li>
-                                                <input class="styled-checkbox" id="styled-checkbox-2" type="checkbox" value="value2">
-                                                <label for="styled-checkbox-2">记住密码</label>
-                                            </li>
-
-                                            <li>
-                                                <a href="#">忘记用户名和密码？</a>
-                                            </li>
-
-                                        </ul>
-                                    </div><!--/.awesome-checkbox-list -->
-                                </div><!--/.signin-password -->
                                 <div class="signin-footer">
                                     <input type="button" value="登录" id="logininput" class="btn signin_btn" onclick=javascrtpt:fun(fm.username.value,fm.password.value)>
                                     <p>
-                                        尚未注册？
-                                        <a href="../Login/popupsignup.html">注册</a >
+                                        <a href="#"></a >
                                     </p>
                                 </div><!--/.signin-footer -->
                                     </form><!--/form -->
@@ -185,6 +93,18 @@
 
 		</footer><!--/.hm-footer-copyright-->
 		<!--footer copyright  end -->
+		<script type="text/javascript">
+            $.backstretch([
+                'http://api.asilu.com/cdn/img/bg/444.jpg',
+                'http://api.asilu.com/cdn/img/bg/445.jpg',
+                'http://api.asilu.com/cdn/img/bg/446.jpg',
+                'http://api.asilu.com/cdn/img/bg/447.jpg',
+                'http://api.asilu.com/cdn/img/bg/448.jpg'
+            ], {
+                fade : 1000, // 动画时长
+                duration : 2000 // 切换延时
+            });
+		</script>
 		<script>
 			//登录
             function fun(un,pwd) {
