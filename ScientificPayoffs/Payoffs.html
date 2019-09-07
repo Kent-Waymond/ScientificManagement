@@ -3,11 +3,20 @@
 <head>
     <meta charset="UTF-8">
     <title>Payoffs</title>
+    <link rel="stylesheet" href="../assets/css/bootstrap.min.css">
+    <link rel="stylesheet" href="../assets/css/bootstrap-select.min.css">
     <script src="../jQuery/jquery-3.3.1.min%20(1).js"></script>
     <script type="text/javascript" src="../layui/layui.js"></script>
     <script type="text/javascript" src="../layui/layui.all.js"></script>
     <link rel="stylesheet" href="../layui/css/layui.css" type="text/css"/>
     <script src="https://vuejs.org/js/vue.js"></script>
+    <script src="https://cdn.bootcss.com/twitter-bootstrap/4.3.1/js/bootstrap.min.js"></script>
+    <script src="../assets/js/bootstrap-select.js"></script>
+    <style>
+        *:not(input) {
+            -webkit-user-select: none;
+        }
+    </style>
 </head>
 <body>
 <div class="layui-col-md10 layui-col-md-offset2"  style="width: 1100px">
@@ -15,13 +24,37 @@
         <div class="layui-col-md12" style="height: 100px;">
             <form class="layui-form" name="mainform" style="margin-top: 30px;">
                 <div class="layui-form-item" >
-                    <div class="layui-input-block layui-input-inline" style="margin-left: 20px;margin-top: 5px;">
-                        <label >
-                            <h2>科研成果类型 :</h2>
-                        </label>
+<!--                    <div class="layui-input-block layui-input-inline"  style="margin-left: 20px;">
+                    <select id="mainName" class="selectpicker"  data-live-search="true" data-live-search-placeholder="搜索" data-actions-box="true">
+                    </select>
+                </div>-->
+                    <div class="layui-input-block layui-input-inline"  style="margin-left: 0px;width: 150px;">
+                        <select  id="mainPerson" >
+                            <option value="">人员</option>
+                        </select>
                     </div>
-                    <div class="layui-input-block layui-input-inline"  style="width: 200px;margin-left: -50px;">
-                        <select name="maintype" id="mainType" onchange="fun()">
+                    <div class="layui-input-block layui-input-inline"  style="margin-left: 20px;width: 150px;">
+                        <select  id="mainTaskType" >
+                            <option value="">项目类型</option>
+                        </select>
+                    </div>
+                    <div class="layui-input-block layui-input-inline"  style="margin-left: 20px;width: 150px;">
+                        <select  id="mainStatus" >
+                            <option value="">项目结题状态</option>
+                        </select>
+                    </div>
+                    <div class="layui-input-block layui-input-inline"  style="margin-left: 20px;width: 150px;">
+                        <select  id="mainTask" >
+                            <option value="">项目名</option>
+                        </select>
+                    </div>
+<!--                    <div class="layui-input-block layui-input-inline"  style="margin-left: 20px;width: 150px;">
+                        <select  id="mainSearch" >
+                            <option value="">查询</option>
+                        </select>
+                    </div>-->
+                    <div class="layui-input-block layui-input-inline"  style="margin-left: 20px;width: 150px;">
+                        <select  id="mainType" >
                         </select>
                     </div>
                     <div class="layui-input-block layui-input-inline" style="margin-left: 15px;">
@@ -30,8 +63,8 @@
                 </div>
             </form>
 
-            <div class="myThesis" style="display:block;">
-                <fieldset class="layui-elem-field layui-field-title site-demo-button" style="margin-top: 30px;">
+            <div class="myThesis" style="display:none;">
+                <fieldset class="layui-elem-field layui-field-title site-demo-button" style="margin-top: 20px;">
                     <legend>论文</legend>
                 </fieldset>
                 <form class="layui-form" name="tform" style="margin-top: 30px;">
@@ -51,7 +84,6 @@
                         </div>
                     </div>
                 </form>
-
             </div>
             <div class="mySoftwareWork" style="display:none;">
                 <fieldset class="layui-elem-field layui-field-title site-demo-button" style="margin-top: 30px;">
@@ -77,20 +109,16 @@
                     <legend>专利</legend>
                 </fieldset>
                 <form class="layui-form" name="pform" style="margin-top: 30px;">
-                    <div class="layui-form-item" >
-                        <div class="layui-input-block layui-input-inline" style="width: 200px;margin-left: 20px;">
-                            <select name="type" id="myptype">
-                            </select>
+                        <div class=" layui-input-inline" style="margin-left: 0px;width: 180px;">
+                            <input type="text" name="ptitle"  placeholder="请输入专利名称" class="layui-input">
                         </div>
-                        <div class="layui-input-block layui-input-inline" style="margin-left: 20px">
-                            <input type="text" name="ptitle"  placeholder="请输入标题" class="layui-input" style="width: 200px;">
+                        <div class=" layui-input-inline" style="margin-left: 20px;width: 150px;">
+                            <input type="text" name="pagency"  placeholder="请输入代理公司" class="layui-input" >
                         </div>
                         <div class="layui-input-block layui-input-inline" style="margin-left: 20px">
                             <button class="layui-btn" type="button" onclick="conditionSearch()"><i class="layui-icon layui-icon-search"></i>查询</button>
                         </div>
-                    </div>
                 </form>
-
             </div>
             <div class="myWriting" style="display:none;">
                 <fieldset class="layui-elem-field layui-field-title site-demo-button" style="margin-top: 30px;">
@@ -115,7 +143,7 @@
                 </form>
 
             </div>
-            <div class="myAward" style="display:none;">
+            <div class="myAward" style="display:block;">
                 <fieldset class="layui-elem-field layui-field-title site-demo-button" style="margin-top: 30px;">
                     <legend>奖项</legend>
                 </fieldset>
@@ -175,7 +203,7 @@
         </div>
         <div class="layui-row grid-demo grid-demo-bg1">
             <div class="layui-col-md12">
-                <div class="myThesis" style="display:block;margin-top: 120px;">
+                <div class="myThesis" style="display:none;margin-top: 140px;">
                     <table class="layui-table" id="mytable" style="margin: 20px">
                         <thead >
                         <tr >
@@ -231,7 +259,7 @@
                         <!--onclick="uploadfile(fm.typeID.value,fm.type.value,fm.name.value,fm.author.value,fm.memo.value)"-->
                     </div>
                 </div>
-                <div class="mySoftwareWork" style="display:none;margin-top: 120px;">
+                <div class="mySoftwareWork" style="margin-top: 140px;display:none;">
                     <table class="layui-table" id="mystable" style="margin-left: 20px">
                         <thead >
                         <tr >
@@ -276,9 +304,163 @@
                         <button type="button" class="layui-btn" id="supload" >开始上传</button>
                     </div>
                 </div>
-                <div class="myPatent" style="display:none;margin-top: 120px;">
-                    <table class="layui-table" id="myptable" style="margin-left: 20px;">
-                        <colgroup>
+                <div class="myPatent" style="margin-top: 140px;display:none;">
+                    <!--表格-->
+                    <div class="layui-btn-group demoTable" id="myToolbar" style="display: none">
+                        <button class="layui-btn layui-btn-normal layui-btn-sm " lay-event="add">添加</button>
+                        <button class="layui-btn layui-btn-sm layui-btn-danger" lay-event="delete">批量删除</button>
+                    </div>
+                    <div id="addContainer" style="display: none;width: 500px" >
+                        <form class="layui-form" style="margin:30px" id="addDetail">
+                            <div class="layui-form-item">
+                                <label class="layui-form-label"  style="width: 100px">专利名称</label>
+                                <div class="layui-input-block">
+                                    <input class="layui-input" type="text"  style="width: 350px" name="pname" id="pname" required>
+                                </div>
+                            </div>
+                            <div class="layui-form-item">
+                                <label class="layui-form-label" >项目ID</label>
+                                <div class="layui-input-block">
+                                    <input class="layui-input" type="text"  style="width: 350px" name="pprojectId" id="pprojectId" required>
+                                </div>
+                            </div>
+                            <div class="layui-form-item">
+                                <label class="layui-form-label">作者</label>
+                                <div class="layui-input-block">
+                                    <input class="layui-input" type="text"  style="width: 350px" name="pauthor" id="pauthor" required>
+                                </div>
+                            </div>
+
+                            <div class="layui-form-item">
+                                <label class="layui-form-label" >性别</label>
+                                <div class="layui-input-block">
+                                    <input class="layui-input" type="text"  style="width: 350px" name="pgender" id="pgender">
+                                </div>
+                            </div>
+                            <div class="layui-form-item">
+                                <label class="layui-form-label" style="width: 100px">作者单位</label>
+                                <div class="layui-input-block">
+                                    <input class="layui-input" type="text"  style="width: 350px" name="punit" id="punit">
+                                </div>
+                            </div>
+                            <div class="layui-form-item">
+                                <label class="layui-form-label" style="width: 100px">作者职称</label>
+                                <div class="layui-input-block">
+                                    <input class="layui-input" type="text"  style="width: 350px" name="pprofession" id="pprofession">
+                                </div>
+                            </div>
+                            <div class="layui-form-item">
+                                <label class="layui-form-label" style="width: 100px">作者排名</label>
+                                <div class="layui-input-block">
+                                    <select name="pauthorType" lay-verify="required" style="width: 350px">
+                                        <option value="0">请选择作者排名</option>
+                                        <option value="1101" >第一作者</option>
+                                        <option value="1102" >第二作者</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="layui-form-item">
+                                <label class="layui-form-label" style="width: 100px">专利状态</label>
+                                <div class="layui-input-block">
+                                    <select name="pstatus" lay-verify="required" style="width: 400px"  id="pstatus">
+                                        <option value="0">请选择专利状态</option>
+                                        <option value="1401" >受理</option>
+                                        <option value="1402" >授权</option>
+                                        <option value="1403" >作废</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="layui-form-item">
+                                <label class="layui-form-label" style="width: 100px">文件类型</label>
+                                <div class="layui-input-block">
+                                    <select name="ptype" lay-verify="required" style="width: 350px">
+                                        <option value="0">请选择文件类型</option>
+                                        <option value="1201" >交底说明书</option>
+                                        <option value="1202" >受理通知书</option>
+                                        <option value="1203" >设计文档</option>
+                                        <option value="1204" >其他</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="layui-form-item">
+                                <label class="layui-form-label" style="width: 100px">专利状态</label>
+                                <div class="layui-input-block">
+                                    <select name="ptypeID" lay-verify="required" style="width: 350px">
+                                        <option value="0">请选择作者排名</option>
+                                        <option value="1301" >团队内</option>
+                                        <option value="1302" >团队外</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="layui-form-item">
+                                <label class="layui-form-label" style="width: 100px">代理公司</label>
+                                <div class="layui-input-block">
+                                    <input class="layui-input" type="text"  style="width: 350px" name="pagency" id="pagency">
+                                </div>
+                            </div>
+
+                            <div class="layui-form-item">
+                                <label class="layui-form-label" style="width: 100px">申请日期</label>
+                                <div class="layui-input-block">
+                                    <input class="layui-input" type="text"  style="width: 350px" name="sqtime" id="sqtime" onfocus="(this.type='date')" onblur="(this.type='text')">
+                                </div>
+                            </div><div class="layui-form-item">
+                            <label class="layui-form-label" style="width: 100px">受理日期</label>
+                            <div class="layui-input-block">
+                                <input class="layui-input" type="text"  style="width: 350px" name="sltime" id="sltime" onfocus="(this.type='date')" onblur="(this.type='text')">
+                            </div>
+                        </div><div class="layui-form-item">
+                            <label class="layui-form-label" style="width: 100px">授权日期</label>
+                            <div class="layui-input-block">
+                                <input class="layui-input" type="text"  style="width: 350px" name="granttime" id="granttime" onfocus="(this.type='date')" onblur="(this.type='text')">
+                            </div>
+                        </div>
+                            <div class="layui-form-item" align="center">
+                                <button type="button" class="layui-btn layui-btn-radius layui-btn-normal" onclick="addDetail()">确认添加</button>
+                            </div>
+                        </form>
+                    </div>
+                    <div id="editContainer" style="display: none">
+                        <form class="layui-form" style="margin:30px" id="editDetail">
+                            <div class="layui-form-item">
+                                <label class="layui-form-label">所属基本类型编号</label>
+                                <div class="layui-input-block">
+                                    <input class="layui-input" type="text" value="" style="width: 350px" name="bid" id="bids" required>
+                                </div>
+                            </div>
+                            <div class="layui-form-item">
+                                <label class="layui-form-label">所属基本类型</label>
+                                <div class="layui-input-block">
+                                    <input class="layui-input" type="text" value="" style="width: 350px" name="bid" id="bnames" required>
+                                </div>
+                            </div>
+                            <div class="layui-form-item">
+                                <label class="layui-form-label">详细类型编号</label>
+                                <div class="layui-input-block">
+                                    <input class="layui-input" type="text" value="" style="width: 350px" name="did" id="dids" required readonly>
+                                </div>
+                            </div>
+                            <div class="layui-form-item">
+                                <label class="layui-form-label">详细类型名称</label>
+                                <div class="layui-input-block">
+                                    <input class="layui-input" type="text" value="" style="width: 350px" name="dname" id="dnames" required>
+                                </div>
+                            </div>
+                            <div class="layui-form-item">
+                                <label class="layui-form-label">备注</label>
+                                <div class="layui-input-block">
+                                    <input class="layui-input" type="text" value="" style="width: 350px" name="memo" id="memos">
+                                </div>
+                            </div>
+                            <div class="layui-form-item" align="center">
+                                <button type="button" class="layui-btn layui-btn-radius layui-btn-normal" onclick="editDetail()">提交修改</button>
+                            </div>
+                        </form>
+                    </div>
+                    <table class="layui-table"  id='detailTable' lay-filter="detailTable" style="margin-top: -5px"></table>
+                </div>
+                <!--    <table class="layui-table" id="myptable" lay-filter="videoTable" style="margin: 25px;">
+&lt;!&ndash;                        <colgroup>
                             <col width="150">
                             <col width="200">
                             <col>
@@ -286,51 +468,88 @@
                         <thead >
                         <tr >
                             <th lay-data="{field:'stock',sort: true,align:'center'}" style="text-align: center;">专利名称</th>
-                            <th lay-data="{field:'stock',sort: true,align:'center'}" style="text-align: center;">专利类型</th>
-                            <th lay-data="{field:'stock',sort: true,align:'center'}" style="display: none">类型ID</th>
-                            <th lay-data="{field:'stock',sort: true,align:'center'}" style="text-align: center;">上传人</th>
-                            <th style="text-align: center;">备注</th>
+                            <th style="text-align: center;">作者</th>
+                            <th style="text-align: center;">状态</th>
+                            <th style="text-align: center;">代理公司</th>
+                            <th lay-data="{field:'stock',sort: true,align:'center'}" style="text-align: center;">申请日期</th>
+                            <th lay-data="{field:'stock',sort: true,align:'center'}" style="text-align: center;">受理日期</th>
+                            <th lay-data="{field:'stock',sort: true,align:'center'}" style="text-align: center;">授权日期</th>
                             <th style="text-align: center;">操作</th>
                         </tr>
                         </thead>
                         <tbody id="mypbody" align="center">
-                        </tbody>
-                    </table>
-                    <div id="ppaging" style="text-align: center;"></div>
-                    <fieldset class="layui-elem-field layui-field-title site-demo-button" style="margin-top: 30px;">
+                        </tbody>&ndash;&gt;
+                    </table>--><!--                    <div id="ppaging" style="text-align: center;"></div>
+                    <fieldset class="layui-elem-field layui-field-title site-demo-button" style="margin-top: 20px;">
                         <legend>专利上传</legend>
                     </fieldset>
                     <div class="layui-upload" style="margin-top: 20px;margin-left: 20px;">
-                        <form class="layui-form" action="" style="margin-top: 30px;" name="pfm">
+                        <form class="layui-form" action="" style="margin-top: 20px;" name="pfm">
                             <div class="layui-form-item">
                                 <div class="layui-input-block layui-input-inline" style="display: none;">
                                     <select name="pDID" lay-verify="required" >
                                         <option value="0201" selected>专利：0201</option>
                                     </select>
                                 </div>
-                                <div class="layui-input-block layui-input-inline" style="display: none" >
+                              &lt;!&ndash;  <div class="layui-input-block layui-input-inline" style="display: none" >
                                     <input type="text" name="puid" required  lay-verify="required" >
-                                </div>
+                                </div>&ndash;&gt;
                                 <div class="layui-input-block layui-input-inline" style="margin-left: 0px">
-                                    <select name="ptype" lay-verify="required" >
-                                        <option value="0">请选择专利类型</option>
-                                        <option value="实用型" >实用型</option>
-                                        <option value="新型" >新型</option>
-                                    </select>
-                                </div>
-                                <div class="layui-input-block layui-input-inline" style="margin-left: 20px">
                                     <input type="text" name="pname" required  lay-verify="required" placeholder="请输入专利名称" class="layui-input" >
                                 </div>
+                                <div class="layui-input-block layui-input-inline" style="margin-left: 20px">
+                                    <input type="text" name="pprojectID" required  lay-verify="required" placeholder="请输入项目ID" class="layui-input" >
+                                </div>
+                                <div class="layui-input-block layui-input-inline" style="margin-left: 20px">
+                                    <input type="text" name="pagency"  placeholder="请输入代理公司" class="layui-input" >
+                                </div>
                                 <div class="layui-input-block layui-input-inline" style="margin-left: 20px;">
-                                    <input type="text" name="pmemo"  placeholder="备注" class="layui-input">
+
+                                </div>
+                                <div class="layui-input-block layui-input-inline" style="margin-left: 20px;">
+                                    <select name="ptype" lay-verify="required" >
+                                        <option value="0">请选择文件类型</option>
+                                        <option value="1201" >交底说明书</option>
+                                        <option value="1202" >受理通知书</option>
+                                        <option value="1203" >设计文档</option>
+                                        <option value="1204" >其他</option>
+                                    </select>
+                                </div>
+                                <div class="layui-input-block layui-input-inline" style="margin-left: 0px;margin-top: 10px;">
+                                    <input type="text" name="pauthor"  required  lay-verify="required" placeholder="请输入作者" class="layui-input">
+                                </div>
+                                <div class="layui-input-block layui-input-inline" style="margin-left: 20px;margin-top: 10px;">
+                                    <input type="text" name="pgender" required  lay-verify="required" placeholder="请输入性别" class="layui-input">
+                                </div>
+                                <div class="layui-input-block layui-input-inline" style="margin-left: 20px;margin-top: 10px;">
+
+                                </div>
+                                <div class="layui-input-block layui-input-inline" style="margin-left: 20px;margin-top: 10px;">
+                                    <input type="text" name="punit" required  lay-verify="required" placeholder="请输入作者单位" class="layui-input">
+                                </div>
+                                <div class="layui-input-block layui-input-inline" style="margin-left: 20px;margin-top: 10px;">
+                                    <input type="text" name="pprofession" required  lay-verify="required" placeholder="请输入作者职称" class="layui-input">
+                                </div>
+                                <div class="layui-input-block layui-input-inline" style="margin-left: 0px;margin-top: 10px;">
+
+                                </div>
+                                <div class="layui-input-block layui-input-inline" style="margin-left: 20px;margin-top: 10px;">
+                                    <input type="text" id="sqdate" name="sqtime"  placeholder="请选择申请日期"  class="layui-input" onfocus="(this.type='date')" onblur="(this.type='text')">
+                                </div>
+
+                                <div class="layui-input-block layui-input-inline" style="margin-left: 20px;margin-top: 10px;">
+                                    <input type="text" id="sldate" name="sltime"  placeholder="请选择受理日期"  class="layui-input" onfocus="(this.type='date')" onblur="(this.type='text')">
+                                </div>
+
+                                <div class="layui-input-block layui-input-inline" style="margin-left: 20px;margin-top: 10px;">
+                                    <input type="text" id="grantdate" name="granttime"  placeholder="请选择授权日期" class="layui-input" onfocus="(this.type='date')" onblur="(this.type='text')">
                                 </div>
                             </div>
                         </form>
-                        <button type="button" class="layui-btn layui-btn-normal" id="pchoosefile">选择文件</button>
-                        <button type="button" class="layui-btn" id="pupload" >开始上传</button>
-                    </div>
-                </div>
-                <div class="myWriting" style="display:none;margin-top: 120px;">
+                      &lt;!&ndash;  <button type="button" class="layui-btn layui-btn-normal" id="pchoosefile">选择文件</button>
+                        <button type="button" class="layui-btn" id="pupload" >开始上传</button>&ndash;&gt;
+                    </div>-->
+                <div class="myWriting" style="margin-top: 140px;display:none;">
                     <table class="layui-table" id="mywtable" style="margin-left: 20px;">
                         <thead >
                         <tr >
@@ -384,65 +603,165 @@
                         <button type="button" class="layui-btn" id="wupload" >开始上传</button>
                     </div>
                 </div>
-                <div class="myAward" style="margin-top: 120px;display:none;" >
-                    <table class="layui-table" id="myatable" style="margin-left: 20px;">
-                        <colgroup>
-                            <col width="150">
-                            <col width="200">
-                            <col>
-                        </colgroup>
-                        <thead >
-                        <tr >
-                            <th lay-data="{field:'stock',sort: true,align:'center'}" style="text-align: center;">奖项名称</th>
-                            <th lay-data="{field:'stock',sort: true,align:'center'}" style="text-align: center;">颁奖单位</th>
-                            <th lay-data="{field:'stock',sort: true,align:'center'}" style="text-align: center;">名次</th>
-                            <th style="text-align: center;">获奖人</th>
-                            <th lay-data="{field:'stock',sort: true,align:'center'}" style="text-align: center;">获奖时间</th>
-                            <th style="text-align: center;">操作</th>
-                        </tr>
-                        </thead>
-                        <tbody id="myabody" align="center">
-                        </tbody>
-                    </table>
-                    <div id="apaging" style="text-align: center;"></div>
-                    <fieldset class="layui-elem-field layui-field-title site-demo-button" style="margin-top: 30px;">
-                        <legend>奖项上传</legend>
-                    </fieldset>
-                    <div class="layui-upload" style="margin-top: 20px;margin-left: 20px;">
-                        <form class="layui-form" action="" style="margin-top: 30px;" name="afm">
+                <div class="myAward" style="margin-top: 140px;display:block;" >
+                    <div class="layui-btn-group demoTable" id="myAWToolbar" style="display: none">
+                        <button class="layui-btn layui-btn-normal layui-btn-sm " lay-event="add">添加</button>
+                        <button class="layui-btn layui-btn-sm layui-btn-danger" lay-event="delete">批量删除</button>
+                    </div>
+                    <div id="addAWContainer" style="display: none;width: 500px" >
+                        <form class="layui-form" style="margin:30px" id="addAWDetail">
                             <div class="layui-form-item">
-                                <div class="layui-input-block layui-input-inline" style="display: none;">
-                                    <select name="aDID" lay-verify="required" >
-                                        <option value="0205" selected>奖项：0205</option>
+                                <label class="layui-form-label" >名称</label>
+                                <div class="layui-input-block">
+                                    <input class="layui-input" type="text"  style="width: 350px" name="softwareName" id="softwareName" required>
+                                </div>
+                            </div>
+                            <div class="layui-form-item" style="display: none">
+                                <label class="layui-form-label" >成果类型</label>
+                                <div class="layui-input-block">
+                                    <input class="layui-input" type="text"  style="width: 350px" value= "0205" name="resultTypeId " id="aresultTypeId " required>
+                                </div>
+                            </div>
+                            <div class="layui-form-item">
+                                <label class="layui-form-label" >项目ID</label>
+                                <div class="layui-input-block">
+                                    <input class="layui-input" type="text"  style="width: 350px" name="projectId" id="projectId" required>
+                                </div>
+                            </div>
+                            <div class="layui-form-item">
+                                <label class="layui-form-label">作者</label>
+                                <div class="layui-input-block">
+                                    <input class="layui-input" type="text"  style="width: 350px" name="aauthor" id="aauthor" required>
+                                </div>
+                            </div>
+                            <div class="layui-form-item">
+                                <label class="layui-form-label" >网址</label>
+                                <div class="layui-input-block">
+                                    <input class="layui-input" type="text"  style="width: 350px" name="webSite" id="webSite">
+                                </div>
+                            </div>
+                            <div class="layui-form-item">
+                                <label class="layui-form-label" style="width: 90px">作者排名</label>
+                                <div class="layui-input-block">
+                                    <select name="pauthorType" lay-verify="required" style="width: 350px">
+                                        <option value="0">请选择作者排名</option>
+                                        <option value="1101" >第一作者</option>
+                                        <option value="1102" >第二作者</option>
+                                        <option value="1103" >第二作者</option>
                                     </select>
                                 </div>
-                                <div class="layui-input-block layui-input-inline" style="display: none" >
-                                    <input type="text" name="auid" required  lay-verify="required" >
+                            </div>
+                            <div class="layui-form-item">
+                                <label class="layui-form-label" style="width: 90px">发布日期</label>
+                                <div class="layui-input-block">
+                                    <input class="layui-input" type="text"  style="width: 350px" name="publishTime" id="publishTime" onfocus="(this.type='date')" onblur="(this.type='text')">
                                 </div>
-                                <div class="layui-input-block layui-input-inline" style="margin-left: 0px">
-                                    <input type="text" name="aname" required  lay-verify="required" placeholder="请输入奖项名称" class="layui-input" >
-                                </div>
-                                <div class="layui-input-block layui-input-inline" style="margin-left: 20px">
-                                    <input type="text" name="aorganization"   placeholder="请输入颁奖单位" class="layui-input" >
-                                </div>
-                                <div class="layui-input-block layui-input-inline" style="margin-left: 20px">
-                                    <input type="text" name="aorder"    placeholder="请输入名次" class="layui-input" >
-                                </div>
-                                <div class="layui-input-block layui-input-inline" style="margin-left: 20px">
-                                    <input type="text" name="awardee"   placeholder="请输入获奖人" class="layui-input" >
-                                </div>
-                                <div class="layui-input-block layui-input-inline" style="width: 180px;height: 33px;margin-left: 20px">
-                                    <input type="date" name="atime"  placeholder="请输入获奖时间"  style="width: 180px;height: 33px;">
-                                </div>
-
+                            </div>
+                            <div class="layui-form-item" align="center">
+                                <button type="button" class="layui-btn layui-btn-radius layui-btn-normal" onclick="addDetail()">确认添加</button>
                             </div>
                         </form>
-                        <button type="button" class="layui-btn layui-btn-normal" id="achoosefile">选择扫描件</button>
-                        <button type="button" class="layui-btn" id="aupload" >开始上传</button>
                     </div>
+                    <table class="layui-table"  id='AWTable' lay-filter="ATable" style="margin-top: -5px"></table>
                 </div>
-                <div class="myApp" style="margin-top: 120px;display: none">
-                    <table class="layui-table" id="myapptable" style="margin-left: 20px;">
+                <div class="myApp" style="margin-top: 140px;display: none">
+                    <div class="layui-btn-group demoTable" id="myAToolbar" style="display: none">
+                        <button class="layui-btn layui-btn-normal layui-btn-sm " lay-event="add">添加</button>
+                        <button class="layui-btn layui-btn-sm layui-btn-danger" lay-event="delete">批量删除</button>
+                    </div>
+                    <div id="addAContainer" style="display: none;width: 500px" >
+                        <form class="layui-form" style="margin:30px" id="addADetail">
+                            <div class="layui-form-item">
+                                <label class="layui-form-label" >名称</label>
+                                <div class="layui-input-block">
+                                    <input class="layui-input" type="text"  style="width: 350px" name="softwareName" id="softwareName" required>
+                                </div>
+                            </div>
+                            <div class="layui-form-item" style="display: none">
+                                <label class="layui-form-label" >成果类型</label>
+                                <div class="layui-input-block">
+                                    <input class="layui-input" type="text"  style="width: 350px" value= "0205" name="resultTypeId " id="aresultTypeId " required>
+                                </div>
+                            </div>
+                            <div class="layui-form-item">
+                                <label class="layui-form-label" >项目ID</label>
+                                <div class="layui-input-block">
+                                    <input class="layui-input" type="text"  style="width: 350px" name="projectId" id="projectId" required>
+                                </div>
+                            </div>
+                            <div class="layui-form-item">
+                                <label class="layui-form-label">作者</label>
+                                <div class="layui-input-block">
+                                    <input class="layui-input" type="text"  style="width: 350px" name="aauthor" id="aauthor" required>
+                                </div>
+                            </div>
+                            <div class="layui-form-item">
+                                <label class="layui-form-label" >网址</label>
+                                <div class="layui-input-block">
+                                    <input class="layui-input" type="text"  style="width: 350px" name="webSite" id="webSite">
+                                </div>
+                            </div>
+                            <div class="layui-form-item">
+                                <label class="layui-form-label" style="width: 90px">作者排名</label>
+                                <div class="layui-input-block">
+                                    <select name="pauthorType" lay-verify="required" style="width: 350px">
+                                        <option value="0">请选择作者排名</option>
+                                        <option value="1101" >第一作者</option>
+                                        <option value="1102" >第二作者</option>
+                                        <option value="1103" >第二作者</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="layui-form-item">
+                                <label class="layui-form-label" style="width: 90px">发布日期</label>
+                                <div class="layui-input-block">
+                                    <input class="layui-input" type="text"  style="width: 350px" name="publishTime" id="publishTime" onfocus="(this.type='date')" onblur="(this.type='text')">
+                                </div>
+                            </div>
+                            <div class="layui-form-item" align="center">
+                                <button type="button" class="layui-btn layui-btn-radius layui-btn-normal" onclick="addDetail()">确认添加</button>
+                            </div>
+                        </form>
+                    </div>
+                   <!-- <div id="editAContainer" style="display: none">
+                        <form class="layui-form" style="margin:30px" id="editDetail">
+                            <div class="layui-form-item">
+                                <label class="layui-form-label">所属基本类型编号</label>
+                                <div class="layui-input-block">
+                                    <input class="layui-input" type="text" value="" style="width: 350px" name="bid" id="bids" required>
+                                </div>
+                            </div>
+                            <div class="layui-form-item">
+                                <label class="layui-form-label">所属基本类型</label>
+                                <div class="layui-input-block">
+                                    <input class="layui-input" type="text" value="" style="width: 350px" name="bid" id="bnames" required>
+                                </div>
+                            </div>
+                            <div class="layui-form-item">
+                                <label class="layui-form-label">详细类型编号</label>
+                                <div class="layui-input-block">
+                                    <input class="layui-input" type="text" value="" style="width: 350px" name="did" id="dids" required readonly>
+                                </div>
+                            </div>
+                            <div class="layui-form-item">
+                                <label class="layui-form-label">详细类型名称</label>
+                                <div class="layui-input-block">
+                                    <input class="layui-input" type="text" value="" style="width: 350px" name="dname" id="dnames" required>
+                                </div>
+                            </div>
+                            <div class="layui-form-item">
+                                <label class="layui-form-label">备注</label>
+                                <div class="layui-input-block">
+                                    <input class="layui-input" type="text" value="" style="width: 350px" name="memo" id="memos">
+                                </div>
+                            </div>
+                            <div class="layui-form-item" align="center">
+                                <button type="button" class="layui-btn layui-btn-radius layui-btn-normal" onclick="editDetail()">提交修改</button>
+                            </div>
+                        </form>
+                    </div>-->
+                    <table class="layui-table"  id='ATable' lay-filter="ATable" style="margin-top: -5px"></table>
+<!--                    <table class="layui-table" id="myapptable" style="margin-left: 20px;">
                         <colgroup>
                             <col width="150">
                             <col width="200">
@@ -490,10 +809,10 @@
                         </form>
                         <button type="button" class="layui-btn layui-btn-normal" id="appchoosefile">选择文件</button>
                         <button type="button" class="layui-btn" id="appupload" >开始上传</button>
-                    </div>
+                    </div>-->
                 </div>
-                <div class="myReport" style="margin-top: 120px;display:none;">
-                    <table class="layui-table" id="myrtable" style="margin-left: 20px;">
+                <div class="myReport" style="margin-top: 140px;display:none;">
+                    <!--<table class="layui-table" id="myrtable" style="margin-left: 20px;">
                         <colgroup>
                             <col width="150">
                             <col width="200">
@@ -538,16 +857,114 @@
                         </form>
                         <button type="button" class="layui-btn layui-btn-normal" id="rchoosefile">选择文件</button>
                         <button type="button" class="layui-btn" id="rupload" >开始上传</button>
+                    </div>-->
+                    <div class="layui-btn-group demoTable" id="myRToolbar" style="display: none">
+                        <button class="layui-btn layui-btn-normal layui-btn-sm " lay-event="add">添加</button>
+                        <button class="layui-btn layui-btn-sm layui-btn-danger" lay-event="delete">批量删除</button>
                     </div>
+                    <div id="addRContainer" style="display: none;width: 500px" >
+                        <form class="layui-form" style="margin:30px" id="addRDetail">
+                            <div class="layui-form-item">
+                                <label class="layui-form-label" >名称</label>
+                                <div class="layui-input-block">
+                                    <input class="layui-input" type="text"  style="width: 350px" name="projectResultName" id="projectResultName" required>
+                                </div>
+                            </div>
+                            <div class="layui-form-item">
+                                <label class="layui-form-label" >项目ID</label>
+                                <div class="layui-input-block">
+                                    <input class="layui-input" type="text"  style="width: 350px" name="projectId" id="rprojectId" required>
+                                </div>
+                            </div>
+                            <div class="layui-form-item">
+                                <label class="layui-form-label">作者</label>
+                                <div class="layui-input-block">
+                                    <select name="writerId" id="writerId" lay-verify="required" style="width: 350px">
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="layui-form-item" style="display: none">
+                                <label class="layui-form-label">成果类型</label>
+                                <div class="layui-input-block">
+                                    <input class="layui-input" type="text"  style="width: 350px" value="0207" name="resultTypeId " id="rresultTypeId " required>
+                                </div>
+                            </div>
+                            <div class="layui-form-item">
+                                <label class="layui-form-label" style="width: 90px">作者排名</label>
+                                <div class="layui-input-block">
+                                    <select name="writerTypeId" lay-verify="required" style="width: 350px">
+                                        <option value="0">请选择作者排名</option>
+                                        <option value="1101" >第一作者</option>
+                                        <option value="1102" >第二作者</option>
+                                        <option value="1103" >第二作者</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="layui-form-item">
+                                <label class="layui-form-label" style="width: 90px">发布日期</label>
+                                <div class="layui-input-block">
+                                    <input class="layui-input" type="text"  style="width: 350px" name="writeTime" id="writeTime" onfocus="(this.type='date')" onblur="(this.type='text')">
+                                </div>
+                            </div>
+                            <div class="layui-form-item" align="center">
+                                <button type="button" class="layui-btn layui-btn-radius layui-btn-normal" onclick="addDetail()">确认添加</button>
+                            </div>
+                        </form>
+                    </div>
+                    <!-- <div id="editAContainer" style="display: none">
+                         <form class="layui-form" style="margin:30px" id="editDetail">
+                             <div class="layui-form-item">
+                                 <label class="layui-form-label">所属基本类型编号</label>
+                                 <div class="layui-input-block">
+                                     <input class="layui-input" type="text" value="" style="width: 350px" name="bid" id="bids" required>
+                                 </div>
+                             </div>
+                             <div class="layui-form-item">
+                                 <label class="layui-form-label">所属基本类型</label>
+                                 <div class="layui-input-block">
+                                     <input class="layui-input" type="text" value="" style="width: 350px" name="bid" id="bnames" required>
+                                 </div>
+                             </div>
+                             <div class="layui-form-item">
+                                 <label class="layui-form-label">详细类型编号</label>
+                                 <div class="layui-input-block">
+                                     <input class="layui-input" type="text" value="" style="width: 350px" name="did" id="dids" required readonly>
+                                 </div>
+                             </div>
+                             <div class="layui-form-item">
+                                 <label class="layui-form-label">详细类型名称</label>
+                                 <div class="layui-input-block">
+                                     <input class="layui-input" type="text" value="" style="width: 350px" name="dname" id="dnames" required>
+                                 </div>
+                             </div>
+                             <div class="layui-form-item">
+                                 <label class="layui-form-label">备注</label>
+                                 <div class="layui-input-block">
+                                     <input class="layui-input" type="text" value="" style="width: 350px" name="memo" id="memos">
+                                 </div>
+                             </div>
+                             <div class="layui-form-item" align="center">
+                                 <button type="button" class="layui-btn layui-btn-radius layui-btn-normal" onclick="editDetail()">提交修改</button>
+                             </div>
+                         </form>
+                     </div>-->
+                    <table class="layui-table"  id='RTable' lay-filter="RTable" style="margin-top: -5px"></table>
                 </div>
             </div>
         </div>
     </div>
 </div>
-<!--论文-->
-<script>
 
-    <!--表单渲染-->
+<script type="text/html" id="handle">
+    <a class="layui-btn layui-btn-xs layui-btn-blue" lay-event="upload" id="upload">上传</a>
+    <a class="layui-btn layui-btn-xs layui-bg-orange" lay-event="download" id="download" onclick="downloadFile()">下载相关文件</a>
+    <a class="layui-btn layui-btn-xs layui-btn-danger" lay-event="del" id="delete">删除</a>
+</script>
+
+<!--论文-->
+<!--<script>
+
+    &lt;!&ndash;表单渲染&ndash;&gt;
     $(document).ready(function () {
         var ele = layui.element;
         ele.render();
@@ -657,7 +1074,7 @@
         });
     }
 
-    <!--删除-->
+    &lt;!&ndash;删除&ndash;&gt;
     layui.use('layer', function(){
         var $ = layui.jquery;
     });
@@ -745,11 +1162,11 @@
             }
         });
     });
-</script>
+</script>-->
 
 <!--软著-->
-<script>
-    <!--表单渲染-->
+<!--<script>
+    &lt;!&ndash;表单渲染&ndash;&gt;
     $(document).ready(function () {
         var ele = layui.element;
         ele.render();
@@ -840,7 +1257,7 @@
         });
     }
 
-    <!--删除-->
+    &lt;!&ndash;删除&ndash;&gt;
     layui.use('layer', function(){
         var $ = layui.jquery;
     });
@@ -916,12 +1333,265 @@
         });
     });
 
-</script>
+</script>-->
 
 <!--专利-->
+
+<script>
+    var addlay,editlay;
+    var http = 'http://148.70.243.66:8888';
+    var getbid = location.search;
+    var bybid = "";
+    if(getbid){
+        var cout = 0;
+        for(var i=0;i<getbid.length;i++){
+            if(cout!=0){
+                bybid+=getbid.charAt(i);
+            }
+            if(getbid.charAt(i)==="="){
+                cout = i;
+            }
+        }
+    }
+    layui.use('table', function() {
+        var table = layui.table
+            , form = layui.form;
+        var $ = layui.$;
+
+        function loadData(data) {//渲染表
+            table.render({
+                elem: '#detailTable',
+                data: data,
+                cols: [[
+                    {type: 'checkbox'},
+                    {field: 'patent_NAME', title: '专利名称'},
+                    {field: 'name', title: '作者'},
+                    {field: 'dname', title: '状态'},
+                    {field: 'dname', title: '代理公司'},
+                    {field: 'application_TIME', title: '申请时间', sort: true},
+                    {field: 'acceptance_TIME', title: '受理时间', sort: true},
+                    {field: 'authorization_TIME', title: '授权时间', sort: true},
+                    {fixed: 'right', title: '操作', templet: '#handle', align: 'center'}
+                ]],
+                page: true,
+                toolbar: '#myToolbar',
+
+            })
+        }
+
+        //加载表数据
+        function loadTable(){
+            $.get(http+'/api/dc/findPatent',function (data) {
+                loadData(data.data);
+            });
+        }
+        loadTable()
+        //模糊查询
+        function conditionSearch(){
+            $.get(http+"/api/dc/findThesis",{PATENT_NAME:pform.ptitle.value,AGENCY_COMPANY:pform.pagency.value},function (result) {
+                loadData(data.data);
+            })
+        }
+        //下载相关文件
+        function downloadFile(UUID){
+            layer.confirm("确认下载？", { title: "Tips" ,btn: ['确定','取消']}, function (index) {
+                $.get(http+"/api/dc/patentDownload",{uuid:UUID},function (result) {
+                    {
+                        layer.msg(result.msg, {icon: -1, shade: 0.3, offset: '40%', time: 2000});
+                        console.log(result)
+                        //layer.close(index); //如果设定了yes回调，需进行手工关闭
+                    }
+                });
+            });
+        }
+  /*      function loadTableByBid(bid){
+            /!*$.post(http+'/api/DetailType/findByBID',{"bid":bid},function (data) {
+                loadData(data.data);
+            });*!/
+            $.ajax({
+                type:'post',
+                url: http+'/api/DetailType/findByBID',
+                data: {"bid":bid},
+                success: function (data) {
+                    loadData(data.data);
+                },
+                error: function (error) {
+                    layer.msg(error);
+                }
+            })
+        }
+        if(!getbid){
+            loadTable();
+        }
+        else{
+            loadTableByBid(bybid);
+        }*/
+
+        //重载
+        $('#find').click(function () {
+            var did = $('#search').val();
+            if (did.length != 0) {
+                $.post(http+'/api/DetailType/findById', {"did": did}, function (data) {
+                    if(data.data==null){
+                        layer.msg('没有找到该详细类型')
+                    }
+                    else{
+                        var myData = [];
+                        myData.push(data.data);
+                        loadData(myData);
+                    }
+                })
+            } else {
+                loadTable();
+            }
+        });
+        //回车重载
+        $('#search').on('keypress',function (event) {
+            if(event.keyCode==13){
+                $('#find').click();
+            }
+        });
+        //回车添加、编辑
+        $('#addContainer').on('keypress',function (event) {
+            if(event.keyCode==13){
+                addDetail();
+            }
+        });
+        $('#editContainer').on('keypress',function (event) {
+            if(event.keyCode==13){
+                editDetail();
+            }
+        });
+        //监听头工具栏事件（添加、批量删除）
+        table.on('toolbar(detailTable)', function(obj){
+            var checkStatus = table.checkStatus(obj.config.id)
+                ,data = checkStatus.data; //获取选中的数据
+            switch(obj.event){
+                case 'add':
+                    addlay = layer.open({
+                        type: 1,
+                        title: '添加专利',
+                        area: ['80%', '70%'],
+                        content: $('#addContainer'),
+                        end: function () {
+                            loadTable();
+                        }
+                    });
+                    break;
+                case 'delete':
+                    if(data.length === 0){
+                        layer.msg('请选择一行');
+                    } else {
+                        //删除
+                        var dids = "";
+                        for(var i=0;i<data.length;i++){
+                            if(i!=data.length-1){
+                                dids+=data[i].did+",";
+                            }
+                            else{
+                                dids+=data[i].did
+                            }
+                        }
+                        $.post(http+'/api/DetailType/deleteById',{"dids":dids},function () {
+                            loadTable();
+                        })
+                    }
+                    break;
+            }
+        });
+        //单个删除/编辑
+        table.on('tool(detailTable)', function(obj) {
+            var data = obj.data;
+            //console.log(obj)
+            if (obj.event === 'del') {
+                layer.confirm('真的删除【' + data.dname + '】么', {title: '删除'}, function (index) {
+                    obj.del();
+                    $.post(http+'/api/DetailType/deleteById', {"dids": data.did}, function () {
+
+                    });
+                    layer.close(index);
+                });
+            }
+  /*          if(obj.event === 'edit'){
+                var bids = $('#bids');
+                var bnames = $('#bnames');
+                var dids = $('#dids');
+                var dnames = $('#dnames');
+                var memos = $('#memos');
+                bids.attr('value',data.bid);
+                bnames.attr('value',data.bname);
+                dids.attr('value',data.did);
+                dnames.attr('value',data.dname);
+                memos.attr('value',data.memo);
+                editlay = layer.open({
+                    type:1,
+                    title: '编辑基本类型',
+                    area: ['80%', '75%'],
+                    content: $('#editContainer'),
+                    end: function () {
+                        loadTable();
+                    }
+                })
+            }*/
+            if(obj.event === 'query'){
+                var a = $('#query');
+                a.attr('href','')
+            }
+        });
+    });
+
+
+    //提交添加表单
+    function addDetail() {
+        var $ = layui.$;
+        var formData = $('#addDetail').serialize();
+        /*$.post('http://148.70.243.66:8888/api/DetailType/insertDetailType',formData,function (data) {
+            if(data.status){
+                layer.msg(data.status+' '+data.error);
+            }
+            else{
+                layer.msg('添加成功');
+            }
+            layer.close(addlay);
+
+        })*/
+        $.ajax({
+            type:'post',
+            url: http+'/api/DetailType/insertDetailType',
+            data: formData,
+            success: function (data) {
+                layer.msg('添加成功');
+                layer.close(addlay);
+            },
+            error: function (data) {
+                layer.msg('错误码：'+data.status);
+                layer.close(addlay);
+            }
+        })
+    }
+
+    //提交编辑表单
+    function editDetail() {
+        var $ = layui.$;
+        var formData = $('#editDetail').serialize();
+        /*$.post(http+'/api/DetailType/updateById',formData,function () {
+            layer.close(editlay);
+        })*/
+        $.ajax({
+            type: 'put',
+            url: http+'/api/DetailType/updateById',
+            data: formData,
+            success: function () {
+                layer.close(editlay);
+            },
+        })
+    }
+
+</script>
+<!--
 <script>
 
-    <!--表单渲染-->
+    &lt;!&ndash;表单渲染&ndash;&gt;
     $(document).ready(function () {
         var ele = layui.element;
         ele.render();
@@ -932,19 +1602,55 @@
     });
     /*$(".myPatent").style.display = "none";*/
     /*    $('#myPatent').css('display','none');*/
-    $('.myPatent').toggle();
+/*    $('.myPatent').toggle();*/
+
+/*    var grantdate = document.getElementById('grantdate')
+    grantdate.onfocus = function (event) {
+        this.type = 'date';
+        this.focus();
+    }*/
+
 
     var http = "http://148.70.243.66:8888";
 
-    function showtable(){
-        $.get(http+"/api/dc/findPatent",function (result) {
-            console.log(result.data)
+/*    function loadData(data) {
+        table.render({
+            elem:"#myptable",
+            data:data,
+            cols:[[
+                {type:"checkbox"},
+                {field:"patent_NAME",title:"专利名称"},
+                {field:"name",title:"作者"},
+                {field:"dname",title:"状态"},
+                /!*{field:"",title:"代理公司"},*!/
+                {field:"application_TIME",title:"申请日期"},
+                {field:"acceptance_TIME",title:"受理日期"},
+                {field:"authorization_TIME",title:"授权日期"},
+            ]],
+            page:true,
+            toolbar:"#myptool"
+        })
+    }
+    function pureData(data) {
+        var puredata = []
+        for(var i =0;i<data.length;i++){
+            puredata.push({"patent_NAME":data[i].patent_NAME,"name":data[i].name,"dname":data[i].dname,"application_TIME":data[i].application_TIME,"acceptance_TIME":data[i].acceptance_TIME,"authorization_TIME":data[i].authorization_TIME})
+        }
+        return puredata
+    }
+    function showtable() {
+        $.get(http + "/api/dc/findPatent", function (result) {
+
+            loadData(pureData(result.data))
+        })
+
+        /!* console.log(result.data)
             var str = ''
-            for (var i=0;i<result.data.length;i++){
+ /!*           for (var i=0;i<result.data.length;i++){
                 if(result.data[i].MEMO == null){
                     result.data[i].MEMO ="";
                 }
-            }
+            }*!/
             for (var i=0;i<result.data.length;i++){
                 str += '<tr>';
                 var tds = '<td>' + result.data[i].PNAME + '</td>'
@@ -953,7 +1659,7 @@
                     + '<td style="display: none">' + result.data[i].DID + '</td>'
                     + '<td>' + result.data[i].MEMO + '</td>'
                     + '<td>' +
-                    /* '<button data-method="notice"  class="layui-btn edit" ><i class="layui-icon layui-icon-edit"></i>编辑</button>' +*/
+                    /!* '<button data-method="notice"  class="layui-btn edit" ><i class="layui-icon layui-icon-edit"></i>编辑</button>' +*!/
                     '<button data-method="notice"  class="layui-btn layui-btn-normal  download" onclick="downloadFile(`'+result.data[i].UUID+'`)"><i class="layui-icon layui-icon-download-circle"></i>相关文件下载</button>' +
                     '<button data-method="notice"  class=" layui-btn layui-btn-danger delete" onclick="del(`'+result.data[i].UUID+'`)"><i class="layui-icon layui-icon-delete"></i>删除</button>' +
                     '</td>';
@@ -977,11 +1683,11 @@
                 var form = layui.form;
                 form.render();
             });
-        })
+        })*!/
     }
-    window.onload = showtable;
+    showtable();*/
 
-    //条件（模糊）查询
+/*    //条件（模糊）查询
     function conditionSearch(){
         $.get(http+"/api/dc/findPatent",{ptype:pform.ptype.value,pname:pform.ptitle.value},function (result) {
             console.log(result)
@@ -1000,7 +1706,7 @@
                         + '<td>' + result.data[i].UID + '</td>'
                         + '<td>' + result.data[i].MEMO + '</td>'
                         + '<td>' +
-                        /* '<button data-method="notice"  class="layui-btn edit" ><i class="layui-icon layui-icon-edit"></i>编辑</button>' +*/
+                        /!* '<button data-method="notice"  class="layui-btn edit" ><i class="layui-icon layui-icon-edit"></i>编辑</button>' +*!/
                         '<button data-method="notice"  class="layui-btn layui-btn-normal  download" onclick="downloadFile(`'+result.data[i].UUID+'`)"><i class="layui-icon layui-icon-download-circle"></i>相关文件下载</button>' +
                         '<button data-method="notice"  class=" layui-btn layui-btn-danger delete" onclick="del(`'+result.data[i].UUID+'`)"><i class="layui-icon layui-icon-delete"></i>删除</button>' +
                         '</td>';
@@ -1028,12 +1734,12 @@
         });
     }
 
-    <!--删除-->
+    &lt;!&ndash;删除&ndash;&gt;
     layui.use('layer', function(){
         var $ = layui.jquery;
     });
     function del(uuid){
-        /*  console.log(uuid)*/
+        /!*  console.log(uuid)*!/
         layer.confirm("确认删除?", { title: "Tips",btn: ['确定','取消'] }, function (index) {
             $.post(http+"/api/dc/patentDeleteByUuid", { uuid: uuid}, function (data)
             {
@@ -1046,9 +1752,9 @@
             });
         });
 
-        /*        //如果没当前用户为学生，则隐藏编辑和删除按钮
+        /!*        //如果没当前用户为学生，则隐藏编辑和删除按钮
                 $('.edit').addClass('layui-hide');
-                $('.delete').addClass('layui-hide');*/
+                $('.delete').addClass('layui-hide');*!/
     }
 
     //文件上传
@@ -1084,9 +1790,9 @@
             });
             console.log(res)  //返回对象数据
         }
-    })
+    })*/
 
-    //分页
+/*    //分页
     layui.use(['laypage', 'layer'], function(){
         var laypage = layui.laypage
             ,layer = layui.layer;
@@ -1101,14 +1807,13 @@
                 console.log(obj.limit); //得到每页显示的条数
             }
         });
-    });
-
-</script>
+    });*/
+</script>-->
 
 <!--著作-->
-<script>
+<!--<script>
 
-    <!--表单渲染-->
+    &lt;!&ndash;表单渲染&ndash;&gt;
     $(document).ready(function () {
         var ele = layui.element;
         ele.render();
@@ -1217,7 +1922,7 @@
         });
     }
 
-    <!--删除-->
+    &lt;!&ndash;删除&ndash;&gt;
     layui.use('layer', function(){
         var $ = layui.jquery;
     });
@@ -1294,12 +1999,725 @@
         });
     });
 
+</script>-->
+
+<!--获奖-->
+<script>
+    var addlay,editlay;
+    var http = 'http://148.70.243.66:8888';
+    var getbid = location.search;
+    var bybid = "";
+    if(getbid){
+        var cout = 0;
+        for(var i=0;i<getbid.length;i++){
+            if(cout!=0){
+                bybid+=getbid.charAt(i);
+            }
+            if(getbid.charAt(i)==="="){
+                cout = i;
+            }
+        }
+    }
+    layui.use('table', function() {
+        var table = layui.table
+            , form = layui.form;
+        var $ = layui.$;
+
+        function loadData(data) {//渲染表
+            table.render({
+                elem: '#AWTable',
+                data: data,
+                cols: [[
+                    {type: 'checkbox'},
+                    {field: 'award_NAME ', title: '名称'},
+                    {field: 'name ', title: '获奖人'},
+                    {field: 'ranking', title: '名次'},
+                    {field: 'award_TIME ', title: '获奖时间', sort: true},
+                    {field: 'award_UNIT ', title: '获奖单位', sort: true},
+                    {fixed: 'right', title: '操作', templet: '#handle', align: 'center'}
+                ]],
+                page: true,
+                toolbar: '#myAWToolbar',
+
+            })
+        }
+
+        //加载表数据
+        function loadTable(){
+            $.get(http+'/api/dc/findAward',function (result) {
+/*                for(var i=0;i<result.data.length;i++){
+                    var authorinfo = ''
+                    for(var j=0;j<result.data[i].writers.length;j++){
+                        authorinfo += result.data[i].writers[j].name + ":" + result.data[i].writers[j].gender +","+ result.data[i].writers[j].unit +","+ result.data[i].writers[j].typeName +","+ result.data[i].writers[j].professionalTitle +","+ result.data[i].writers[j].writerType+"。"+ " <br>"
+                    }
+                    result.data[i].writers = authorinfo
+                }*/
+                loadData(result.data);
+            });
+        }
+        loadTable()
+        //模糊查询
+        function conditionSearch(){
+            $.get(http+"/api/dc/findThesis",{PATENT_NAME:pform.ptitle.value,AGENCY_COMPANY:pform.pagency.value},function (result) {
+                loadData(data.data);
+            })
+        }
+
+
+        //重载
+        $('#find').click(function () {
+            var did = $('#search').val();
+            if (did.length != 0) {
+                $.post(http+'/api/DetailType/findById', {"did": did}, function (data) {
+                    if(data.data==null){
+                        layer.msg('没有找到该详细类型')
+                    }
+                    else{
+                        var myData = [];
+                        myData.push(data.data);
+                        loadData(myData);
+                    }
+                })
+            } else {
+                loadTable();
+            }
+        });
+        //回车重载
+        $('#search').on('keypress',function (event) {
+            if(event.keyCode==13){
+                $('#find').click();
+            }
+        });
+        //回车添加
+        $('#addAWContainer').on('keypress',function (event) {
+            if(event.keyCode==13){
+                addDetail();
+            }
+        });
+
+        //监听头工具栏事件（添加、批量删除）
+        table.on('toolbar(AWTable)', function(obj){
+            var checkStatus = table.checkStatus(obj.config.id)
+                ,data = checkStatus.data; //获取选中的数据
+            switch(obj.event){
+                case 'add':
+                    addlay = layer.open({
+                        type: 1,
+                        title: '添加软件信息',
+                        area: ['80%', '70%'],
+                        content: $('#addAContainer'),
+                        end: function () {
+                            loadTable();
+                        }
+                    });
+                    break;
+                case 'delete':
+                    if(data.length === 0){
+                        layer.msg('请选择一行');
+                    } else {
+                        //删除
+                        var dids = "";
+                        for(var i=0;i<data.length;i++){
+                            if(i!=data.length-1){
+                                dids+=data[i].uuid+",";
+                            }
+                            else{
+                                dids+=data[i].uuid
+                            }
+                        }
+                        $.get(http+'/api/software/delete',{"uuid":dids},function () {
+                            loadTable();
+                        })
+                    }
+                    break;
+            }
+        });
+        //单个删除/下载
+        table.on('tool(ATable)', function(obj) {
+            var data = obj.data;
+            console.log(data)
+            if (obj.event === 'del') {
+                layer.confirm('确认删除吗？', {title: '删除'}, function (index) {
+                    obj.del();
+                    $.get(http+'/api/software/delete', {"uuid": data.uuid}, function () {
+                        layui.use('layer', function(){
+                            var layer = layui.layer;
+                            layer.alert("<h3 style='color:black'>" + '删除成功! '  + "</h3>",{title:"温馨提示"});
+                            setTimeout(function(){
+                                //刷新
+                                location.reload();
+                            },1000);
+                        });
+                    });
+                    layer.close(index);
+                });
+            }
+            if(obj.event === 'download'){
+                layer.confirm('请选择下载文件！', {
+                    title: "Tips" ,btnAlign: 'c',
+                    btn: ['设计文档下载', '相关文件下载','取消']
+                    ,btn3: function(index, layero){
+                        close()
+                    }
+                }, function(index, layero){
+                    $.get(http+'/api/software/downLoadFile', {"uuid": data.uuid,fileTypeId:"1205"}, function (result) {
+                        if(result.status =="success"){
+                            var layer = layui.layer;
+                            layer.alert("<h3 style='color:black'>" + '已开始下载! '  + "</h3>",{title:"温馨提示"});
+                        }
+                    })
+                }, function(index){
+                    //按钮二的回调
+                    $.get(http+'/api/software/downLoadFile', {"uuid": data.uuid,fileTypeId:"1204"}, function (result) {
+                        if(result.status =="success"){
+                            var layer = layui.layer;
+                            layer.alert("<h3 style='color:black'>" + '已开始下载! '  + "</h3>",{title:"温馨提示"});
+                        }
+                    })
+                });
+            }
+            /*             if(obj.event === 'query'){
+                            var a = $('#query');
+                            a.attr('href','')
+                        }*/
+        });
+    });
+    var DataDeal = {
+        //将从form中通过$('#refer').serialize()获取的值转成json
+        formToJson: function (data) {
+            data=data.replace(/&/g,"\",\"");
+            data=data.replace(/=/g,"\":\"");
+            data="{\""+data+"\"}";
+            return data;
+        }
+    };
+
+    //提交添加表单
+    function addDetail() {
+        var $ = layui.$;
+        var formData = $('#addAWDetail').serialize();
+        formData= decodeURIComponent(formData,true);//防止中文乱码
+        var jsondata=DataDeal.formToJson(formData);//转化为json
+        console.log(jsondata )
+        console.log("aaaaaaaaaaaaaaaaaaaaa")
+        $.ajax({
+            type:'post',
+            url: http+'/api/software/insert',
+            data: formData,
+            success: function (data) {
+                layer.msg('添加成功');
+                layer.close(addlay);
+            },
+            error: function (data) {
+                layer.msg('错误码：'+data.status);
+                layer.close(addlay);
+            }
+        })
+    }
+
+    //提交编辑表单
+    function editDetail() {
+        var $ = layui.$;
+        var formData = $('#editAWDetail').serialize();
+        /*$.post(http+'/api/DetailType/updateById',formData,function () {
+            layer.close(editlay);
+        })*/
+        $.ajax({
+            type: 'put',
+            url: http+'/api/DetailType/updateById',
+            data: formData,
+            success: function () {
+                layer.close(editlay);
+            },
+        })
+    }
+
 </script>
+
+<!--软件-->
+<script>
+    var addlay,editlay;
+    var http = 'http://148.70.243.66:8888';
+    var getbid = location.search;
+    var bybid = "";
+    if(getbid){
+        var cout = 0;
+        for(var i=0;i<getbid.length;i++){
+            if(cout!=0){
+                bybid+=getbid.charAt(i);
+            }
+            if(getbid.charAt(i)==="="){
+                cout = i;
+            }
+        }
+    }
+    layui.use('table', function() {
+        var table = layui.table
+            , form = layui.form;
+        var $ = layui.$;
+
+        function loadData(data) {//渲染表
+            table.render({
+                elem: '#ATable',
+                data: data,
+                cols: [[
+                    {type: 'checkbox'},
+                    {field: 'softwareName', title: '名称'},
+                    {field: 'writers', title: '作者'},
+                    {field: 'publishTime', title: '时间'},
+                    {field: 'webSite', title: '网址'},
+                    {field: '', title: '设计文档', sort: true}, //暂未显示
+                    {fixed: 'right', title: '操作', templet: '#handle', align: 'center'}
+                ]],
+                page: true,
+                toolbar: '#myAToolbar',
+
+            })
+        }
+
+        //加载表数据
+        function loadTable(){
+            $.get(http+'/api/software/find',function (result) {
+                console.log(result.data[0].writers)
+                for(var i=0;i<result.data.length;i++){
+                    result.data[i].webSite = "<a href=`result.data[i].webSite`>" + result.data[i].webSite + "</a>"
+                 /*   console.log(result.data[i].webSite)*/
+                    var authorinfo = ''
+                    for(var j=0;j<result.data[i].writers.length;j++){
+                        authorinfo += result.data[i].writers[j].name + ":" + result.data[i].writers[j].gender +","+ result.data[i].writers[j].unit +","+ result.data[i].writers[j].typeName +","+ result.data[i].writers[j].professionalTitle +","+ result.data[i].writers[j].writerType+"。"+ " <br>"
+                    }
+                    result.data[i].writers = authorinfo
+                }
+                loadData(result.data);
+            });
+        }
+        loadTable()
+        //模糊查询
+        function conditionSearch(){
+            $.get(http+"/api/dc/findThesis",{PATENT_NAME:pform.ptitle.value,AGENCY_COMPANY:pform.pagency.value},function (result) {
+                loadData(data.data);
+            })
+        }
+
+
+        //重载
+        $('#find').click(function () {
+            var did = $('#search').val();
+            if (did.length != 0) {
+                $.post(http+'/api/DetailType/findById', {"did": did}, function (data) {
+                    if(data.data==null){
+                        layer.msg('没有找到该详细类型')
+                    }
+                    else{
+                        var myData = [];
+                        myData.push(data.data);
+                        loadData(myData);
+                    }
+                })
+            } else {
+                loadTable();
+            }
+        });
+        //回车重载
+        $('#search').on('keypress',function (event) {
+            if(event.keyCode==13){
+                $('#find').click();
+            }
+        });
+        //回车添加
+        $('#addAContainer').on('keypress',function (event) {
+            if(event.keyCode==13){
+                addDetail();
+            }
+        });
+
+        //监听头工具栏事件（添加、批量删除）
+        table.on('toolbar(ATable)', function(obj){
+            var checkStatus = table.checkStatus(obj.config.id)
+                ,data = checkStatus.data; //获取选中的数据
+            switch(obj.event){
+                case 'add':
+                    addlay = layer.open({
+                        type: 1,
+                        title: '添加软件信息',
+                        area: ['80%', '70%'],
+                        content: $('#addAContainer'),
+                        end: function () {
+                            loadTable();
+                        }
+                    });
+                    break;
+                case 'delete':
+                    if(data.length === 0){
+                        layer.msg('请选择一行');
+                    } else {
+                        //删除
+                        var dids = "";
+                        for(var i=0;i<data.length;i++){
+                            if(i!=data.length-1){
+                                dids+=data[i].uuid+",";
+                            }
+                            else{
+                                dids+=data[i].uuid
+                            }
+                        }
+                        $.get(http+'/api/software/delete',{"uuid":dids},function () {
+                            loadTable();
+                        })
+                    }
+                    break;
+            }
+        });
+        //单个删除/下载
+        table.on('tool(ATable)', function(obj) {
+            var data = obj.data;
+            console.log(data)
+            if (obj.event === 'del') {
+                layer.confirm('确认删除吗？', {title: '删除'}, function (index) {
+                    obj.del();
+                    $.get(http+'/api/software/delete', {"uuid": data.uuid}, function () {
+                        layui.use('layer', function(){
+                            var layer = layui.layer;
+                            layer.alert("<h3 style='color:black'>" + '删除成功! '  + "</h3>",{title:"温馨提示"});
+                            setTimeout(function(){
+                                //刷新
+                                location.reload();
+                            },1000);
+                        });
+                    });
+                    layer.close(index);
+                });
+            }
+                     if(obj.event === 'download'){
+                             layer.confirm('请选择下载文件！', {
+                                 title: "Tips" ,btnAlign: 'c',
+                                 btn: ['设计文档下载', '相关文件下载','取消']
+                                 ,btn3: function(index, layero){
+                                     close()
+                                 }
+                             }, function(index, layero){
+                                 $.get(http+'/api/software/downLoadFile', {"uuid": data.uuid,fileTypeId:"1205"}, function (result) {
+                                    if(result.status =="success"){
+                                        var layer = layui.layer;
+                                        layer.alert("<h3 style='color:black'>" + '已开始下载! '  + "</h3>",{title:"温馨提示"});
+                                    }
+                                 })
+                             }, function(index){
+                                 //按钮二的回调
+                                 $.get(http+'/api/software/downLoadFile', {"uuid": data.uuid,fileTypeId:"1204"}, function (result) {
+                                     if(result.status =="success"){
+                                         var layer = layui.layer;
+                                         layer.alert("<h3 style='color:black'>" + '已开始下载! '  + "</h3>",{title:"温馨提示"});
+                                     }
+                                 })
+                             });
+                         }
+/*             if(obj.event === 'query'){
+                var a = $('#query');
+                a.attr('href','')
+            }*/
+        });
+    });
+    var DataDeal = {
+        //将从form中通过$('#refer').serialize()获取的值转成json
+        formToJson: function (data) {
+            data=data.replace(/&/g,"\",\"");
+            data=data.replace(/=/g,"\":\"");
+            data="{\""+data+"\"}";
+            return data;
+        }
+    };
+
+    //提交添加表单
+    function addDetail() {
+        var $ = layui.$;
+        var formData = $('#addADetail').serialize();
+        formData= decodeURIComponent(formData,true);//防止中文乱码
+        var jsondata=DataDeal.formToJson(formData);//转化为json
+        console.log(jsondata )
+        console.log("aaaaaaaaaaaaaaaaaaaaa")
+        $.ajax({
+            type:'post',
+            url: http+'/api/software/insert',
+            data: formData,
+            success: function (data) {
+                layer.msg('添加成功');
+                layer.close(addlay);
+            },
+            error: function (data) {
+                layer.msg('错误码：'+data.status);
+                layer.close(addlay);
+            }
+        })
+    }
+
+    //提交编辑表单
+    function editDetail() {
+        var $ = layui.$;
+        var formData = $('#editADetail').serialize();
+        /*$.post(http+'/api/DetailType/updateById',formData,function () {
+            layer.close(editlay);
+        })*/
+        $.ajax({
+            type: 'put',
+            url: http+'/api/DetailType/updateById',
+            data: formData,
+            success: function () {
+                layer.close(editlay);
+            },
+        })
+    }
+
+</script>
+
+<!--报告-->
+<script>
+    var addlay,editlay;
+    var http = 'http://148.70.243.66:8888';
+    var getbid = location.search;
+    var bybid = "";
+    if(getbid){
+        var cout = 0;
+        for(var i=0;i<getbid.length;i++){
+            if(cout!=0){
+                bybid+=getbid.charAt(i);
+            }
+            if(getbid.charAt(i)==="="){
+                cout = i;
+            }
+        }
+    }
+    layui.use('table', function() {
+        var table = layui.table
+            , form = layui.form;
+        var $ = layui.$;
+
+        function loadData(data) {//渲染表
+            table.render({
+                elem: '#RTable',
+                data: data,
+                cols: [[
+                    {type: 'checkbox'},
+                    {field: 'reportName', title: '名称'},
+                    {field: 'writerInfos', title: '撰写人'},
+                    {field: 'writeTime', title: '撰写时间'},
+                    {fixed: 'right', title: '操作', templet: '#handle', align: 'center'}
+                ]],
+                page: true,
+                toolbar: '#myRToolbar',
+
+            })
+        }
+
+        //加载表数据
+        function loadTable(){
+            $.get(http+'/api/resultReport/find',function (result) {
+                console.log(result.data[0].writerInfos)
+                for(var i=0;i<result.data.length;i++){
+                    var authorinfo = ''
+                    for(var j=0;j<result.data[i].writerInfos.length;j++){
+                        authorinfo += result.data[i].writerInfos[j].writerName + ":" + result.data[i].writerInfos[j].gender +","+ result.data[i].writerInfos[j].typeName +","+ result.data[i].writerInfos[j].professionalTitle +","+ result.data[i].writerInfos[j].writerType+"。"+ " <br>"
+                    }
+                    result.data[i].writerInfos = authorinfo
+                }
+                loadData(result.data);
+            });
+        }
+        loadTable()
+        //模糊查询
+        function conditionSearch(){
+            $.get(http+"/api/dc/findThesis",{PATENT_NAME:pform.ptitle.value,AGENCY_COMPANY:pform.pagency.value},function (result) {
+                loadData(data.data);
+            })
+        }
+
+
+        //重载
+        $('#find').click(function () {
+            var did = $('#search').val();
+            if (did.length != 0) {
+                $.post(http+'/api/DetailType/findById', {"did": did}, function (data) {
+                    if(data.data==null){
+                        layer.msg('没有找到该详细类型')
+                    }
+                    else{
+                        var myData = [];
+                        myData.push(data.data);
+                        loadData(myData);
+                    }
+                })
+            } else {
+                loadTable();
+            }
+        });
+        //回车重载
+        $('#search').on('keypress',function (event) {
+            if(event.keyCode==13){
+                $('#find').click();
+            }
+        });
+        //回车添加
+        $('#addRContainer').on('keypress',function (event) {
+            if(event.keyCode==13){
+                addDetail();
+            }
+        });
+
+        //监听头工具栏事件（添加、批量删除）
+        table.on('toolbar(RTable)', function(obj){
+            var checkStatus = table.checkStatus(obj.config.id)
+                ,data = checkStatus.data; //获取选中的数据
+            switch(obj.event){
+                case 'add':
+                    addlay = layer.open({
+                        type: 1,
+                        title: '添加报告',
+                        area: ['80%', '70%'],
+                        content: $('#addRContainer'),
+                        end: function () {
+                            loadTable();
+                        }
+                    });
+                    break;
+                case 'delete':
+                    if(data.length === 0){
+                        layer.msg('请选择一行');
+                    } else {
+                        //删除
+                        var dids = "";
+                        for(var i=0;i<data.length;i++){
+                            if(i!=data.length-1){
+                                dids+=data[i].uuid+",";
+                            }
+                            else{
+                                dids+=data[i].uuid
+                            }
+                        }
+                        $.get(http+'/api/resultReport/delete',{"uuid":dids},function () {
+                            loadTable();
+                        })
+                    }
+                    break;
+            }
+        });
+        //单个删除/下载/上传
+        table.on('tool(RTable)', function(obj) {
+            var data = obj.data;
+            console.log(data)
+            if (obj.event === 'del') {
+                layer.confirm('确认删除吗？', {title: '删除'}, function (index) {
+                    obj.del();
+                    $.get(http+'/api/resultReport/delete', {"uuid": data.uuid}, function () {
+                        layui.use('layer', function(){
+                            var layer = layui.layer;
+                            layer.alert("<h3 style='color:black'>" + '删除成功! '  + "</h3>",{title:"温馨提示"});
+                            setTimeout(function(){
+                                //刷新
+                                location.reload();
+                            },1000);
+                        });
+                    });
+                    layer.close(index);
+                });
+            }
+            if(obj.event === 'download'){
+                layer.confirm("确认下载？", { title: "Tips",btn: ['确定','取消'] }, function (index) {
+                    $.get(http+"/api/dc/thesisDownload",{uuid:data.uuid},function (result) {
+                        {
+                            layer.msg(result.msg, {icon: -1, shade: 0.3, offset: '40%', time: 2000});
+                            if(result.status =="success"){
+                                var layer = layui.layer;
+                                layer.alert("<h3 style='color:black'>" + '已开始下载! '  + "</h3>",{title:"温馨提示"});
+                            }
+                            //layer.close(index); //如果设定了yes回调，需进行手工关闭
+                        }
+                    });
+                });
+            }
+            if(obj.event === 'upload'){
+                layer.open({
+                    title: '上传'
+                    ,content: '<input type="text" id="fileName" placeholder="请输入文档名称">',
+                    yes:function () {
+                        $.post(http+"/api/resultReport/uploadFile",{uuid:data.uuid,fileName:fileName.value},function (result) {
+                            if(result.status =="success"){
+                                var layer = layui.layer;
+                                layer.alert("<h3 style='color:black'>" + '上传成功！ '  + "</h3>",{title:"温馨提示"});
+                            }
+                        })
+                    }
+                });
+            }
+        });
+    });
+    function generateWriter() {
+        $.get(http+"/api/authorManager/findAuthor",function (result) {
+            var idstr = ''
+            idstr += ' <option>'+"请选择作者"+'</option>';
+            for (var i=0;i<result.data.length;i++){
+                var ops = ' <option value='+result.data[i].wid+'>'+ result.data[i].name +'</option>'
+                idstr += ops
+            }
+            $("#writerId").html(idstr)
+        })
+    }
+    generateWriter()
+
+    //转为对象格式
+    var DataDeal = {
+        //将从form中通过$('#refer').serialize()获取的值转成json
+        formToJson: function (data) {
+            data=data.replace(/&/g,"\",\"");
+            data=data.replace(/=/g,"\":\"");
+            data="{\""+data+"\"}";
+            return data;
+        }
+    };
+
+    //提交添加表单
+    function addDetail() {
+        var $ = layui.$;
+        var formData = $('#addRDetail').serialize();
+        console.log(formData)
+        formData= decodeURIComponent(formData,true);//防止中文乱码
+        var jsondata = DataDeal.formToJson(formData);//转化为json
+        console.log(jsondata)
+        console.log("222222222222")
+        var writer = []
+        writer.push({"resultTypeId":jsondata.resultTypeId,"writerId":jsondata.writerId,"writerTypeId":jsondata.writerTypeId})
+        delete jsondata.resultTypeId
+        delete jsondata.writerId
+        delete jsondata.writerTypeId
+        console.log(jsondata)
+        console.log("1111111111111")
+        let key = 'writers'
+        let value = writer
+        jsondata[key] = value
+        console.log(jsondata )
+        console.log("aaaaaaaaaaaaaaaaaaaaa")
+        $.ajax({
+            type:'post',
+            url: http+'/api/resultReport/insert',
+            data: formData,
+            success: function (data) {
+                layer.msg('添加成功');
+                layer.close(addlay);
+            },
+            error: function (data) {
+                layer.msg('错误码：'+data.status);
+                layer.close(addlay);
+            }
+        })
+    }
+
+</script>
+
 
 <!--mainform-->
 <script>
     var http = "http://148.70.243.66:8888";
     function mainForm() {
+
         $.post(http+"/api/DetailType/findByBID",{bid:"02"},function(result){
             console.log(result)
             var formstr = ''
@@ -1314,11 +2732,33 @@
                 form.render();
             });
         })
+        $('#mainName').selectpicker();
     }
     window.onload = mainForm
 
+    $(function() {
+
+/*
+        $.post(http+"",{bid:"02"},function(result){
+            console.log(result)
+            var namestr = ''
+            /!* namestr += ' <option>'+"请选择成果类型"+'</option>';*!/
+            for (var i=0;i<result.data.length;i++){
+                var ops = ' <option value='+result.data[i].did+'>'+ result.data[i].dname +'</option>'
+                namestr += ops
+            }
+            $("#mainType").html(namestr)
+         /!*   $('#mainName').selectpicker('refresh');*!/
+        })*/
+    });
+    //获取已选项
+/*    var selectedValues = [];
+    $("#mainName:selected").each(function(){
+        selectedValues.push($(this).val());
+    });*/
+
     function Toggle() {
-   /*     console.log($("#mainType").val() + "       6666666666666")*/
+        console.log($("#mainType").val() + "       6666666666666")
         if ($("#mainType").val() == "0201") {
             $(".mySoftwareWork").hide()
             $(".myPatent").hide()
