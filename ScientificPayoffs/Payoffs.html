@@ -85,6 +85,121 @@
                     </div>
                 </form>
             </div>
+            <div class="myThesis" style="display:none;">
+                <div class="layui-btn-group demoTable" id="myTToolbar" style="display: none">
+                    <button class="layui-btn layui-btn-normal layui-btn-sm " lay-event="add">添加</button>
+                    <button class="layui-btn layui-btn-sm layui-btn-danger" lay-event="delete">批量删除</button>
+                </div>
+                <div id="addTContainer" style="display: none;width: 500px" >
+                    <form class="layui-form" style="margin:30px" id="addTDetail">
+                        <div class="layui-form-item">
+                            <label class="layui-form-label" >名称</label>
+                            <div class="layui-input-block">
+                                <input class="layui-input" type="text"  style="width: 350px" name="softwareName" id="softwareName" required>
+                            </div>
+                        </div>
+                        <div class="layui-form-item" style="display: none">
+                            <label class="layui-form-label" >成果类型</label>
+                            <div class="layui-input-block">
+                                <input class="layui-input" type="text"  style="width: 350px" value= "0205" name="resultTypeId " id="aresultTypeId " required>
+                            </div>
+                        </div>
+                        <div class="layui-form-item">
+                            <label class="layui-form-label" >项目ID</label>
+                            <div class="layui-input-block">
+                                <input class="layui-input" type="text"  style="width: 350px" name="projectId" id="projectId" required>
+                            </div>
+                        </div>
+                        <div class="layui-form-item">
+                            <label class="layui-form-label">作者</label>
+                            <div class="layui-input-block">
+                                <input class="layui-input" type="text"  style="width: 350px" name="aauthor" id="aauthor" required>
+                            </div>
+                        </div>
+                        <div class="layui-form-item">
+                            <label class="layui-form-label" >网址</label>
+                            <div class="layui-input-block">
+                                <input class="layui-input" type="text"  style="width: 350px" name="webSite" id="webSite">
+                            </div>
+                        </div>
+                        <div class="layui-form-item">
+                            <label class="layui-form-label" style="width: 90px">作者排名</label>
+                            <div class="layui-input-block">
+                                <select name="pauthorType" lay-verify="required" style="width: 350px">
+                                    <option value="0">请选择作者排名</option>
+                                    <option value="1101" >第一作者</option>
+                                    <option value="1102" >第二作者</option>
+                                    <option value="1103" >第二作者</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="layui-form-item">
+                            <label class="layui-form-label" style="width: 90px">发布日期</label>
+                            <div class="layui-input-block">
+                                <input class="layui-input" type="text"  style="width: 350px" name="publishTime" id="publishTime" onfocus="(this.type='date')" onblur="(this.type='text')">
+                            </div>
+                        </div>
+                        <div class="layui-form-item" align="center">
+                            <button type="button" class="layui-btn layui-btn-radius layui-btn-normal" onclick="addDetail()">确认添加</button>
+                        </div>
+                    </form>
+                </div>
+                <table class="layui-table"  id='TTable' lay-filter="TTable" style="margin-top: -5px"></table>
+                <!--                    <table class="layui-table" id="mytable" style="margin: 20px">
+                                        <thead >
+                                        <tr >
+                                            <th lay-data="{field:'stock',sort: true,align:'center'}" style="text-align: center;">论文名称</th>
+                                            <th lay-data="{field:'stock',sort: true,align:'center'}" style="text-align: center;">论文类型</th>
+                                            <th lay-data="{field:'stock',sort: true,align:'center'}" style="display: none">类型ID</th>
+                                            <th lay-data="{field:'stock',sort: true,align:'center'}" style="text-align: center;">上传人</th>
+                                            <th style="text-align: center;">作者</th>
+                                            <th style="text-align: center;">备注</th>
+                                            <th style="text-align: center;">操作</th>
+                                        </tr>
+                                        </thead>
+                                        <tbody id="mytbody" align="center">
+                                        </tbody>
+                                    </table>
+                                    <div id="tpaging" style="text-align: center;"></div >
+                                    <fieldset class="layui-elem-field layui-field-title site-demo-button" style="margin-top: 30px;">
+                                        <legend>论文上传</legend>
+                                    </fieldset>
+                                    <div class="layui-upload" style="margin:20px;">
+                                        <form class="layui-form" action="" style="margin-top: 30px;" name="tfm">
+                                            <div class="layui-form-item">
+                                                <div class="layui-input-block layui-input-inline" style="display: none">
+                                                    <select name="tDID" lay-verify="required" >
+                                                        <option value="0202" selected>论文：0202</option>
+                                                    </select>
+                                                </div>
+                                                <div class="layui-input-block layui-input-inline" style="display: none" >//uid
+                                                    <input type="text" name="tuid" required  lay-verify="required" >
+                                                </div>
+                                                <div class="layui-input-block layui-input-inline" style="margin-left: 0px">
+                                                    <select name="ttype" lay-verify="required" >
+                                                        <option value="0">请选择论文类型</option>
+                                                        <option value="专题型" >专题型</option>
+                                                        <option value="论辩型" >论辩型</option>
+                                                        <option value="综述型" >综述型</option>
+                                                        <option value="综合型" >综合型</option>
+                                                    </select>
+                                                </div>
+                                                <div class="layui-input-block layui-input-inline" style="margin-left: 20px">
+                                                    <input type="text" name="tname" required  lay-verify="required" placeholder="请输入论文名称" class="layui-input" >
+                                                </div>
+                                                <div class="layui-input-block layui-input-inline" style="margin-left: 20px;">
+                                                    <input type="text" name="tauthor" required  lay-verify="required" placeholder="请输入作者" class="layui-input" >
+                                                </div>
+                                                <div class="layui-input-block layui-input-inline" style="margin-left: 20px;width: 300px">
+                                                    <input type="text" name="tmemo"  placeholder="备注" class="layui-input" >
+                                                </div>
+                                            </div>
+                                        </form>
+                                        <button type="button" class="layui-btn layui-btn-normal" id="tchoosefile">选择文件</button>
+                                        <button type="button" class="layui-btn" id="tupload" >开始上传</button>
+                                        &lt;!&ndash;onclick="uploadfile(fm.typeID.value,fm.type.value,fm.name.value,fm.author.value,fm.memo.value)"&ndash;&gt;
+                                    </div>-->
+            </div>
             <div class="mySoftwareWork" style="display:none;">
                 <fieldset class="layui-elem-field layui-field-title site-demo-button" style="margin-top: 30px;">
                     <legend>软著</legend>
@@ -104,6 +219,110 @@
                 </form>
 
             </div>
+            <div class="mySoftwareWork" style="display:none;">
+                <div class="layui-btn-group demoTable" id="mySToolbar" style="display: none">
+                    <button class="layui-btn layui-btn-normal layui-btn-sm " lay-event="add">添加</button>
+                    <button class="layui-btn layui-btn-sm layui-btn-danger" lay-event="delete">批量删除</button>
+                </div>
+                <div id="addSContainer" style="display: none;width: 500px" >
+                    <form class="layui-form" style="margin:30px" id="addSDetail">
+                        <div class="layui-form-item">
+                            <label class="layui-form-label" >名称</label>
+                            <div class="layui-input-block">
+                                <input class="layui-input" type="text"  style="width: 350px" name="softwareName" id="softwareName" required>
+                            </div>
+                        </div>
+                        <div class="layui-form-item" style="display: none">
+                            <label class="layui-form-label" >成果类型</label>
+                            <div class="layui-input-block">
+                                <input class="layui-input" type="text"  style="width: 350px" value= "0205" name="resultTypeId " id="aresultTypeId " required>
+                            </div>
+                        </div>
+                        <div class="layui-form-item">
+                            <label class="layui-form-label" >项目ID</label>
+                            <div class="layui-input-block">
+                                <input class="layui-input" type="text"  style="width: 350px" name="projectId" id="projectId" required>
+                            </div>
+                        </div>
+                        <div class="layui-form-item">
+                            <label class="layui-form-label">作者</label>
+                            <div class="layui-input-block">
+                                <input class="layui-input" type="text"  style="width: 350px" name="aauthor" id="aauthor" required>
+                            </div>
+                        </div>
+                        <div class="layui-form-item">
+                            <label class="layui-form-label" >网址</label>
+                            <div class="layui-input-block">
+                                <input class="layui-input" type="text"  style="width: 350px" name="webSite" id="webSite">
+                            </div>
+                        </div>
+                        <div class="layui-form-item">
+                            <label class="layui-form-label" style="width: 90px">作者排名</label>
+                            <div class="layui-input-block">
+                                <select name="pauthorType" lay-verify="required" style="width: 350px">
+                                    <option value="0">请选择作者排名</option>
+                                    <option value="1101" >第一作者</option>
+                                    <option value="1102" >第二作者</option>
+                                    <option value="1103" >第二作者</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="layui-form-item">
+                            <label class="layui-form-label" style="width: 90px">发布日期</label>
+                            <div class="layui-input-block">
+                                <input class="layui-input" type="text"  style="width: 350px" name="publishTime" id="publishTime" onfocus="(this.type='date')" onblur="(this.type='text')">
+                            </div>
+                        </div>
+                        <div class="layui-form-item" align="center">
+                            <button type="button" class="layui-btn layui-btn-radius layui-btn-normal" onclick="addDetail()">确认添加</button>
+                        </div>
+                    </form>
+                </div>
+                <table class="layui-table"  id='STable' lay-filter="STable" style="margin-top: -5px"></table>
+                <!--                    <table class="layui-table" id="mystable" style="margin-left: 20px">
+                                        <thead >
+                                        <tr >
+                                            <th lay-data="{field:'stock',sort: true,align:'center'}" style="text-align: center;">论文名称</th>
+                                            <th lay-data="{field:'stock',sort: true,align:'center'}" style="display: none;">类型ID</th>
+                                            <th lay-data="{field:'stock',sort: true,align:'center'}" style="text-align: center;">上传人</th>
+                                            <th style="text-align: center;">作者</th>
+                                            <th style="text-align: center;">备注</th>
+                                            <th style="text-align: center;">操作</th>
+                                        </tr>
+                                        </thead>
+                                        <tbody id="mysbody" align="center">
+                                        </tbody>
+                                    </table>
+                                    <div id="spaging" style="text-align: center;"></div>
+                                    <fieldset class="layui-elem-field layui-field-title site-demo-button" style="margin-top: 30px;">
+                                        <legend>软著上传</legend>
+                                    </fieldset>
+                                    <div class="layui-upload" style="margin-top: 20px;margin-left: 20px;">
+                                        <form class="layui-form" action="" style="margin-top: 30px;" name="sfm">
+                                            <div class="layui-form-item">
+                                                <div class="layui-input-block layui-input-inline" style="display: none;">
+                                                    <select name="sDID" lay-verify="required" >
+                                                        <option value="0203" selected>软著：0203</option >
+                                                    </select>
+                                                </div>
+                                                <div class="layui-input-block layui-input-inline" style="display: none" >
+                                                    <input type="text" name="suid" required  lay-verify="required" >
+                                                </div>
+                                                <div class="layui-input-block layui-input-inline" style="margin-left: 0px">
+                                                    <input type="text" name="sname" required  lay-verify="required" placeholder="请输入软著名称" class="layui-input" >
+                                                </div>
+                                                <div class="layui-input-block layui-input-inline" style="margin-left: 20px;">
+                                                    <input type="text" name="sauthor" required  lay-verify="required" placeholder="请输入作者" class="layui-input" >
+                                                </div>
+                                                <div class="layui-input-block layui-input-inline" style="margin-left: 20px;">
+                                                    <input type="text" name="smemo"  placeholder="备注" class="layui-input" >
+                                                </div>
+                                            </div>
+                                        </form>
+                                        <button type="button" class="layui-btn layui-btn-normal" id="schoosefile">选择文件</button>
+                                        <button type="button" class="layui-btn" id="supload" >开始上传</button>
+                                    </div>-->
+            </div>
             <div class="myPatent" style="display:none;">
                 <fieldset class="layui-elem-field layui-field-title site-demo-button" style="margin-top: 30px;">
                     <legend>专利</legend>
@@ -119,6 +338,161 @@
                             <button class="layui-btn" type="button" onclick="conditionSearch()"><i class="layui-icon layui-icon-search"></i>查询</button>
                         </div>
                 </form>
+            </div>
+            <div class="myPatent" style="display:none;">
+                <!--表格-->
+                <div class="layui-btn-group demoTable" id="myToolbar" style="display: none">
+                    <button class="layui-btn layui-btn-normal layui-btn-sm " lay-event="add">添加</button>
+                    <button class="layui-btn layui-btn-sm layui-btn-danger" lay-event="delete">批量删除</button>
+                </div>
+                <div id="addContainer" style="display: none;width: 500px" >
+                    <form class="layui-form" style="margin:30px" id="addDetail">
+                        <div class="layui-form-item">
+                            <label class="layui-form-label"  style="width: 100px">专利名称</label>
+                            <div class="layui-input-block">
+                                <input class="layui-input" type="text"  style="width: 350px" name="pname" id="pname" required>
+                            </div>
+                        </div>
+                        <div class="layui-form-item">
+                            <label class="layui-form-label" >项目ID</label>
+                            <div class="layui-input-block">
+                                <input class="layui-input" type="text"  style="width: 350px" name="pprojectId" id="pprojectId" required>
+                            </div>
+                        </div>
+                        <div class="layui-form-item">
+                            <label class="layui-form-label">作者</label>
+                            <div class="layui-input-block">
+                                <input class="layui-input" type="text"  style="width: 350px" name="pauthor" id="pauthor" required>
+                            </div>
+                        </div>
+
+                        <div class="layui-form-item">
+                            <label class="layui-form-label" >性别</label>
+                            <div class="layui-input-block">
+                                <input class="layui-input" type="text"  style="width: 350px" name="pgender" id="pgender">
+                            </div>
+                        </div>
+                        <div class="layui-form-item">
+                            <label class="layui-form-label" style="width: 100px">作者单位</label>
+                            <div class="layui-input-block">
+                                <input class="layui-input" type="text"  style="width: 350px" name="punit" id="punit">
+                            </div>
+                        </div>
+                        <div class="layui-form-item">
+                            <label class="layui-form-label" style="width: 100px">作者职称</label>
+                            <div class="layui-input-block">
+                                <input class="layui-input" type="text"  style="width: 350px" name="pprofession" id="pprofession">
+                            </div>
+                        </div>
+                        <div class="layui-form-item">
+                            <label class="layui-form-label" style="width: 100px">作者排名</label>
+                            <div class="layui-input-block">
+                                <select name="pauthorType" lay-verify="required" style="width: 350px">
+                                    <option value="0">请选择作者排名</option>
+                                    <option value="1101" >第一作者</option>
+                                    <option value="1102" >第二作者</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="layui-form-item">
+                            <label class="layui-form-label" style="width: 100px">专利状态</label>
+                            <div class="layui-input-block">
+                                <select name="pstatus" lay-verify="required" style="width: 400px"  id="pstatus">
+                                    <option value="0">请选择专利状态</option>
+                                    <option value="1401" >受理</option>
+                                    <option value="1402" >授权</option>
+                                    <option value="1403" >作废</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="layui-form-item">
+                            <label class="layui-form-label" style="width: 100px">文件类型</label>
+                            <div class="layui-input-block">
+                                <select name="ptype" lay-verify="required" style="width: 350px">
+                                    <option value="0">请选择文件类型</option>
+                                    <option value="1201" >交底说明书</option>
+                                    <option value="1202" >受理通知书</option>
+                                    <option value="1203" >设计文档</option>
+                                    <option value="1204" >其他</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="layui-form-item">
+                            <label class="layui-form-label" style="width: 100px">专利状态</label>
+                            <div class="layui-input-block">
+                                <select name="ptypeID" lay-verify="required" style="width: 350px">
+                                    <option value="0">请选择作者排名</option>
+                                    <option value="1301" >团队内</option>
+                                    <option value="1302" >团队外</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="layui-form-item">
+                            <label class="layui-form-label" style="width: 100px">代理公司</label>
+                            <div class="layui-input-block">
+                                <input class="layui-input" type="text"  style="width: 350px" name="pagency" id="pagency">
+                            </div>
+                        </div>
+
+                        <div class="layui-form-item">
+                            <label class="layui-form-label" style="width: 100px">申请日期</label>
+                            <div class="layui-input-block">
+                                <input class="layui-input" type="text"  style="width: 350px" name="sqtime" id="sqtime" onfocus="(this.type='date')" onblur="(this.type='text')">
+                            </div>
+                        </div><div class="layui-form-item">
+                        <label class="layui-form-label" style="width: 100px">受理日期</label>
+                        <div class="layui-input-block">
+                            <input class="layui-input" type="text"  style="width: 350px" name="sltime" id="sltime" onfocus="(this.type='date')" onblur="(this.type='text')">
+                        </div>
+                    </div><div class="layui-form-item">
+                        <label class="layui-form-label" style="width: 100px">授权日期</label>
+                        <div class="layui-input-block">
+                            <input class="layui-input" type="text"  style="width: 350px" name="granttime" id="granttime" onfocus="(this.type='date')" onblur="(this.type='text')">
+                        </div>
+                    </div>
+                        <div class="layui-form-item" align="center">
+                            <button type="button" class="layui-btn layui-btn-radius layui-btn-normal" onclick="addDetail()">确认添加</button>
+                        </div>
+                    </form>
+                </div>
+                <div id="editContainer" style="display: none">
+                    <form class="layui-form" style="margin:30px" id="editDetail">
+                        <div class="layui-form-item">
+                            <label class="layui-form-label">所属基本类型编号</label>
+                            <div class="layui-input-block">
+                                <input class="layui-input" type="text" value="" style="width: 350px" name="bid" id="bids" required>
+                            </div>
+                        </div>
+                        <div class="layui-form-item">
+                            <label class="layui-form-label">所属基本类型</label>
+                            <div class="layui-input-block">
+                                <input class="layui-input" type="text" value="" style="width: 350px" name="bid" id="bnames" required>
+                            </div>
+                        </div>
+                        <div class="layui-form-item">
+                            <label class="layui-form-label">详细类型编号</label>
+                            <div class="layui-input-block">
+                                <input class="layui-input" type="text" value="" style="width: 350px" name="did" id="dids" required readonly>
+                            </div>
+                        </div>
+                        <div class="layui-form-item">
+                            <label class="layui-form-label">详细类型名称</label>
+                            <div class="layui-input-block">
+                                <input class="layui-input" type="text" value="" style="width: 350px" name="dname" id="dnames" required>
+                            </div>
+                        </div>
+                        <div class="layui-form-item">
+                            <label class="layui-form-label">备注</label>
+                            <div class="layui-input-block">
+                                <input class="layui-input" type="text" value="" style="width: 350px" name="memo" id="memos">
+                            </div>
+                        </div>
+                        <div class="layui-form-item" align="center">
+                            <button type="button" class="layui-btn layui-btn-radius layui-btn-normal" onclick="editDetail()">提交修改</button>
+                        </div>
+                    </form>
+                </div>
+                <table class="layui-table"  id='detailTable' lay-filter="detailTable" style="margin-top: -5px"></table>
             </div>
             <div class="myWriting" style="display:none;">
                 <fieldset class="layui-elem-field layui-field-title site-demo-button" style="margin-top: 30px;">
@@ -143,6 +517,119 @@
                 </form>
 
             </div>
+            <div class="myWriting" style="display:none;">
+                <div class="layui-btn-group demoTable" id="myWToolbar" style="display: none">
+                    <button class="layui-btn layui-btn-normal layui-btn-sm " lay-event="add">添加</button>
+                    <button class="layui-btn layui-btn-sm layui-btn-danger" lay-event="delete">批量删除</button>
+                </div>
+                <div id="addWContainer" style="display: none;width: 500px" >
+                    <form class="layui-form" style="margin:30px" id="addWDetail">
+                        <div class="layui-form-item">
+                            <label class="layui-form-label" >名称</label>
+                            <div class="layui-input-block">
+                                <input class="layui-input" type="text"  style="width: 350px" name="softwareName" id="softwareName" required>
+                            </div>
+                        </div>
+                        <div class="layui-form-item" style="display: none">
+                            <label class="layui-form-label" >成果类型</label>
+                            <div class="layui-input-block">
+                                <input class="layui-input" type="text"  style="width: 350px" value= "0205" name="resultTypeId " id="aresultTypeId " required>
+                            </div>
+                        </div>
+                        <div class="layui-form-item">
+                            <label class="layui-form-label" >项目ID</label>
+                            <div class="layui-input-block">
+                                <input class="layui-input" type="text"  style="width: 350px" name="projectId" id="projectId" required>
+                            </div>
+                        </div>
+                        <div class="layui-form-item">
+                            <label class="layui-form-label">作者</label>
+                            <div class="layui-input-block">
+                                <input class="layui-input" type="text"  style="width: 350px" name="aauthor" id="aauthor" required>
+                            </div>
+                        </div>
+                        <div class="layui-form-item">
+                            <label class="layui-form-label" >网址</label>
+                            <div class="layui-input-block">
+                                <input class="layui-input" type="text"  style="width: 350px" name="webSite" id="webSite">
+                            </div>
+                        </div>
+                        <div class="layui-form-item">
+                            <label class="layui-form-label" style="width: 90px">作者排名</label>
+                            <div class="layui-input-block">
+                                <select name="pauthorType" lay-verify="required" style="width: 350px">
+                                    <option value="0">请选择作者排名</option>
+                                    <option value="1101" >第一作者</option>
+                                    <option value="1102" >第二作者</option>
+                                    <option value="1103" >第二作者</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="layui-form-item">
+                            <label class="layui-form-label" style="width: 90px">发布日期</label>
+                            <div class="layui-input-block">
+                                <input class="layui-input" type="text"  style="width: 350px" name="publishTime" id="publishTime" onfocus="(this.type='date')" onblur="(this.type='text')">
+                            </div>
+                        </div>
+                        <div class="layui-form-item" align="center">
+                            <button type="button" class="layui-btn layui-btn-radius layui-btn-normal" onclick="addDetail()">确认添加</button>
+                        </div>
+                    </form>
+                </div>
+                <table class="layui-table"  id='WTable' lay-filter="WTable" style="margin-top: -5px"></table>
+                <!--                    <table class="layui-table" id="mywtable" style="margin-left: 20px;">
+                                        <thead >
+                                        <tr >
+                                            <th lay-data="{field:'stock',sort: true,align:'center'}"style="text-align: center;">书籍名称</th>
+                                            <th lay-data="{field:'stock',sort: true,align:'center'}"style="text-align: center;">书籍类型</th>
+                                            <th lay-data="{field:'stock',sort: true,align:'center'}" style="display: none">类型ID</th>
+                                            <th lay-data="{field:'stock',sort: true,align:'center'}"style="text-align: center;">上传人</th>
+                                            <th style="text-align: center;">作者</th>
+                                            <th style="text-align: center;">备注</th>
+                                            <th style="text-align: center;">操作</th>
+                                        </tr>
+                                        </thead>
+                                        <tbody id="mywbody" align="center">
+                                        </tbody>
+                                    </table>
+                                    <div id="wpaging" style="text-align: center;"></div>
+                                    <fieldset class="layui-elem-field layui-field-title site-demo-button" style="margin-top: 30px;">
+                                        <legend>书籍上传</legend>
+                                    </fieldset>
+                                    <div class="layui-upload" style="margin-top: 20px;margin-left: 20px;">
+                                        <form class="layui-form" action="" style="margin-top: 30px;" name="wfm" >
+                                            <div class="layui-form-item">
+                                                <div class="layui-input-block layui-input-inline" style="display:none;">
+                                                    <select name="wDID" lay-verify="required" >
+                                                        <option value="0204" selected>书籍：0204</option>
+                                                    </select>
+                                                </div>
+                                                <div class="layui-input-block layui-input-inline" style="display: none" >
+                                                    <input type="text" name="wuid" required  lay-verify="required" >
+                                                </div>
+                                                <div class="layui-input-block layui-input-inline" style="margin-left: 0px">
+                                                    <select name="wtype" lay-verify="required" >
+                                                        <option value="0">请选择书籍类型</option>
+                                                        <option value="专著" >专著</option>
+                                                        <option value="独著" >独著</option>
+                                                        <option value="合著" >合著</option>
+                                                    </select>
+                                                </div>
+                                                <div class="layui-input-block layui-input-inline" style="margin-left: 20px">
+                                                    <input type="text" name="wname" required  lay-verify="required" placeholder="请输入书籍名称" class="layui-input" >
+                                                </div>
+                                                <div class="layui-input-block layui-input-inline" style="margin-left: 20px;">
+                                                    <input type="text" name="wauthor" required  lay-verify="required" placeholder="请输入作者" class="layui-input" >
+                                                </div>
+                                                <div class="layui-input-block layui-input-inline" style="margin-left: 20px;;width: 300px">
+                                                    <input type="text" name="wmemo"  placeholder="备注" class="layui-input" >
+                                                </div>
+                                            </div>
+                                        </form>
+                                        <button type="button" class="layui-btn layui-btn-normal" id="wchoosefile">选择文件</button>
+                                        <button type="button" class="layui-btn" id="wupload" >开始上传</button>
+                                    </div>-->
+            </div>
             <div class="myAward" style="display:none;">
                 <fieldset class="layui-elem-field layui-field-title site-demo-button" style="margin-top: 30px;">
                     <legend>奖项</legend>
@@ -161,6 +648,104 @@
                     </div>
                 </form>
 
+            </div>
+            <div class="myAward" style="display:none;" >
+                <div class="layui-btn-group demoTable" id="myAWToolbar" style="display: none">
+                    <button class="layui-btn layui-btn-normal layui-btn-sm " lay-event="add">添加</button>
+                    <button class="layui-btn layui-btn-sm layui-btn-danger" lay-event="delete">批量删除</button>
+                </div>
+                <div id="addAWContainer" style="display: none;width: 500px" >
+                    <form class="layui-form" style="margin:30px" id="addAWDetail">
+                        <div class="layui-form-item">
+                            <label class="layui-form-label" >项目ID</label>
+                            <div class="layui-input-block">
+                                <input class="layui-input" type="text"  style="width: 350px" name="PROJECT_ID" id="PROJECT_ID" required>
+                            </div>
+                        </div>
+                        <div class="layui-form-item">
+                            <label class="layui-form-label" >名称</label>
+                            <div class="layui-input-block">
+                                <input class="layui-input" type="text"  style="width: 350px" name="AWARD_NAME" id="AWARD_NAME" required>
+                            </div>
+                        </div>
+                        <div class="layui-form-item" style="display: none">
+                            <label class="layui-form-label" >颁奖单位</label>
+                            <div class="layui-input-block">
+                                <input class="layui-input" type="text"  style="width: 350px" value= "0205" name="AWARD_UNIT " id="AWARD_UNIT " required>
+                            </div>
+                        </div>
+                        <div class="layui-form-item">
+                            <label class="layui-form-label" style="width: 100px">颁奖时间</label>
+                            <div class="layui-input-block">
+                                <input class="layui-input" type="text"  style="width: 350px" name="AWARD_TIME" id="AWARD_TIME" required>
+                            </div>
+                        </div>
+                        <div class="layui-form-item">
+                            <label class="layui-form-label">名次</label>
+                            <div class="layui-input-block">
+                                <input class="layui-input" type="text"  style="width: 350px" name="RANKING" id="RANKING" required>
+                            </div>
+                        </div>
+                        <div class="layui-form-item">
+                            <label class="layui-form-label" >获奖人</label>
+                            <div class="layui-input-block">
+                                <input class="layui-input" type="text"  style="width: 350px" name="NAME" id="NAME">
+                            </div>
+                        </div>
+                        <div class="layui-form-item">
+                            <label class="layui-form-label" style="width: 100px">获奖人性别</label>
+                            <div class="layui-input-block">
+                                <select name="TYPE_ID" lay-verify="required" style="width: 350px">
+                                    <option value="0">请选择性别</option>
+                                    <option value="0101" >男</option>
+                                    <option value="0102" >女</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="layui-form-item">
+                            <label class="layui-form-label" style="width: 100px">获奖人类型ID</label>
+                            <div class="layui-input-block">
+                                <select name="TYPE_ID" lay-verify="required" style="width: 350px">
+                                    <option value="0">请选择获奖人类型</option>
+                                    <option value="1301" >团队内</option>
+                                    <option value="1302" >团队外</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="layui-form-item">
+                            <label class="layui-form-label" style="width: 100px">获奖人职称</label>
+                            <div class="layui-input-block">
+                                <input class="layui-input" type="text"  style="width: 350px" name="PROFESSIONAL_TITLE" id="PROFESSIONAL_TITLE">
+                            </div>
+                        </div>
+                        <div class="layui-form-item">
+                            <label class="layui-form-label" style="width: 100px">获奖人单位</label>
+                            <div class="layui-input-block">
+                                <input class="layui-input" type="text"  style="width: 350px" name="UNIT" id="UNIT">
+                            </div>
+                        </div>
+                        <div class="layui-form-item">
+                            <label class="layui-form-label" style="width: 100px">获奖人排名</label>
+                            <div class="layui-input-block">
+                                <select name="pauthorType" lay-verify="required" style="width: 350px">
+                                    <option value="0">请选择获奖人排名</option>
+                                    <option value="1101" >第一获奖人</option>
+                                    <option value="1102" >第二获奖人</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="layui-form-item" style="display: none">
+                            <label class="layui-form-label" >成果类型</label>
+                            <div class="layui-input-block">
+                                <input class="layui-input" type="text"  value="0205" style="width: 350px" name="RESULT_TYPE_ID" id="RESULT_TYPE_ID">
+                            </div>
+                        </div>
+                        <div class="layui-form-item" align="center">
+                            <button type="button" class="layui-btn layui-btn-radius layui-btn-normal" onclick="addDetail()">确认添加</button>
+                        </div>
+                    </form>
+                </div>
+                <table class="layui-table"  id='AWTable' lay-filter="AWTable" style="margin-top: -5px"></table>
             </div>
             <div class="myApp" style="display:block;">
                 <fieldset class="layui-elem-field layui-field-title site-demo-button" style="margin-top: 30px;">
@@ -181,6 +766,78 @@
                 </form>
 
             </div>
+            <div class="myApp" style="display: block">
+                <div class="layui-btn-group demoTable" id="myAToolbar" style="display: none">
+                    <button class="layui-btn layui-btn-normal layui-btn-sm " lay-event="add">添加</button>
+                    <button class="layui-btn layui-btn-sm layui-btn-danger" lay-event="delete">批量删除</button>
+                </div>
+                <div id="addAContainer" style="display: none;width: 500px" >
+                    <form class="layui-form" style="margin:30px" id="addADetail" name="addADetail">
+                        <div class="layui-form-item">
+                            <label class="layui-form-label" >项目ID</label>
+                            <div class="layui-input-block">
+                                <input class="layui-input" type="text"  style="width: 350px" name="projectId" id="projectId" required="required">
+                            </div>
+                        </div>
+                        <div class="layui-form-item">
+                            <label class="layui-form-label" style="width: 90px">发布日期</label>
+                            <div class="layui-input-block">
+                                <input class="layui-input" type="text"  style="width: 350px" name="publishTime" id="publishTime"  required="required" onfocus="(this.type='date')" onblur="(this.type='text')">
+                            </div>
+                        </div>
+                        <div class="layui-form-item">
+                            <label class="layui-form-label" >名称</label>
+                            <div class="layui-input-block">
+                                <input class="layui-input" type="text"  style="width: 350px" name="softwareName" id="softwareName" required="required">
+                            </div>
+                        </div>
+                        <div class="layui-form-item">
+                            <label class="layui-form-label" >网址</label>
+                            <div class="layui-input-block">
+
+                                <input class="layui-input" type="text"  style="width: 350px" name="webSite" id="webSite" required="required">
+                            </div>
+                        </div>
+                        <div class="layui-form-item">
+                            <label class="layui-form-label">作者</label>
+                            <div class="layui-input-block">
+                                <select name="wid" id="awid" lay-verify="required" style="width: 350px" required="required">
+                                </select>
+                            </div>
+                        </div>
+                        <div class="layui-form-item">
+                            <label class="layui-form-label" style="width: 90px">作者排名</label>
+                            <div class="layui-input-block">
+                                <select name="writerTypeId"id="aorder" lay-verify="required" style="width: 350px">
+                                    <option >请选择作者排名</option>
+                                    <option value="1101" >第一作者</option>
+                                    <option value="1102" >第二作者</option>
+                                    <option value="1103" >第二作者</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="layui-form-item" align="center">
+                            <button type="button" class="layui-btn layui-btn-radius layui-btn-normal" onclick="addInfo();addCode()">添加作者信息</button>
+                        </div>
+                        <div class="layui-form-item">
+                            <label class="layui-form-label" style="width: 90px">作者信息</label>
+                            <div class="layui-input-block" >
+                                <textarea name="winfo" id="awinfo" lay-verify="required" style="width: 350px" ></textarea>
+                            </div>
+                        </div>
+                        <div class="layui-form-item" style="display: none">
+                            <label class="layui-form-label" style="width: 90px">码信息</label>
+                            <div class="layui-input-block" >
+                                <textarea name="detailInfo" id="detailInfo" lay-verify="required" style="width: 350px" ></textarea>
+                            </div>
+                        </div>
+                        <div class="layui-form-item" align="center">
+                            <button type="button" class="layui-btn layui-btn-radius layui-btn-normal" onclick="addDetail()">提交</button>
+                        </div>
+                    </form>
+                </div>
+                <table class="layui-table"  id='ATable' lay-filter="ATable" style="margin-top: -5px"></table>
+            </div>
             <div class="myReport" style="display: none" >
                 <fieldset class="layui-elem-field layui-field-title site-demo-button" style="margin-top: 30px;">
                     <legend>报告</legend>
@@ -200,858 +857,72 @@
                 </form>
 
             </div>
+            <div class="myReport" style="display:none;">
+                <div class="layui-btn-group demoTable" id="myRToolbar" style="display: none">
+                    <button class="layui-btn layui-btn-normal layui-btn-sm " lay-event="add">添加</button>
+                    <button class="layui-btn layui-btn-sm layui-btn-danger" lay-event="delete">批量删除</button>
+                </div>
+                <div id="addRContainer" style="display: none;width: 500px" >
+                    <form class="layui-form" style="margin:30px" id="addRDetail">
+                        <div class="layui-form-item">
+                            <label class="layui-form-label" >名称</label>
+                            <div class="layui-input-block">
+                                <input class="layui-input" type="text"  style="width: 350px" name="projectResultName" id="projectResultName" required>
+                            </div>
+                        </div>
+                        <div class="layui-form-item">
+                            <label class="layui-form-label" >项目ID</label>
+                            <div class="layui-input-block">
+                                <input class="layui-input" type="text"  style="width: 350px" name="projectId" id="rprojectId" required>
+                            </div>
+                        </div>
+                        <div class="layui-form-item">
+                            <label class="layui-form-label">作者</label>
+                            <div class="layui-input-block">
+                                <select name="writerId" id="writerId" lay-verify="required" style="width: 350px">
+                                </select>
+                            </div>
+                        </div>
+                        <div class="layui-form-item" style="display: none">
+                            <label class="layui-form-label">成果类型</label>
+                            <div class="layui-input-block">
+                                <input class="layui-input" type="text"  style="width: 350px" value="0207" name="resultTypeId " id="rresultTypeId " required>
+                            </div>
+                        </div>
+                        <div class="layui-form-item">
+                            <label class="layui-form-label" style="width: 90px">作者排名</label>
+                            <div class="layui-input-block">
+                                <select name="writerTypeId" lay-verify="required" style="width: 350px">
+                                    <option value="0">请选择作者排名</option>
+                                    <option value="1101" >第一作者</option>
+                                    <option value="1102" >第二作者</option>
+                                    <option value="1103" >第二作者</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="layui-form-item">
+                            <label class="layui-form-label" style="width: 90px">发布日期</label>
+                            <div class="layui-input-block">
+                                <input class="layui-input" type="text"  style="width: 350px" name="writeTime" id="writeTime" onfocus="(this.type='date')" onblur="(this.type='text')">
+                            </div>
+                        </div>
+                        <div class="layui-form-item" align="center">
+                            <button type="button" class="layui-btn layui-btn-radius layui-btn-normal" onclick="addDetail()">确认添加</button>
+                        </div>
+                    </form>
+                </div>
+                <table class="layui-table"  id='RTable' lay-filter="RTable" style="margin-top: -5px"></table>
+            </div>
         </div>
         <div class="layui-row grid-demo grid-demo-bg1">
             <div class="layui-col-md12">
-<!--                <div class="myThesis" style="display:none;margin-top: 140px;">
-                    <div class="layui-btn-group demoTable" id="myTToolbar" style="display: none">
-                        <button class="layui-btn layui-btn-normal layui-btn-sm " lay-event="add">添加</button>
-                        <button class="layui-btn layui-btn-sm layui-btn-danger" lay-event="delete">批量删除</button>
-                    </div>
-                    <div id="addTContainer" style="display: none;width: 500px" >
-                        <form class="layui-form" style="margin:30px" id="addTDetail">
-                            <div class="layui-form-item">
-                                <label class="layui-form-label" >名称</label>
-                                <div class="layui-input-block">
-                                    <input class="layui-input" type="text"  style="width: 350px" name="softwareName" id="softwareName" required>
-                                </div>
-                            </div>
-                            <div class="layui-form-item" style="display: none">
-                                <label class="layui-form-label" >成果类型</label>
-                                <div class="layui-input-block">
-                                    <input class="layui-input" type="text"  style="width: 350px" value= "0205" name="resultTypeId " id="aresultTypeId " required>
-                                </div>
-                            </div>
-                            <div class="layui-form-item">
-                                <label class="layui-form-label" >项目ID</label>
-                                <div class="layui-input-block">
-                                    <input class="layui-input" type="text"  style="width: 350px" name="projectId" id="projectId" required>
-                                </div>
-                            </div>
-                            <div class="layui-form-item">
-                                <label class="layui-form-label">作者</label>
-                                <div class="layui-input-block">
-                                    <input class="layui-input" type="text"  style="width: 350px" name="aauthor" id="aauthor" required>
-                                </div>
-                            </div>
-                            <div class="layui-form-item">
-                                <label class="layui-form-label" >网址</label>
-                                <div class="layui-input-block">
-                                    <input class="layui-input" type="text"  style="width: 350px" name="webSite" id="webSite">
-                                </div>
-                            </div>
-                            <div class="layui-form-item">
-                                <label class="layui-form-label" style="width: 90px">作者排名</label>
-                                <div class="layui-input-block">
-                                    <select name="pauthorType" lay-verify="required" style="width: 350px">
-                                        <option value="0">请选择作者排名</option>
-                                        <option value="1101" >第一作者</option>
-                                        <option value="1102" >第二作者</option>
-                                        <option value="1103" >第二作者</option>
-                                    </select>
-                                </div>
-                            </div>
-                            <div class="layui-form-item">
-                                <label class="layui-form-label" style="width: 90px">发布日期</label>
-                                <div class="layui-input-block">
-                                    <input class="layui-input" type="text"  style="width: 350px" name="publishTime" id="publishTime" onfocus="(this.type='date')" onblur="(this.type='text')">
-                                </div>
-                            </div>
-                            <div class="layui-form-item" align="center">
-                                <button type="button" class="layui-btn layui-btn-radius layui-btn-normal" onclick="addDetail()">确认添加</button>
-                            </div>
-                        </form>
-                    </div>
-                    <table class="layui-table"  id='TTable' lay-filter="TTable" style="margin-top: -5px"></table>
-&lt;!&ndash;                    <table class="layui-table" id="mytable" style="margin: 20px">
-                        <thead >
-                        <tr >
-                            <th lay-data="{field:'stock',sort: true,align:'center'}" style="text-align: center;">论文名称</th>
-                            <th lay-data="{field:'stock',sort: true,align:'center'}" style="text-align: center;">论文类型</th>
-                            <th lay-data="{field:'stock',sort: true,align:'center'}" style="display: none">类型ID</th>
-                            <th lay-data="{field:'stock',sort: true,align:'center'}" style="text-align: center;">上传人</th>
-                            <th style="text-align: center;">作者</th>
-                            <th style="text-align: center;">备注</th>
-                            <th style="text-align: center;">操作</th>
-                        </tr>
-                        </thead>
-                        <tbody id="mytbody" align="center">
-                        </tbody>
-                    </table>
-                    <div id="tpaging" style="text-align: center;"></div >
-                    <fieldset class="layui-elem-field layui-field-title site-demo-button" style="margin-top: 30px;">
-                        <legend>论文上传</legend>
-                    </fieldset>
-                    <div class="layui-upload" style="margin:20px;">
-                        <form class="layui-form" action="" style="margin-top: 30px;" name="tfm">
-                            <div class="layui-form-item">
-                                <div class="layui-input-block layui-input-inline" style="display: none">
-                                    <select name="tDID" lay-verify="required" >
-                                        <option value="0202" selected>论文：0202</option>
-                                    </select>
-                                </div>
-                                <div class="layui-input-block layui-input-inline" style="display: none" >//uid
-                                    <input type="text" name="tuid" required  lay-verify="required" >
-                                </div>
-                                <div class="layui-input-block layui-input-inline" style="margin-left: 0px">
-                                    <select name="ttype" lay-verify="required" >
-                                        <option value="0">请选择论文类型</option>
-                                        <option value="专题型" >专题型</option>
-                                        <option value="论辩型" >论辩型</option>
-                                        <option value="综述型" >综述型</option>
-                                        <option value="综合型" >综合型</option>
-                                    </select>
-                                </div>
-                                <div class="layui-input-block layui-input-inline" style="margin-left: 20px">
-                                    <input type="text" name="tname" required  lay-verify="required" placeholder="请输入论文名称" class="layui-input" >
-                                </div>
-                                <div class="layui-input-block layui-input-inline" style="margin-left: 20px;">
-                                    <input type="text" name="tauthor" required  lay-verify="required" placeholder="请输入作者" class="layui-input" >
-                                </div>
-                                <div class="layui-input-block layui-input-inline" style="margin-left: 20px;width: 300px">
-                                    <input type="text" name="tmemo"  placeholder="备注" class="layui-input" >
-                                </div>
-                            </div>
-                        </form>
-                        <button type="button" class="layui-btn layui-btn-normal" id="tchoosefile">选择文件</button>
-                        <button type="button" class="layui-btn" id="tupload" >开始上传</button>
-                        &lt;!&ndash;onclick="uploadfile(fm.typeID.value,fm.type.value,fm.name.value,fm.author.value,fm.memo.value)"&ndash;&gt;
-                    </div>&ndash;&gt;
-                </div>
-                <div class="mySoftwareWork" style="margin-top: 140px;display:none;">
-                    <div class="layui-btn-group demoTable" id="mySToolbar" style="display: none">
-                        <button class="layui-btn layui-btn-normal layui-btn-sm " lay-event="add">添加</button>
-                        <button class="layui-btn layui-btn-sm layui-btn-danger" lay-event="delete">批量删除</button>
-                    </div>
-                    <div id="addSContainer" style="display: none;width: 500px" >
-                        <form class="layui-form" style="margin:30px" id="addSDetail">
-                            <div class="layui-form-item">
-                                <label class="layui-form-label" >名称</label>
-                                <div class="layui-input-block">
-                                    <input class="layui-input" type="text"  style="width: 350px" name="softwareName" id="softwareName" required>
-                                </div>
-                            </div>
-                            <div class="layui-form-item" style="display: none">
-                                <label class="layui-form-label" >成果类型</label>
-                                <div class="layui-input-block">
-                                    <input class="layui-input" type="text"  style="width: 350px" value= "0205" name="resultTypeId " id="aresultTypeId " required>
-                                </div>
-                            </div>
-                            <div class="layui-form-item">
-                                <label class="layui-form-label" >项目ID</label>
-                                <div class="layui-input-block">
-                                    <input class="layui-input" type="text"  style="width: 350px" name="projectId" id="projectId" required>
-                                </div>
-                            </div>
-                            <div class="layui-form-item">
-                                <label class="layui-form-label">作者</label>
-                                <div class="layui-input-block">
-                                    <input class="layui-input" type="text"  style="width: 350px" name="aauthor" id="aauthor" required>
-                                </div>
-                            </div>
-                            <div class="layui-form-item">
-                                <label class="layui-form-label" >网址</label>
-                                <div class="layui-input-block">
-                                    <input class="layui-input" type="text"  style="width: 350px" name="webSite" id="webSite">
-                                </div>
-                            </div>
-                            <div class="layui-form-item">
-                                <label class="layui-form-label" style="width: 90px">作者排名</label>
-                                <div class="layui-input-block">
-                                    <select name="pauthorType" lay-verify="required" style="width: 350px">
-                                        <option value="0">请选择作者排名</option>
-                                        <option value="1101" >第一作者</option>
-                                        <option value="1102" >第二作者</option>
-                                        <option value="1103" >第二作者</option>
-                                    </select>
-                                </div>
-                            </div>
-                            <div class="layui-form-item">
-                                <label class="layui-form-label" style="width: 90px">发布日期</label>
-                                <div class="layui-input-block">
-                                    <input class="layui-input" type="text"  style="width: 350px" name="publishTime" id="publishTime" onfocus="(this.type='date')" onblur="(this.type='text')">
-                                </div>
-                            </div>
-                            <div class="layui-form-item" align="center">
-                                <button type="button" class="layui-btn layui-btn-radius layui-btn-normal" onclick="addDetail()">确认添加</button>
-                            </div>
-                        </form>
-                    </div>
-                    <table class="layui-table"  id='STable' lay-filter="STable" style="margin-top: -5px"></table>
-&lt;!&ndash;                    <table class="layui-table" id="mystable" style="margin-left: 20px">
-                        <thead >
-                        <tr >
-                            <th lay-data="{field:'stock',sort: true,align:'center'}" style="text-align: center;">论文名称</th>
-                            <th lay-data="{field:'stock',sort: true,align:'center'}" style="display: none;">类型ID</th>
-                            <th lay-data="{field:'stock',sort: true,align:'center'}" style="text-align: center;">上传人</th>
-                            <th style="text-align: center;">作者</th>
-                            <th style="text-align: center;">备注</th>
-                            <th style="text-align: center;">操作</th>
-                        </tr>
-                        </thead>
-                        <tbody id="mysbody" align="center">
-                        </tbody>
-                    </table>
-                    <div id="spaging" style="text-align: center;"></div>
-                    <fieldset class="layui-elem-field layui-field-title site-demo-button" style="margin-top: 30px;">
-                        <legend>软著上传</legend>
-                    </fieldset>
-                    <div class="layui-upload" style="margin-top: 20px;margin-left: 20px;">
-                        <form class="layui-form" action="" style="margin-top: 30px;" name="sfm">
-                            <div class="layui-form-item">
-                                <div class="layui-input-block layui-input-inline" style="display: none;">
-                                    <select name="sDID" lay-verify="required" >
-                                        <option value="0203" selected>软著：0203</option >
-                                    </select>
-                                </div>
-                                <div class="layui-input-block layui-input-inline" style="display: none" >
-                                    <input type="text" name="suid" required  lay-verify="required" >
-                                </div>
-                                <div class="layui-input-block layui-input-inline" style="margin-left: 0px">
-                                    <input type="text" name="sname" required  lay-verify="required" placeholder="请输入软著名称" class="layui-input" >
-                                </div>
-                                <div class="layui-input-block layui-input-inline" style="margin-left: 20px;">
-                                    <input type="text" name="sauthor" required  lay-verify="required" placeholder="请输入作者" class="layui-input" >
-                                </div>
-                                <div class="layui-input-block layui-input-inline" style="margin-left: 20px;">
-                                    <input type="text" name="smemo"  placeholder="备注" class="layui-input" >
-                                </div>
-                            </div>
-                        </form>
-                        <button type="button" class="layui-btn layui-btn-normal" id="schoosefile">选择文件</button>
-                        <button type="button" class="layui-btn" id="supload" >开始上传</button>
-                    </div>&ndash;&gt;
-                </div>
-                <div class="myPatent" style="margin-top: 140px;display:none;">
-                    &lt;!&ndash;表格&ndash;&gt;
-                    <div class="layui-btn-group demoTable" id="myToolbar" style="display: none">
-                        <button class="layui-btn layui-btn-normal layui-btn-sm " lay-event="add">添加</button>
-                        <button class="layui-btn layui-btn-sm layui-btn-danger" lay-event="delete">批量删除</button>
-                    </div>
-                    <div id="addContainer" style="display: none;width: 500px" >
-                        <form class="layui-form" style="margin:30px" id="addDetail">
-                            <div class="layui-form-item">
-                                <label class="layui-form-label"  style="width: 100px">专利名称</label>
-                                <div class="layui-input-block">
-                                    <input class="layui-input" type="text"  style="width: 350px" name="pname" id="pname" required>
-                                </div>
-                            </div>
-                            <div class="layui-form-item">
-                                <label class="layui-form-label" >项目ID</label>
-                                <div class="layui-input-block">
-                                    <input class="layui-input" type="text"  style="width: 350px" name="pprojectId" id="pprojectId" required>
-                                </div>
-                            </div>
-                            <div class="layui-form-item">
-                                <label class="layui-form-label">作者</label>
-                                <div class="layui-input-block">
-                                    <input class="layui-input" type="text"  style="width: 350px" name="pauthor" id="pauthor" required>
-                                </div>
-                            </div>
 
-                            <div class="layui-form-item">
-                                <label class="layui-form-label" >性别</label>
-                                <div class="layui-input-block">
-                                    <input class="layui-input" type="text"  style="width: 350px" name="pgender" id="pgender">
-                                </div>
-                            </div>
-                            <div class="layui-form-item">
-                                <label class="layui-form-label" style="width: 100px">作者单位</label>
-                                <div class="layui-input-block">
-                                    <input class="layui-input" type="text"  style="width: 350px" name="punit" id="punit">
-                                </div>
-                            </div>
-                            <div class="layui-form-item">
-                                <label class="layui-form-label" style="width: 100px">作者职称</label>
-                                <div class="layui-input-block">
-                                    <input class="layui-input" type="text"  style="width: 350px" name="pprofession" id="pprofession">
-                                </div>
-                            </div>
-                            <div class="layui-form-item">
-                                <label class="layui-form-label" style="width: 100px">作者排名</label>
-                                <div class="layui-input-block">
-                                    <select name="pauthorType" lay-verify="required" style="width: 350px">
-                                        <option value="0">请选择作者排名</option>
-                                        <option value="1101" >第一作者</option>
-                                        <option value="1102" >第二作者</option>
-                                    </select>
-                                </div>
-                            </div>
-                            <div class="layui-form-item">
-                                <label class="layui-form-label" style="width: 100px">专利状态</label>
-                                <div class="layui-input-block">
-                                    <select name="pstatus" lay-verify="required" style="width: 400px"  id="pstatus">
-                                        <option value="0">请选择专利状态</option>
-                                        <option value="1401" >受理</option>
-                                        <option value="1402" >授权</option>
-                                        <option value="1403" >作废</option>
-                                    </select>
-                                </div>
-                            </div>
-                            <div class="layui-form-item">
-                                <label class="layui-form-label" style="width: 100px">文件类型</label>
-                                <div class="layui-input-block">
-                                    <select name="ptype" lay-verify="required" style="width: 350px">
-                                        <option value="0">请选择文件类型</option>
-                                        <option value="1201" >交底说明书</option>
-                                        <option value="1202" >受理通知书</option>
-                                        <option value="1203" >设计文档</option>
-                                        <option value="1204" >其他</option>
-                                    </select>
-                                </div>
-                            </div>
-                            <div class="layui-form-item">
-                                <label class="layui-form-label" style="width: 100px">专利状态</label>
-                                <div class="layui-input-block">
-                                    <select name="ptypeID" lay-verify="required" style="width: 350px">
-                                        <option value="0">请选择作者排名</option>
-                                        <option value="1301" >团队内</option>
-                                        <option value="1302" >团队外</option>
-                                    </select>
-                                </div>
-                            </div>
-                            <div class="layui-form-item">
-                                <label class="layui-form-label" style="width: 100px">代理公司</label>
-                                <div class="layui-input-block">
-                                    <input class="layui-input" type="text"  style="width: 350px" name="pagency" id="pagency">
-                                </div>
-                            </div>
 
-                            <div class="layui-form-item">
-                                <label class="layui-form-label" style="width: 100px">申请日期</label>
-                                <div class="layui-input-block">
-                                    <input class="layui-input" type="text"  style="width: 350px" name="sqtime" id="sqtime" onfocus="(this.type='date')" onblur="(this.type='text')">
-                                </div>
-                            </div><div class="layui-form-item">
-                            <label class="layui-form-label" style="width: 100px">受理日期</label>
-                            <div class="layui-input-block">
-                                <input class="layui-input" type="text"  style="width: 350px" name="sltime" id="sltime" onfocus="(this.type='date')" onblur="(this.type='text')">
-                            </div>
-                        </div><div class="layui-form-item">
-                            <label class="layui-form-label" style="width: 100px">授权日期</label>
-                            <div class="layui-input-block">
-                                <input class="layui-input" type="text"  style="width: 350px" name="granttime" id="granttime" onfocus="(this.type='date')" onblur="(this.type='text')">
-                            </div>
-                        </div>
-                            <div class="layui-form-item" align="center">
-                                <button type="button" class="layui-btn layui-btn-radius layui-btn-normal" onclick="addDetail()">确认添加</button>
-                            </div>
-                        </form>
-                    </div>
-                    <div id="editContainer" style="display: none">
-                        <form class="layui-form" style="margin:30px" id="editDetail">
-                            <div class="layui-form-item">
-                                <label class="layui-form-label">所属基本类型编号</label>
-                                <div class="layui-input-block">
-                                    <input class="layui-input" type="text" value="" style="width: 350px" name="bid" id="bids" required>
-                                </div>
-                            </div>
-                            <div class="layui-form-item">
-                                <label class="layui-form-label">所属基本类型</label>
-                                <div class="layui-input-block">
-                                    <input class="layui-input" type="text" value="" style="width: 350px" name="bid" id="bnames" required>
-                                </div>
-                            </div>
-                            <div class="layui-form-item">
-                                <label class="layui-form-label">详细类型编号</label>
-                                <div class="layui-input-block">
-                                    <input class="layui-input" type="text" value="" style="width: 350px" name="did" id="dids" required readonly>
-                                </div>
-                            </div>
-                            <div class="layui-form-item">
-                                <label class="layui-form-label">详细类型名称</label>
-                                <div class="layui-input-block">
-                                    <input class="layui-input" type="text" value="" style="width: 350px" name="dname" id="dnames" required>
-                                </div>
-                            </div>
-                            <div class="layui-form-item">
-                                <label class="layui-form-label">备注</label>
-                                <div class="layui-input-block">
-                                    <input class="layui-input" type="text" value="" style="width: 350px" name="memo" id="memos">
-                                </div>
-                            </div>
-                            <div class="layui-form-item" align="center">
-                                <button type="button" class="layui-btn layui-btn-radius layui-btn-normal" onclick="editDetail()">提交修改</button>
-                            </div>
-                        </form>
-                    </div>
-                    <table class="layui-table"  id='detailTable' lay-filter="detailTable" style="margin-top: -5px"></table>
-                </div>
-                &lt;!&ndash;    <table class="layui-table" id="myptable" lay-filter="videoTable" style="margin: 25px;">
-&lt;!&ndash;                        <colgroup>
-                            <col width="150">
-                            <col width="200">
-                            <col>
-                        </colgroup>
-                        <thead >
-                        <tr >
-                            <th lay-data="{field:'stock',sort: true,align:'center'}" style="text-align: center;">专利名称</th>
-                            <th style="text-align: center;">作者</th>
-                            <th style="text-align: center;">状态</th>
-                            <th style="text-align: center;">代理公司</th>
-                            <th lay-data="{field:'stock',sort: true,align:'center'}" style="text-align: center;">申请日期</th>
-                            <th lay-data="{field:'stock',sort: true,align:'center'}" style="text-align: center;">受理日期</th>
-                            <th lay-data="{field:'stock',sort: true,align:'center'}" style="text-align: center;">授权日期</th>
-                            <th style="text-align: center;">操作</th>
-                        </tr>
-                        </thead>
-                        <tbody id="mypbody" align="center">
-                        </tbody>&ndash;&gt;
-                    </table>&ndash;&gt;&lt;!&ndash;                    <div id="ppaging" style="text-align: center;"></div>
-                    <fieldset class="layui-elem-field layui-field-title site-demo-button" style="margin-top: 20px;">
-                        <legend>专利上传</legend>
-                    </fieldset>
-                    <div class="layui-upload" style="margin-top: 20px;margin-left: 20px;">
-                        <form class="layui-form" action="" style="margin-top: 20px;" name="pfm">
-                            <div class="layui-form-item">
-                                <div class="layui-input-block layui-input-inline" style="display: none;">
-                                    <select name="pDID" lay-verify="required" >
-                                        <option value="0201" selected>专利：0201</option>
-                                    </select>
-                                </div>
-                              &lt;!&ndash;  <div class="layui-input-block layui-input-inline" style="display: none" >
-                                    <input type="text" name="puid" required  lay-verify="required" >
-                                </div>&ndash;&gt;
-                                <div class="layui-input-block layui-input-inline" style="margin-left: 0px">
-                                    <input type="text" name="pname" required  lay-verify="required" placeholder="请输入专利名称" class="layui-input" >
-                                </div>
-                                <div class="layui-input-block layui-input-inline" style="margin-left: 20px">
-                                    <input type="text" name="pprojectID" required  lay-verify="required" placeholder="请输入项目ID" class="layui-input" >
-                                </div>
-                                <div class="layui-input-block layui-input-inline" style="margin-left: 20px">
-                                    <input type="text" name="pagency"  placeholder="请输入代理公司" class="layui-input" >
-                                </div>
-                                <div class="layui-input-block layui-input-inline" style="margin-left: 20px;">
 
-                                </div>
-                                <div class="layui-input-block layui-input-inline" style="margin-left: 20px;">
-                                    <select name="ptype" lay-verify="required" >
-                                        <option value="0">请选择文件类型</option>
-                                        <option value="1201" >交底说明书</option>
-                                        <option value="1202" >受理通知书</option>
-                                        <option value="1203" >设计文档</option>
-                                        <option value="1204" >其他</option>
-                                    </select>
-                                </div>
-                                <div class="layui-input-block layui-input-inline" style="margin-left: 0px;margin-top: 10px;">
-                                    <input type="text" name="pauthor"  required  lay-verify="required" placeholder="请输入作者" class="layui-input">
-                                </div>
-                                <div class="layui-input-block layui-input-inline" style="margin-left: 20px;margin-top: 10px;">
-                                    <input type="text" name="pgender" required  lay-verify="required" placeholder="请输入性别" class="layui-input">
-                                </div>
-                                <div class="layui-input-block layui-input-inline" style="margin-left: 20px;margin-top: 10px;">
 
-                                </div>
-                                <div class="layui-input-block layui-input-inline" style="margin-left: 20px;margin-top: 10px;">
-                                    <input type="text" name="punit" required  lay-verify="required" placeholder="请输入作者单位" class="layui-input">
-                                </div>
-                                <div class="layui-input-block layui-input-inline" style="margin-left: 20px;margin-top: 10px;">
-                                    <input type="text" name="pprofession" required  lay-verify="required" placeholder="请输入作者职称" class="layui-input">
-                                </div>
-                                <div class="layui-input-block layui-input-inline" style="margin-left: 0px;margin-top: 10px;">
 
-                                </div>
-                                <div class="layui-input-block layui-input-inline" style="margin-left: 20px;margin-top: 10px;">
-                                    <input type="text" id="sqdate" name="sqtime"  placeholder="请选择申请日期"  class="layui-input" onfocus="(this.type='date')" onblur="(this.type='text')">
-                                </div>
 
-                                <div class="layui-input-block layui-input-inline" style="margin-left: 20px;margin-top: 10px;">
-                                    <input type="text" id="sldate" name="sltime"  placeholder="请选择受理日期"  class="layui-input" onfocus="(this.type='date')" onblur="(this.type='text')">
-                                </div>
 
-                                <div class="layui-input-block layui-input-inline" style="margin-left: 20px;margin-top: 10px;">
-                                    <input type="text" id="grantdate" name="granttime"  placeholder="请选择授权日期" class="layui-input" onfocus="(this.type='date')" onblur="(this.type='text')">
-                                </div>
-                            </div>
-                        </form>
-                      &lt;!&ndash;  <button type="button" class="layui-btn layui-btn-normal" id="pchoosefile">选择文件</button>
-                        <button type="button" class="layui-btn" id="pupload" >开始上传</button>&ndash;&gt;
-                    </div>&ndash;&gt;
-                <div class="myWriting" style="margin-top: 140px;display:none;">
-                    <div class="layui-btn-group demoTable" id="myWToolbar" style="display: none">
-                        <button class="layui-btn layui-btn-normal layui-btn-sm " lay-event="add">添加</button>
-                        <button class="layui-btn layui-btn-sm layui-btn-danger" lay-event="delete">批量删除</button>
-                    </div>
-                    <div id="addWContainer" style="display: none;width: 500px" >
-                        <form class="layui-form" style="margin:30px" id="addWDetail">
-                            <div class="layui-form-item">
-                                <label class="layui-form-label" >名称</label>
-                                <div class="layui-input-block">
-                                    <input class="layui-input" type="text"  style="width: 350px" name="softwareName" id="softwareName" required>
-                                </div>
-                            </div>
-                            <div class="layui-form-item" style="display: none">
-                                <label class="layui-form-label" >成果类型</label>
-                                <div class="layui-input-block">
-                                    <input class="layui-input" type="text"  style="width: 350px" value= "0205" name="resultTypeId " id="aresultTypeId " required>
-                                </div>
-                            </div>
-                            <div class="layui-form-item">
-                                <label class="layui-form-label" >项目ID</label>
-                                <div class="layui-input-block">
-                                    <input class="layui-input" type="text"  style="width: 350px" name="projectId" id="projectId" required>
-                                </div>
-                            </div>
-                            <div class="layui-form-item">
-                                <label class="layui-form-label">作者</label>
-                                <div class="layui-input-block">
-                                    <input class="layui-input" type="text"  style="width: 350px" name="aauthor" id="aauthor" required>
-                                </div>
-                            </div>
-                            <div class="layui-form-item">
-                                <label class="layui-form-label" >网址</label>
-                                <div class="layui-input-block">
-                                    <input class="layui-input" type="text"  style="width: 350px" name="webSite" id="webSite">
-                                </div>
-                            </div>
-                            <div class="layui-form-item">
-                                <label class="layui-form-label" style="width: 90px">作者排名</label>
-                                <div class="layui-input-block">
-                                    <select name="pauthorType" lay-verify="required" style="width: 350px">
-                                        <option value="0">请选择作者排名</option>
-                                        <option value="1101" >第一作者</option>
-                                        <option value="1102" >第二作者</option>
-                                        <option value="1103" >第二作者</option>
-                                    </select>
-                                </div>
-                            </div>
-                            <div class="layui-form-item">
-                                <label class="layui-form-label" style="width: 90px">发布日期</label>
-                                <div class="layui-input-block">
-                                    <input class="layui-input" type="text"  style="width: 350px" name="publishTime" id="publishTime" onfocus="(this.type='date')" onblur="(this.type='text')">
-                                </div>
-                            </div>
-                            <div class="layui-form-item" align="center">
-                                <button type="button" class="layui-btn layui-btn-radius layui-btn-normal" onclick="addDetail()">确认添加</button>
-                            </div>
-                        </form>
-                    </div>
-                    <table class="layui-table"  id='WTable' lay-filter="WTable" style="margin-top: -5px"></table>
-&lt;!&ndash;                    <table class="layui-table" id="mywtable" style="margin-left: 20px;">
-                        <thead >
-                        <tr >
-                            <th lay-data="{field:'stock',sort: true,align:'center'}"style="text-align: center;">书籍名称</th>
-                            <th lay-data="{field:'stock',sort: true,align:'center'}"style="text-align: center;">书籍类型</th>
-                            <th lay-data="{field:'stock',sort: true,align:'center'}" style="display: none">类型ID</th>
-                            <th lay-data="{field:'stock',sort: true,align:'center'}"style="text-align: center;">上传人</th>
-                            <th style="text-align: center;">作者</th>
-                            <th style="text-align: center;">备注</th>
-                            <th style="text-align: center;">操作</th>
-                        </tr>
-                        </thead>
-                        <tbody id="mywbody" align="center">
-                        </tbody>
-                    </table>
-                    <div id="wpaging" style="text-align: center;"></div>
-                    <fieldset class="layui-elem-field layui-field-title site-demo-button" style="margin-top: 30px;">
-                        <legend>书籍上传</legend>
-                    </fieldset>
-                    <div class="layui-upload" style="margin-top: 20px;margin-left: 20px;">
-                        <form class="layui-form" action="" style="margin-top: 30px;" name="wfm" >
-                            <div class="layui-form-item">
-                                <div class="layui-input-block layui-input-inline" style="display:none;">
-                                    <select name="wDID" lay-verify="required" >
-                                        <option value="0204" selected>书籍：0204</option>
-                                    </select>
-                                </div>
-                                <div class="layui-input-block layui-input-inline" style="display: none" >
-                                    <input type="text" name="wuid" required  lay-verify="required" >
-                                </div>
-                                <div class="layui-input-block layui-input-inline" style="margin-left: 0px">
-                                    <select name="wtype" lay-verify="required" >
-                                        <option value="0">请选择书籍类型</option>
-                                        <option value="专著" >专著</option>
-                                        <option value="独著" >独著</option>
-                                        <option value="合著" >合著</option>
-                                    </select>
-                                </div>
-                                <div class="layui-input-block layui-input-inline" style="margin-left: 20px">
-                                    <input type="text" name="wname" required  lay-verify="required" placeholder="请输入书籍名称" class="layui-input" >
-                                </div>
-                                <div class="layui-input-block layui-input-inline" style="margin-left: 20px;">
-                                    <input type="text" name="wauthor" required  lay-verify="required" placeholder="请输入作者" class="layui-input" >
-                                </div>
-                                <div class="layui-input-block layui-input-inline" style="margin-left: 20px;;width: 300px">
-                                    <input type="text" name="wmemo"  placeholder="备注" class="layui-input" >
-                                </div>
-                            </div>
-                        </form>
-                        <button type="button" class="layui-btn layui-btn-normal" id="wchoosefile">选择文件</button>
-                        <button type="button" class="layui-btn" id="wupload" >开始上传</button>
-                    </div>&ndash;&gt;
-                </div>-->
-                <div class="myAward" style="margin-top: 140px;display:none;" >
-                    <div class="layui-btn-group demoTable" id="myAWToolbar" style="display: none">
-                        <button class="layui-btn layui-btn-normal layui-btn-sm " lay-event="add">添加</button>
-                        <button class="layui-btn layui-btn-sm layui-btn-danger" lay-event="delete">批量删除</button>
-                    </div>
-                    <div id="addAWContainer" style="display: none;width: 500px" >
-                        <form class="layui-form" style="margin:30px" id="addAWDetail">
-                            <div class="layui-form-item">
-                                <label class="layui-form-label" >项目ID</label>
-                                <div class="layui-input-block">
-                                    <input class="layui-input" type="text"  style="width: 350px" name="PROJECT_ID" id="PROJECT_ID" required>
-                                </div>
-                            </div>
-                            <div class="layui-form-item">
-                                <label class="layui-form-label" >名称</label>
-                                <div class="layui-input-block">
-                                    <input class="layui-input" type="text"  style="width: 350px" name="AWARD_NAME" id="AWARD_NAME" required>
-                                </div>
-                            </div>
-                            <div class="layui-form-item" style="display: none">
-                                <label class="layui-form-label" >颁奖单位</label>
-                                <div class="layui-input-block">
-                                    <input class="layui-input" type="text"  style="width: 350px" value= "0205" name="AWARD_UNIT " id="AWARD_UNIT " required>
-                                </div>
-                            </div>
-                            <div class="layui-form-item">
-                                <label class="layui-form-label" style="width: 100px">颁奖时间</label>
-                                <div class="layui-input-block">
-                                    <input class="layui-input" type="text"  style="width: 350px" name="AWARD_TIME" id="AWARD_TIME" required>
-                                </div>
-                            </div>
-                            <div class="layui-form-item">
-                                <label class="layui-form-label">名次</label>
-                                <div class="layui-input-block">
-                                    <input class="layui-input" type="text"  style="width: 350px" name="RANKING" id="RANKING" required>
-                                </div>
-                            </div>
-                            <div class="layui-form-item">
-                                <label class="layui-form-label" >获奖人</label>
-                                <div class="layui-input-block">
-                                    <input class="layui-input" type="text"  style="width: 350px" name="NAME" id="NAME">
-                                </div>
-                            </div>
-                            <div class="layui-form-item">
-                                <label class="layui-form-label" style="width: 100px">获奖人性别</label>
-                                <div class="layui-input-block">
-                                    <select name="TYPE_ID" lay-verify="required" style="width: 350px">
-                                        <option value="0">请选择性别</option>
-                                        <option value="0101" >男</option>
-                                        <option value="0102" >女</option>
-                                    </select>
-                                </div>
-                            </div>
-                            <div class="layui-form-item">
-                                <label class="layui-form-label" style="width: 100px">获奖人类型ID</label>
-                                <div class="layui-input-block">
-                                    <select name="TYPE_ID" lay-verify="required" style="width: 350px">
-                                        <option value="0">请选择获奖人类型</option>
-                                        <option value="1301" >团队内</option>
-                                        <option value="1302" >团队外</option>
-                                    </select>
-                                </div>
-                            </div>
-                            <div class="layui-form-item">
-                                <label class="layui-form-label" style="width: 100px">获奖人职称</label>
-                                <div class="layui-input-block">
-                                    <input class="layui-input" type="text"  style="width: 350px" name="PROFESSIONAL_TITLE" id="PROFESSIONAL_TITLE">
-                                </div>
-                            </div>
-                            <div class="layui-form-item">
-                                <label class="layui-form-label" style="width: 100px">获奖人单位</label>
-                                <div class="layui-input-block">
-                                    <input class="layui-input" type="text"  style="width: 350px" name="UNIT" id="UNIT">
-                                </div>
-                            </div>
-                            <div class="layui-form-item">
-                                <label class="layui-form-label" style="width: 100px">获奖人排名</label>
-                                <div class="layui-input-block">
-                                    <select name="pauthorType" lay-verify="required" style="width: 350px">
-                                        <option value="0">请选择获奖人排名</option>
-                                        <option value="1101" >第一获奖人</option>
-                                        <option value="1102" >第二获奖人</option>
-                                    </select>
-                                </div>
-                            </div>
-                            <div class="layui-form-item" style="display: none">
-                                <label class="layui-form-label" >成果类型</label>
-                                <div class="layui-input-block">
-                                    <input class="layui-input" type="text"  value="0205" style="width: 350px" name="RESULT_TYPE_ID" id="RESULT_TYPE_ID">
-                                </div>
-                            </div>
-                            <div class="layui-form-item" align="center">
-                                <button type="button" class="layui-btn layui-btn-radius layui-btn-normal" onclick="addDetail()">确认添加</button>
-                            </div>
-                        </form>
-                    </div>
-                    <table class="layui-table"  id='AWTable' lay-filter="AWTable" style="margin-top: -5px"></table>
-                </div>
-                <div class="myApp" style="margin-top: 140px;display: block">
-                    <div class="layui-btn-group demoTable" id="myAToolbar" style="display: none">
-                        <button class="layui-btn layui-btn-normal layui-btn-sm " lay-event="add">添加</button>
-                        <button class="layui-btn layui-btn-sm layui-btn-danger" lay-event="delete">批量删除</button>
-                    </div>
-                    <div id="addAContainer" style="display: none;width: 500px" >
-                        <form class="layui-form" style="margin:30px" id="addADetail" name="addADetail">
-                            <div class="layui-form-item">
-                                <label class="layui-form-label" >项目ID</label>
-                                <div class="layui-input-block">
-                                    <input class="layui-input" type="text"  style="width: 350px" name="projectId" id="projectId" required="required">
-                                </div>
-                            </div>
-                            <div class="layui-form-item">
-                                <label class="layui-form-label" style="width: 90px">发布日期</label>
-                                <div class="layui-input-block">
-                                    <input class="layui-input" type="text"  style="width: 350px" name="publishTime" id="publishTime"  required="required" onfocus="(this.type='date')" onblur="(this.type='text')">
-                                </div>
-                            </div>
-                            <div class="layui-form-item">
-                                <label class="layui-form-label" >名称</label>
-                                <div class="layui-input-block">
-                                    <input class="layui-input" type="text"  style="width: 350px" name="softwareName" id="softwareName" required="required">
-                                </div>
-                            </div>
-                            <div class="layui-form-item">
-                                <label class="layui-form-label" >网址</label>
-                                <div class="layui-input-block">
-
-                                    <input class="layui-input" type="text"  style="width: 350px" name="webSite" id="webSite" required="required">
-                                </div>
-                            </div>
-                            <div class="layui-form-item">
-                                <label class="layui-form-label">作者</label>
-                                <div class="layui-input-block">
-                                    <select name="wid" id="awid" lay-verify="required" style="width: 350px" required="required">
-                                    </select>
-                                </div>
-                            </div>
-                            <div class="layui-form-item">
-                                <label class="layui-form-label" style="width: 90px">作者排名</label>
-                                <div class="layui-input-block">
-                                    <select name="writerTypeId"id="aorder" lay-verify="required" style="width: 350px">
-                                        <option >请选择作者排名</option>
-                                        <option value="1101" >第一作者</option>
-                                        <option value="1102" >第二作者</option>
-                                        <option value="1103" >第二作者</option>
-                                    </select>
-                                </div>
-                            </div>
-                            <div class="layui-form-item" align="center">
-                                <button type="button" class="layui-btn layui-btn-radius layui-btn-normal" onclick="addInfo();addCode()">添加作者信息</button>
-                            </div>
-                            <div class="layui-form-item">
-                                <label class="layui-form-label" style="width: 90px">作者信息</label>
-                                <div class="layui-input-block" >
-                                    <textarea name="winfo" id="awinfo" lay-verify="required" style="width: 350px" ></textarea>
-                                </div>
-                            </div>
-                            <div class="layui-form-item" style="display: none">
-                                <label class="layui-form-label" style="width: 90px">码信息</label>
-                                <div class="layui-input-block" >
-                                    <textarea name="detailInfo" id="detailInfo" lay-verify="required" style="width: 350px" ></textarea>
-                                </div>
-                            </div>
-                            <div class="layui-form-item" align="center">
-                                <button type="button" class="layui-btn layui-btn-radius layui-btn-normal" onclick="addDetail()">提交</button>
-                            </div>
-                        </form>
-                    </div>
-                    <table class="layui-table"  id='ATable' lay-filter="ATable" style="margin-top: -5px"></table>
-                </div>
-                <div class="myReport" style="margin-top: 140px;display:none;">
-                    <!--<table class="layui-table" id="myrtable" style="margin-left: 20px;">
-                        <colgroup>
-                            <col width="150">
-                            <col width="200">
-                            <col>
-                        </colgroup>
-                        <thead >
-                        <tr >
-                            <th lay-data="{field:'stock',sort: true,align:'center'}" style="text-align: center;">报告名称</th>
-                            <th lay-data="{field:'stock',sort: true,align:'center'}" style="text-align: center;">撰写人</th>
-                            <th lay-data="{field:'stock',sort: true,align:'center'}" style="text-align: center;">撰写时间</th>
-                            <th style="text-align: center;">操作</th>
-                        </tr>
-                        </thead>
-                        <tbody id="myrbody" align="center">
-                        </tbody>
-                    </table>
-                    <div id="rpaging" style="text-align: center;"></div>
-                    <fieldset class="layui-elem-field layui-field-title site-demo-button" style="margin-top: 30px;">
-                        <legend>报告上传</legend>
-                    </fieldset>
-                    <div class="layui-upload" style="margin-top: 20px;margin-left: 20px;">
-                        <form class="layui-form" action="" style="margin-top: 30px;" name="appfm">
-                            <div class="layui-form-item">
-                                <div class="layui-input-block layui-input-inline" style="display: none;">
-                                    <select name="rDID" lay-verify="required" >
-                                        <option value="0207" selected>报告：0207</option>
-                                    </select>
-                                </div>
-                                <div class="layui-input-block layui-input-inline" style="display: none" >
-                                    <input type="text" name="ruid" required  lay-verify="required" >
-                                </div>
-                                <div class="layui-input-block layui-input-inline" style="margin-left: 0px">
-                                    <input type="text" name="rname" required  lay-verify="required" placeholder="请输入报告名称" class="layui-input" >
-                                </div>
-                                <div class="layui-input-block layui-input-inline" style="margin-left: 20px">
-                                    <input type="text" name="rauthor"   placeholder="请输入撰写人" class="layui-input" >
-                                </div>
-                                <div class="layui-input-block layui-input-inline" style="width: 180px;height: 33px;margin-left: 20px">
-                                    <input type="date" name="atime"  placeholder="请输入获奖时间"  style="width: 180px;height: 33px;">
-                                </div>
-                            </div>
-                        </form>
-                        <button type="button" class="layui-btn layui-btn-normal" id="rchoosefile">选择文件</button>
-                        <button type="button" class="layui-btn" id="rupload" >开始上传</button>
-                    </div>-->
-                    <div class="layui-btn-group demoTable" id="myRToolbar" style="display: none">
-                        <button class="layui-btn layui-btn-normal layui-btn-sm " lay-event="add">添加</button>
-                        <button class="layui-btn layui-btn-sm layui-btn-danger" lay-event="delete">批量删除</button>
-                    </div>
-                    <div id="addRContainer" style="display: none;width: 500px" >
-                        <form class="layui-form" style="margin:30px" id="addRDetail">
-                            <div class="layui-form-item">
-                                <label class="layui-form-label" >名称</label>
-                                <div class="layui-input-block">
-                                    <input class="layui-input" type="text"  style="width: 350px" name="projectResultName" id="projectResultName" required>
-                                </div>
-                            </div>
-                            <div class="layui-form-item">
-                                <label class="layui-form-label" >项目ID</label>
-                                <div class="layui-input-block">
-                                    <input class="layui-input" type="text"  style="width: 350px" name="projectId" id="rprojectId" required>
-                                </div>
-                            </div>
-                            <div class="layui-form-item">
-                                <label class="layui-form-label">作者</label>
-                                <div class="layui-input-block">
-                                    <select name="writerId" id="writerId" lay-verify="required" style="width: 350px">
-                                    </select>
-                                </div>
-                            </div>
-                            <div class="layui-form-item" style="display: none">
-                                <label class="layui-form-label">成果类型</label>
-                                <div class="layui-input-block">
-                                    <input class="layui-input" type="text"  style="width: 350px" value="0207" name="resultTypeId " id="rresultTypeId " required>
-                                </div>
-                            </div>
-                            <div class="layui-form-item">
-                                <label class="layui-form-label" style="width: 90px">作者排名</label>
-                                <div class="layui-input-block">
-                                    <select name="writerTypeId" lay-verify="required" style="width: 350px">
-                                        <option value="0">请选择作者排名</option>
-                                        <option value="1101" >第一作者</option>
-                                        <option value="1102" >第二作者</option>
-                                        <option value="1103" >第二作者</option>
-                                    </select>
-                                </div>
-                            </div>
-                            <div class="layui-form-item">
-                                <label class="layui-form-label" style="width: 90px">发布日期</label>
-                                <div class="layui-input-block">
-                                    <input class="layui-input" type="text"  style="width: 350px" name="writeTime" id="writeTime" onfocus="(this.type='date')" onblur="(this.type='text')">
-                                </div>
-                            </div>
-                            <div class="layui-form-item" align="center">
-                                <button type="button" class="layui-btn layui-btn-radius layui-btn-normal" onclick="addDetail()">确认添加</button>
-                            </div>
-                        </form>
-                    </div>
-                    <table class="layui-table"  id='RTable' lay-filter="RTable" style="margin-top: -5px"></table>
-                </div>
             </div>
         </div>
     </div>
@@ -3177,10 +3048,6 @@
         }
         jsondata  = eval("("+form2JsonString("addADetail")+")");
         console.log(jsondata)
-        console.log(jsondata.projectId)
-        console.log(jsondata.publishTime)
-        console.log(jsondata.softwareName)
-        console.log(jsondata.webSite)
         console.log(jsondata.detailInfo)
         var writer = []
         writer.push("0205")
@@ -3188,39 +3055,41 @@
         console.log(writer)
         console.log(writer[1].length)
         var writerInfo = [];
-        var first = {
-                "resultTypeId": "0206",
-                "wid": "c4daf250219145819b3f2a10bc9bc1bc",
-                "writerTypeId": "1101"
-            };
+        var order ={
+            "resultTypeId": writer[0],
+            "wid": writer[1][0],
+            "writerTypeId": writer[1][1]
+        }
+        writerInfo.push(order)
+        for(var i=0;i<(writer[1].length-1)%2;i++){
+            var count = writer[1].length-1
+            var cnt = 0
+            writerInfo['order'+i] ={
+                "resultTypeId": writer[0],
+                "wid": writer[1][0],
+                "writerTypeId": writer[1][1]
+            }
+        }
 
-        var second = {
-                "resultTypeId": "0206",
-                "wid": "0adecea8ffd5472b88f067169e0b7e10",
-                "writerTypeId": "1102"
-            };
-        var third = {
-                "resultTypeId": "0206",
-                "wid": "0adecea8ffd5472b88f067169e0b7e10",
-                "writerTypeId": "1102"
-            };
-
-        writerInfo.push(first);
-        writerInfo.push(second);
+    console.log(writerInfo)
 
         var a = {
-                "projectId": "5a1da275-131f-4e64-b004-1dca9d72a9de",
-                "publishTime": "2019-09-08",
-                "softwareName": "工具管理",
-                "webSite": "www.baidu.com",
+                "projectId": jsondata.projectId,
+                "publishTime": jsondata.publishTime,
+                "softwareName": jsondata.softwareName,
+                "webSite": jsondata.webSite,
                 writerInfo
             };
-
+    console.log(a)
 
         $.ajax({
             type:'post',
             url: http+'/api/software/insert',
-            data: jsondata,
+            dataType:"json",
+            contentType:"application/json:charset=UTF-8",
+            traditional:true,
+
+            data: JSON.stringify(a),
             success: function (data) {
                 layer.msg('添加成功');
                 layer.close(addlay);
