@@ -24,41 +24,28 @@
         <div class="layui-col-md12" style="height: 100px;">
             <form class="layui-form" name="mainform" style="margin-top: 30px;">
                 <div class="layui-form-item" >
-<!--                    <div class="layui-input-block layui-input-inline"  style="margin-left: 20px;">
-                    <select id="mainName" class="selectpicker"  data-live-search="true" data-live-search-placeholder="搜索" data-actions-box="true">
-                    </select>
-                </div>-->
-                    <div class="layui-input-block layui-input-inline"  style="margin-left: 0px;width: 150px;">
-                        <select  id="mainPerson" >
-                            <option value="">人员</option>
+                    <div class="layui-input-inline" style="margin-left: 0px;">
+                        <select name="mainPerson" id="mainPerson" lay-verify="required" lay-search="">
                         </select>
                     </div>
-                    <div class="layui-input-block layui-input-inline"  style="margin-left: 20px;width: 150px;">
-                        <select  id="mainTaskType" >
+
+                    <div class="layui-input-inline" style="margin-left: 20px;">
+                        <select name="mainTask" id="mainTask" lay-verify="required" lay-search="">
+                            <option value="">项目</option>
+                        </select>
+                    </div>
+                    <div class="layui-input-inline" style="margin-left: 20px;">
+                        <select name="mainTaskType" id="mainTaskType" lay-verify="required" lay-search="">
                             <option value="">项目类型</option>
                         </select>
                     </div>
-                    <div class="layui-input-block layui-input-inline"  style="margin-left: 20px;width: 150px;">
-                        <select  id="mainStatus" >
-                            <option value="">项目结题状态</option>
+                    <div class="layui-input-inline" style="margin-left: 20px;">
+                        <select name="mainStatus" id="mainStatus" lay-verify="required" lay-search="">
+                            <option value="">项目状态</option>
                         </select>
                     </div>
-                    <div class="layui-input-block layui-input-inline"  style="margin-left: 20px;width: 150px;">
-                        <select  id="mainTask" >
-                            <option value="">项目名</option>
-                        </select>
-                    </div>
-<!--                    <div class="layui-input-block layui-input-inline"  style="margin-left: 20px;width: 150px;">
-                        <select  id="mainSearch" >
-                            <option value="">查询</option>
-                        </select>
-                    </div>-->
-                    <div class="layui-input-block layui-input-inline"  style="margin-left: 20px;width: 150px;">
-                        <select  id="mainType" >
-                        </select>
-                    </div>
-                    <div class="layui-input-block layui-input-inline" style="margin-left: 15px;">
-                        <button type="button" class="layui-btn layui-btn-normal" onclick="Toggle()">切换</button>
+                    <div class=" layui-input-inline" style="margin-left: 15px;">
+                        <button type="button" class="layui-btn layui-btn-normal" onclick="">查询</button>
                     </div>
                 </div>
             </form>
@@ -790,6 +777,10 @@
 <script>
     var http = "http://148.70.243.66:8888";
 
+    layui.use('form', function(){//需要再次渲染form才能在界面显示
+        var form = layui.form;
+        form.render();
+    });
     function generateWriter() {
         $.get(http+"/api/authorManager/findAuthor",function (result) {
             var idstr = ''
@@ -806,47 +797,41 @@
     }
     generateWriter()
 
+    function loadUser() {
+        $.post(http+"/api/manager/queryAllUser",function (result) {
+            var userstr = ''
+            userstr += ' <option>'+"请选择姓名"+'</option>';
+            for (var i=0;i<result.data.length;i++){
+                var ops = '<option value='+result.data[i].user_role.uid+'>'+ result.data[i].user_role.username +'</option>'
+                userstr += ops
+            }
+            console.log(userstr)
+            layui.use('form', function(){//需要再次渲染form才能在界面显示
+                var form = layui.form;
+                form.render();
+            });
+            $("#mainPerson").html(userstr)//姓名
+        })
+    }
+    window.onload = loadUser
+
+/*    //toggle
     function mainForm() {
 
         $.post(http+"/api/DetailType/findByBID",{bid:"02"},function(result){
-            /*console.log(result)*/
+            /!*console.log(result)*!/
             var formstr = ''
-            /* formstr += ' <option>'+"请选择成果类型"+'</option>';*/
+            /!* formstr += ' <option>'+"请选择成果类型"+'</option>';*!/
             for (var i=0;i<result.data.length;i++){
                 var ops = ' <option value='+result.data[i].did+'>'+ result.data[i].dname +'</option>'
                 formstr += ops
             }
             $("#mainType").html(formstr)
-            layui.use('form', function(){//需要再次渲染form才能在界面显示
-                var form = layui.form;
-                form.render();
-            });
+
         })
         $('#mainName').selectpicker();
     }
     window.onload = mainForm
-
-    $(function() {
-
-        /*
-                $.post(http+"",{bid:"02"},function(result){
-                    console.log(result)
-                    var namestr = ''
-                    /!* namestr += ' <option>'+"请选择成果类型"+'</option>';*!/
-                    for (var i=0;i<result.data.length;i++){
-                        var ops = ' <option value='+result.data[i].did+'>'+ result.data[i].dname +'</option>'
-                        namestr += ops
-                    }
-                    $("#mainType").html(namestr)
-                 /!*   $('#mainName').selectpicker('refresh');*!/
-                })*/
-    });
-    //获取已选项
-    /*    var selectedValues = [];
-        $("#mainName:selected").each(function(){
-            selectedValues.push($(this).val());
-        });*/
-
     function Toggle() {
         console.log($("#mainType").val() + "       6666666666666")
         if ($("#mainType").val() == "0201") {
@@ -906,7 +891,7 @@
             $(".mySoftwareWork").hide()
             $(".myReport").show()
         }
-    }
+    }*/
 
 </script>
 
@@ -969,13 +954,6 @@
             });
         }
         loadTable()
-        //模糊查询
-        function conditionSearch(){
-            $.get(http+"/api/dc/findThesis",{PATENT_NAME:pform.ptitle.value,AGENCY_COMPANY:pform.pagency.value},function (result) {
-                loadData(data.data);
-            })
-        }
-
 
         //重载
         $('#find').click(function () {
@@ -1089,10 +1067,6 @@
                     })
                 });
             }
-            /*             if(obj.event === 'query'){
-                            var a = $('#query');
-                            a.attr('href','')
-                        }*/
         });
     });
     var DataDeal = {
