@@ -25,23 +25,20 @@
             <form class="layui-form" name="mainform" style="margin-top: 30px;">
                 <div class="layui-form-item" >
                     <div class="layui-input-inline" style="margin-left: 0px;">
-                        <select name="mainPerson" id="mainPerson" lay-verify="required" lay-search="">
+                        <select name="mainPerson" id="mainPerson" lay-filter="mainPerson"  lay-verify="required" lay-search="">
                         </select>
                     </div>
 
                     <div class="layui-input-inline" style="margin-left: 20px;">
-                        <select name="mainTask" id="mainTask" lay-verify="required" lay-search="">
-                            <option value="">项目</option>
+                        <select name="mainTask" id="mainTask" lay-filter="mainTask" lay-verify="required" lay-search="">
                         </select>
                     </div>
                     <div class="layui-input-inline" style="margin-left: 20px;">
-                        <select name="mainTaskType" id="mainTaskType" lay-verify="required" lay-search="">
-                            <option value="">项目类型</option>
+                        <select name="mainTaskType" id="mainTaskType" lay-filter="mainTaskType" lay-verify="required" lay-search="">
                         </select>
                     </div>
                     <div class="layui-input-inline" style="margin-left: 20px;">
-                        <select name="mainStatus" id="mainStatus" lay-verify="required" lay-search="">
-                            <option value="">项目状态</option>
+                        <select name="mainStatus" id="mainStatus" lay-filter="mainStatus" lay-verify="required" lay-search="">
                         </select>
                     </div>
                     <div class=" layui-input-inline" style="margin-left: 15px;">
@@ -50,7 +47,7 @@
                 </div>
             </form>
 
-            <div class="myThesis" style="display:block;">
+            <div class="myThesis" style="display:none;">
                 <fieldset class="layui-elem-field layui-field-title site-demo-button" style="margin-top: 20px;">
                     <legend>论文</legend>
                 </fieldset>
@@ -501,7 +498,7 @@
                                         <button type="button" class="layui-btn" id="wupload" >开始上传</button>
                                     </div>-->
             </div>
-            <div class="myAward" style="display:none;">
+            <div class="myAward" style="display:block;">
                 <fieldset class="layui-elem-field layui-field-title site-demo-button" style="margin-top: 30px;">
                     <legend>奖项</legend>
                 </fieldset>
@@ -618,7 +615,7 @@
                             </div>
                         </div>
                         <div class="layui-form-item">
-                            <label class="layui-form-label" >软件名称</label>
+                            <label class="layui-form-label"  style="width: 90px">软件名称</label>
                             <div class="layui-input-block">
                                 <input class="layui-input" type="text"  style="width: 350px" name="softwareName" id="softwareName" required="required">
                             </div>
@@ -632,7 +629,7 @@
                         <div class="layui-form-item" style="display: none">
                             <label class="layui-form-label">成果类型</label>
                             <div class="layui-input-block">
-                                <input class="layui-input" type="text"  style="width: 350px" value="0206" name="resultTypeId " id="aresultTypeId " required>
+                                <input class="layui-input" type="text"  style="width: 350px" value="0206" name="resultTypeId" id="aresultTypeId " required>
                             </div>
                         </div>
                         <div class="layui-form-item">
@@ -656,7 +653,7 @@
                                     <option >请选择作者排名</option>
                                     <option value="1101" >第一作者</option>
                                     <option value="1102" >第二作者</option>
-                                    <option value="1103" >第二作者</option>
+                                    <option value="1103" >第三作者</option>
                                 </select>
                             </div>
                         </div>
@@ -692,29 +689,28 @@
                 </div>
                 <div id="addRContainer" style="display: none;width: 500px" >
                     <form class="layui-form" style="margin:30px" id="addRDetail">
-                        <div class="layui-form-item">
-                            <label class="layui-form-label" >项目ID</label>
+                        <div class="layui-form-item" >
+                            <label class="layui-form-label" style="width: 90px">项目ID</label>
                             <div class="layui-input-block">
                                 <input class="layui-input" type="text"  style="width: 350px" name="projectId" id="rprojectId" required>
                             </div>
                         </div>
                         <div class="layui-form-item">
-                            <label class="layui-form-label" >报告名称</label>
+                            <label class="layui-form-label" style="width: 90px">报告名称</label>
                             <div class="layui-input-block">
                                 <input class="layui-input" type="text"  style="width: 350px" name="projectResultName" id="projectResultName" required>
                             </div>
                         </div>
                         <div class="layui-form-item">
-                            <label class="layui-form-label">撰写时间</label>
+                            <label class="layui-form-label" style="width: 90px">撰写时间</label>
                             <div class="layui-input-block">
-                                <select name="writeTime" id="writeTime" lay-verify="required" style="width: 350px">
-                                </select>
+                                <input class="layui-input" type="text"  style="width: 350px" name="writeTime" id="writeTime"  required="required" onfocus="(this.type='date')" onblur="(this.type='text')">
                             </div>
                         </div>
                         <div class="layui-form-item" style="display: none">
                             <label class="layui-form-label">成果类型</label>
                             <div class="layui-input-block">
-                                <input class="layui-input" type="text"  style="width: 350px" value="0207" name="resultTypeId " id="rresultTypeId " required>
+                                <input class="layui-input" type="text"  style="width: 350px" value="0207" name="resultTypeId" id="rresultTypeId " required>
                             </div>
                         </div>
                         <div class="layui-form-item">
@@ -731,31 +727,26 @@
                                     <option >请选择作者排名</option>
                                     <option value="1101" >第一作者</option>
                                     <option value="1102" >第二作者</option>
-                                    <option value="1103" >第二作者</option>
+                                    <option value="1103" >第三作者</option>
                                 </select>
                             </div>
                         </div>
                         <div class="layui-form-item" align="center">
-                            <button type="button" class="layui-btn layui-btn-radius layui-btn-normal" onclick="addInfo();addCode()">添加作者信息</button>
+                            <button type="button" class="layui-btn layui-btn-radius layui-btn-normal" onclick="addRInfo();addRCode()">添加作者信息</button>
                         </div>
                         <div class="layui-form-item">
                             <label class="layui-form-label" style="width: 90px">作者信息</label>
                             <div class="layui-input-block" >
-                                <textarea name="winfo" id="rwinfo" lay-verify="required" style="width: 350px" ></textarea>
+                                <textarea name="rwinfo" id="rwinfo" lay-verify="required" style="width: 350px" ></textarea>
                             </div>
                         </div>
                         <div class="layui-form-item" style="display: none">
                             <label class="layui-form-label" style="width: 90px">码信息</label>
                             <div class="layui-input-block" >
-                                <textarea name="detailInfo" id="rdetailInfo" lay-verify="required" style="width: 350px" ></textarea>
+                                <textarea name="rdetailInfo" id="rdetailInfo" lay-verify="required" style="width: 350px" ></textarea>
                             </div>
                         </div>
-                        <div class="layui-form-item">
-                            <label class="layui-form-label" style="width: 90px">发布日期</label>
-                            <div class="layui-input-block">
-                                <input class="layui-input" type="text"  style="width: 350px" name="writeTime" id="rwriteTime" onfocus="(this.type='date')" onblur="(this.type='text')">
-                            </div>
-                        </div>
+
                         <div class="layui-form-item" align="center">
                             <button type="button" class="layui-btn layui-btn-radius layui-btn-normal" onclick="addDetail()">确认添加</button>
                         </div>
@@ -777,44 +768,73 @@
 <script>
     var http = "http://148.70.243.66:8888";
 
-    layui.use('form', function(){//需要再次渲染form才能在界面显示
+    layui.use('form', function(){//需要渲染form才能在界面显示
         var form = layui.form;
         form.render();
     });
     function generateWriter() {
         $.get(http+"/api/authorManager/findAuthor",function (result) {
             var idstr = ''
-            idstr += ' <option>'+"请选择作者"+'</option>';
+            idstr += ' <option value="">'+"请选择作者"+'</option>';
             for (var i=0;i<result.data.length;i++){
                 var ops = ' <option value='+result.data[i].wid+'>'+ result.data[i].name +'</option>'
                 idstr += ops
             }
-            /*console.log(idstr)*/
-            $("#writerId").html(idstr)//报告
+       /*     console.log(idstr)*/
             $("#awid").html(idstr)//软件
+            $("#rwid").html(idstr)//报告
 
         })
     }
     generateWriter()
-
-    function loadUser() {
+    layui.use('form', function(){//需要渲染form才能在界面显示
+        var form = layui.form;
         $.post(http+"/api/manager/queryAllUser",function (result) {
             var userstr = ''
-            userstr += ' <option>'+"请选择姓名"+'</option>';
+            userstr += ' <option value="">'+"请选择姓名"+'</option> ';
             for (var i=0;i<result.data.length;i++){
-                var ops = '<option value='+result.data[i].user_role.uid+'>'+ result.data[i].user_role.username +'</option>'
+                var ops = '<option value='+result.data[i].user_role.uid+'>'+ result.data[i].user_role.username +'</option> '
                 userstr += ops
             }
-            console.log(userstr)
-            layui.use('form', function(){//需要再次渲染form才能在界面显示
-                var form = layui.form;
-                form.render();
-            });
+       /*     console.log(userstr)*/
             $("#mainPerson").html(userstr)//姓名
+            form.render('select');
         })
-    }
-    window.onload = loadUser
 
+        form.on('select(mainPerson)', function (data) {
+            $.get(http+"/api/project/findProjectInfo",{userId:data.value},function (result) {
+                var taskstr = ''
+                taskstr += ' <option value="">'+"请选择项目"+'</option>';
+                for (var i=0;i<result.data.length;i++){
+                    var ops = ' <option value='+result.data[i].pid+'>'+ result.data[i].pname +'</option>'
+                    taskstr += ops
+                }
+                /*console.log(taskstr)*/
+                $("#mainTask").html(taskstr)//项目
+                form.render('select');
+            })
+        });
+        $.post(http+"/api/DetailType/findByBID",{bid:"03"},function (result) {
+            var typestr = ''
+            for (var i=0;i<result.data.length;i++){
+                var ops = '<option value='+result.data[i].did+'>'+ result.data[i].dname +'</option> '
+                typestr += ops
+            }
+            $("#mainTaskType").html(typestr)//项目类型
+            $("select[name='mainTaskType']").find("option[value='"+result.data[1].did+"']").attr("selected",true);
+            form.render('select');
+        })
+        $.post(http+"/api/DetailType/findByBID",{bid:"06"},function (result) {
+            var typestr = ''
+            var ops = '<option value='+result.data[0].did+'>'+ result.data[0].dname +'</option> '
+            typestr += ops
+            var opt = '<option value='+result.data[1].did+' selected='+`"selected"`+'>'+ result.data[1].dname +'</option> '
+            // console.log(opt);
+            typestr += opt
+            $("#mainStatus").html(typestr)//状态
+            form.render('select');
+        })
+    });
 /*    //toggle
     function mainForm() {
 
@@ -896,7 +916,7 @@
 </script>
 
 <!--论文-->
-<script>
+<!--<script>
     var addlay,editlay;
     var getbid = location.search;
     var bybid = "";
@@ -1085,8 +1105,8 @@
         var $ = layui.$;
         var formData = $('#addTDetail').serialize();
         formData= decodeURIComponent(formData,true);//防止中文乱码
-        var jsondata=DataDeal.formToJson(formData);//转化为json
-        console.log(jsondata )
+        var rjsondata=DataDeal.formToJson(formData);//转化为json
+        console.log(rjsondata )
         console.log("aaaaaaaaaaaaaaaaaaaaa")
         $.ajax({
             type:'post',
@@ -1104,7 +1124,7 @@
     }
 
 
-</script>
+</script>-->
 
 <!--软著-->
 <!--<script>
@@ -1302,8 +1322,8 @@
         var $ = layui.$;
         var formData = $('#addSDetail').serialize();
         formData= decodeURIComponent(formData,true);//防止中文乱码
-        var jsondata=DataDeal.formToJson(formData);//转化为json
-        console.log(jsondata )
+        var rjsondata=DataDeal.formToJson(formData);//转化为json
+        console.log(rjsondata )
         console.log("aaaaaaaaaaaaaaaaaaaaa")
         $.ajax({
             type:'post',
@@ -1520,8 +1540,8 @@
         var $ = layui.$;
         var formData = $('#addPDetail').serialize();
         formData= decodeURIComponent(formData,true);//防止中文乱码
-        var jsondata=DataDeal.formToJson(formData);//转化为json
-        console.log(jsondata )
+        var rjsondata=DataDeal.formToJson(formData);//转化为json
+        console.log(rjsondata )
         console.log("aaaaaaaaaaaaaaaaaaaaa")
         $.ajax({
             type:'post',
@@ -1736,8 +1756,8 @@
         var $ = layui.$;
         var formData = $('#addWDetail').serialize();
         formData= decodeURIComponent(formData,true);//防止中文乱码
-        var jsondata=DataDeal.formToJson(formData);//转化为json
-        console.log(jsondata )
+        var rjsondata=DataDeal.formToJson(formData);//转化为json
+        console.log(rjsondata )
         console.log("aaaaaaaaaaaaaaaaaaaaa")
         $.ajax({
             type:'post',
@@ -1757,7 +1777,7 @@
 </script>-->
 
 <!--获奖-->
-<!--<script>
+<script>
     var addlay,editlay;
     var getbid = location.search;
     var bybid = "";
@@ -1811,12 +1831,6 @@
             });
         }
         loadTable()
-        //模糊查询
-        function conditionSearch(){
-            $.get(http+"/api/dc/findThesis",{PATENT_NAME:pform.ptitle.value,AGENCY_COMPANY:pform.pagency.value},function (result) {
-                loadData(data.data);
-            })
-        }
 
 
         //重载
@@ -1858,9 +1872,9 @@
                 case 'add':
                     addlay = layer.open({
                         type: 1,
-                        title: '添加软件信息',
+                        title: '添加奖项信息',
                         area: ['80%', '70%'],
-                        content: $('#addWContainer'),
+                        content: $('#addAWContainer'),
                         end: function () {
                             loadTable();
                         }
@@ -1937,28 +1951,78 @@
                         }*/
         });
     });
-    var DataDeal = {
-        //将从form中通过$('#refer').serialize()获取的值转成json
-        formToJson: function (data) {
-            data=data.replace(/&/g,"\",\"");
-            data=data.replace(/=/g,"\":\"");
-            data="{\""+data+"\"}";
-            return data;
-        }
-    };
+   //添加作者信息
+    function addInfo() {
+        var winfo = []
+        winfo =  $("#awid").find("option:selected").text() + ":" +  $("#aorder").find("option:selected").text()
+        $("#awinfo").append(winfo+",")
+    }
+    //添加码信息
+    function addCode() {
+        var dinfo = []
+        dinfo =  $("#awid").find("option:selected").val() + "," +  $("#aorder").find("option:selected").val() + ","
+        $("#detailInfo").append(dinfo)
+    }
 
+    //转格式
+    $.fn.serializeObject = function()
+    {
+        var res = {};
+        var a = this.serializeArray();
+        $.each(a, function() {
+            if (res[this.name] !== undefined) {
+                if (!res[this.name].push) {
+                    res[this.name] = [res[this.name]];
+                }
+                res[this.name].push(this.value || '');
+            } else {
+                res[this.name] = this.value || '';
+            }
+        });
+        return res;
+    };
     //提交添加表单
     function addDetail() {
         var $ = layui.$;
-        var formData = $('#addAWDetail').serialize();
-        formData= decodeURIComponent(formData,true);//防止中文乱码
-        var jsondata=DataDeal.formToJson(formData);//转化为json
-        console.log(jsondata )
-        console.log("aaaaaaaaaaaaaaaaaaaaa")
+        function form2JsonString(formId) {
+            var paramArray = $('#' + formId).serializeArray();
+            var jsonObj = {};
+            $(paramArray).each(function () {
+                jsonObj[this.name] = this.value;
+            });
+            return JSON.stringify(jsonObj);
+        }
+        rjsondata  = eval("("+form2JsonString("addADetail")+")");
+        console.log(rjsondata)
+        var writer = rjsondata.detailInfo.split(",")
+        console.log(writer)
+        var writerInfo = [];
+
+        for(var i=0;i<(writer.length-1)/2;i++){
+           var order ={
+               "resultTypeId": rjsondata.resultTypeId,
+               "wid": writer[2*i],
+               "writerTypeId": writer[2*i+1]
+           }
+           console.log(order)
+           writerInfo.push(order)
+        }
+    console.log(writerInfo)
+        var a = {
+                "projectId": rjsondata.projectId,
+                "publishTime": rjsondata.publishTime,
+                "softwareName": rjsondata.softwareName,
+                "webSite": rjsondata.webSite,
+                writerInfo
+            };
+
         $.ajax({
-            type:'post',
-            url: http+'/api/software/insert',
-            data: formData,
+            type:"post",
+            url:http+"/api/software/insert",
+            dataType:"json",
+            contentType : "application/json;charset=UTF-8",
+            traditional:true,
+            data:JSON.stringify(a),
             success: function (data) {
                 layer.msg('添加成功');
                 layer.close(addlay);
@@ -1967,14 +2031,12 @@
                 layer.msg('错误码：'+data.status);
                 layer.close(addlay);
             }
-        })
+        });
     }
-
-</script>-->
+</script>
 
 <!--软件-->
-<!--
-<script>
+<!--<script>
     var addlay,editlay;
     var getbid = location.search;
     var bybid = "";
@@ -2002,13 +2064,12 @@
                     {type: 'checkbox'},
                     {field: 'softwareName', title: '名称'},
                     {field: 'writers', title: '作者'},
-                    {field: 'publishTime', title: '时间'},
+                    {field: 'publishTime', title: '时间', sort: true},
                     {field: 'webSite', title: '网址'},
-                    {field: '', title: '设计文档', sort: true}, //暂未显示
+                    {field: '', title: '设计文档'},  //暂未显示
                     {fixed: 'right', title: '操作', templet: '#handle', align: 'center'}
                 ]],
                 toolbar: '#myAToolbar',
-
             })
         }
 
@@ -2029,13 +2090,6 @@
             });
         }
         loadTable()
-        //模糊查询
-        function conditionSearch(){
-            $.get(http+"/api/dc/findThesis",{PATENT_NAME:pform.ptitle.value,AGENCY_COMPANY:pform.pagency.value},function (result) {
-                loadData(data.data);
-            })
-        }
-
 
         //重载
         $('#find').click(function () {
@@ -2193,50 +2247,37 @@
             });
             return JSON.stringify(jsonObj);
         }
-        jsondata  = eval("("+form2JsonString("addADetail")+")");
-        console.log(jsondata)
-        console.log(jsondata.detailInfo)
-        var writer = []
-        writer.push("0205")
-        writer.push(jsondata.detailInfo.split(","))
+        rjsondata  = eval("("+form2JsonString("addADetail")+")");
+        console.log(rjsondata)
+        var writer = rjsondata.detailInfo.split(",")
         console.log(writer)
-        console.log(writer[1].length)
         var writerInfo = [];
-        var order ={
-            "resultTypeId": writer[0],
-            "wid": writer[1][0],
-            "writerTypeId": writer[1][1]
-        }
-        writerInfo.push(order)
-        for(var i=0;i<(writer[1].length-1)%2;i++){
-            var count = writer[1].length-1
-            var cnt = 0
-            writerInfo['order'+i] ={
-                "resultTypeId": writer[0],
-                "wid": writer[1][0],
-                "writerTypeId": writer[1][1]
-            }
-        }
 
+        for(var i=0;i<(writer.length-1)/2;i++){
+           var order ={
+               "resultTypeId": rjsondata.resultTypeId,
+               "wid": writer[2*i],
+               "writerTypeId": writer[2*i+1]
+           }
+           console.log(order)
+           writerInfo.push(order)
+        }
     console.log(writerInfo)
-
         var a = {
-                "projectId": jsondata.projectId,
-                "publishTime": jsondata.publishTime,
-                "softwareName": jsondata.softwareName,
-                "webSite": jsondata.webSite,
+                "projectId": rjsondata.projectId,
+                "publishTime": rjsondata.publishTime,
+                "softwareName": rjsondata.softwareName,
+                "webSite": rjsondata.webSite,
                 writerInfo
             };
-    console.log(a)
 
         $.ajax({
-            type:'post',
-            url: http+'/api/software/insert',
+            type:"post",
+            url:http+"/api/software/insert",
             dataType:"json",
-            contentType:"application/json:charset=UTF-8",
+            contentType : "application/json;charset=UTF-8",
             traditional:true,
-
-            data: JSON.stringify(a),
+            data:JSON.stringify(a),
             success: function (data) {
                 layer.msg('添加成功');
                 layer.close(addlay);
@@ -2245,11 +2286,10 @@
                 layer.msg('错误码：'+data.status);
                 layer.close(addlay);
             }
-        })
+        });
     }
 
-</script>
--->
+</script>-->
 
 <!--报告-->
 <!--<script>
@@ -2292,24 +2332,19 @@
         //加载表数据
         function loadTable(){
             $.get(http+'/api/resultReport/find',function (result) {
-                console.log(result.data[0].writerInfos)
+                console.log(result.data.length)
                 for(var i=0;i<result.data.length;i++){
                     var authorinfo = ''
                     for(var j=0;j<result.data[i].writerInfos.length;j++){
                         authorinfo += result.data[i].writerInfos[j].writerName + ":" + result.data[i].writerInfos[j].gender +","+ result.data[i].writerInfos[j].typeName +","+ result.data[i].writerInfos[j].professionalTitle +","+ result.data[i].writerInfos[j].writerType+"。"+ " <br>"
                     }
                     result.data[i].writerInfos = authorinfo
+/*                    console.log(result.data[i].writerInfos)*/
                 }
                 loadData(result.data);
             });
         }
         loadTable()
-        //模糊查询
-        function conditionSearch(){
-            $.get(http+"/api/dc/findThesis",{PATENT_NAME:pform.ptitle.value,AGENCY_COMPANY:pform.pagency.value},function (result) {
-                loadData(data.data);
-            })
-        }
 
 
         //重载
@@ -2431,43 +2466,78 @@
         });
     });
 
+    //添加作者信息
+    function addRInfo() {
+        var winfo = []
+        winfo =  $("#rwid").find("option:selected").text() + ":" +  $("#rorder").find("option:selected").text()
+        $("#rwinfo").append(winfo+",")
+    }
+    //添加码信息
+    function addRCode() {
+        var dinfo = []
+        dinfo =  $("#rwid").find("option:selected").val() + "," +  $("#rorder").find("option:selected").val() + ","
+        $("#rdetailInfo").append(dinfo)
+    }
 
-    //转为对象格式
-    var DataDeal = {
-        //将从form中通过$('#refer').serialize()获取的值转成json
-        formToJson: function (data) {
-            data=data.replace(/&/g,"\",\"");
-            data=data.replace(/=/g,"\":\"");
-            data="{\""+data+"\"}";
-            return data;
-        }
+    //转格式
+    $.fn.serializeObject = function()
+    {
+        var res = {};
+        var a = this.serializeArray();
+        $.each(a, function() {
+            if (res[this.name] !== undefined) {
+                if (!res[this.name].push) {
+                    res[this.name] = [res[this.name]];
+                }
+                res[this.name].push(this.value || '');
+            } else {
+                res[this.name] = this.value || '';
+            }
+        });
+        return res;
     };
-
     //提交添加表单
-/*    function addDetail() {
+    function addDetail() {
         var $ = layui.$;
-        var formData = $('#addRDetail').serialize();
-        console.log(formData)
-        formData= decodeURIComponent(formData,true);//防止中文乱码
-        var jsondata = DataDeal.formToJson(formData);//转化为json
-        console.log(jsondata)
-        console.log("222222222222")
-        var writer = []
-        writer.push({"resultTypeId":jsondata.resultTypeId,"writerId":jsondata.writerId,"writerTypeId":jsondata.writerTypeId})
-        delete jsondata.resultTypeId
-        delete jsondata.writerId
-        delete jsondata.writerTypeId
-        console.log(jsondata)
-        console.log("1111111111111")
-        let key = 'writers'
-        let value = writer
-        jsondata[key] = value
-        console.log(jsondata )
-        console.log("aaaaaaaaaaaaaaaaaaaaa")
+        function form2JsonString(formId) {
+            var paramArray = $('#' + formId).serializeArray();
+            var jsonObj = {};
+            $(paramArray).each(function () {
+                jsonObj[this.name] = this.value;
+            });
+            return JSON.stringify(jsonObj);
+        }
+        rjsondata  = eval("("+form2JsonString("addRDetail")+")");
+        console.log(rjsondata)
+        console.log(rjsondata.detailInfo)
+        var writer = rjsondata.rdetailInfo.split(",")
+        console.log(writer)
+        var writers = [];
+        for(var i=0;i<(writer.length-1)/2;i++){
+            var order ={
+                "resultTypeId": rjsondata.resultTypeId,
+                "writerId": writer[2*i],
+                "writerTypeId": writer[2*i+1]
+            }
+            console.log(order)
+            writers.push(order)
+        }
+        console.log(writers)
+
+        var a = {
+            "projectId": rjsondata.projectId,
+            "writeTime": rjsondata.writeTime,
+            "projectResultName": rjsondata.projectResultName,
+            writers: writers
+        };
+        console.log(a)
         $.ajax({
-            type:'post',
-            url: http+'/api/resultReport/insert',
-            data: formData,
+            type:"post",
+            url:http+"/api/resultReport/insert",
+            dataType:"json",
+            contentType : "application/json;charset=UTF-8",
+            traditional:true,
+            data:JSON.stringify(a),
             success: function (data) {
                 layer.msg('添加成功');
                 layer.close(addlay);
@@ -2476,8 +2546,8 @@
                 layer.msg('错误码：'+data.status);
                 layer.close(addlay);
             }
-        })
-    }*/
+        });
+    }
 
 </script>-->
 
