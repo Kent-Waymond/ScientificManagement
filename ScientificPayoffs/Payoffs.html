@@ -47,7 +47,7 @@
                 </div>
             </form>
 
-            <div class="myThesis" style="display:none;">
+            <div class="myThesis" style="display:block;">
                 <fieldset class="layui-elem-field layui-field-title site-demo-button" style="margin-top: 20px;">
                     <legend>论文</legend>
                 </fieldset>
@@ -363,7 +363,7 @@
                 </div>
                 <table class="layui-table"  id='PTable' lay-filter="PTable" style="margin-top: -5px"></table>
             </div>
-            <div class="myWriting" style="display:block;">
+            <div class="myWriting" style="display:none;">
                 <fieldset class="layui-elem-field layui-field-title site-demo-button" style="margin-top: 30px;">
                     <legend>书籍</legend>
                 </fieldset>
@@ -706,7 +706,7 @@
 <script type="text/html" id="handle">
     <a class="layui-btn layui-btn-xs layui-btn-blue" lay-event="upload" id="upload">上传</a>
     <a class="layui-btn layui-btn-xs layui-bg-orange" lay-event="download" id="download">下载</a>
-    <a class="layui-btn layui-btn-xs layui-btn-danger" lay-event="del" id="delete">删除</a>
+    <a class="layui-btn layui-btn-xs layui-btn-danger" lay-event="del" id="del">删除</a>
 </script>
 
 <!--mainform-->
@@ -783,88 +783,12 @@
             form.render('select');
         })
     });
-/*    //toggle
-    function mainForm() {
 
-        $.post(http+"/api/DetailType/findByBID",{bid:"02"},function(result){
-            /!*console.log(result)*!/
-            var formstr = ''
-            /!* formstr += ' <option>'+"请选择成果类型"+'</option>';*!/
-            for (var i=0;i<result.data.length;i++){
-                var ops = ' <option value='+result.data[i].did+'>'+ result.data[i].dname +'</option>'
-                formstr += ops
-            }
-            $("#mainType").html(formstr)
-
-        })
-        $('#mainName').selectpicker();
-    }
-    window.onload = mainForm
-    function Toggle() {
-        console.log($("#mainType").val() + "       6666666666666")
-        if ($("#mainType").val() == "0201") {
-            $(".mySoftwareWork").hide()
-            $(".myPatent").hide()
-            $(".myWriting").hide()
-            $(".myAward").hide()
-            $(".myApp").hide()
-            $(".myReport").hide()
-            $(".myThesis").show()
-        } else if ($("#mainType").val() == "0202") {
-            $(".myPatent").hide()
-            $(".myWriting").hide()
-            $(".myAward").hide()
-            $(".myApp").hide()
-            $(".myReport").hide()
-            $(".myThesis").hide()
-            $(".mySoftwareWork").show()
-        }else if ($("#mainType").val() == "0203") {
-            $(".myWriting").hide()
-            $(".myAward").hide()
-            $(".myApp").hide()
-            $(".myReport").hide()
-            $(".myThesis").hide()
-            $(".mySoftwareWork").hide()
-            $(".myPatent").show()
-        }else if ($("#mainType").val() == "0204") {
-            $(".myPatent").hide()
-            $(".myAward").hide()
-            $(".myApp").hide()
-            $(".myReport").hide()
-            $(".myThesis").hide()
-            $(".mySoftwareWork").hide()
-            $(".myWriting").show()
-        }else if ($("#mainType").val() == "0205") {
-            $(".myPatent").hide()
-            $(".myWriting").hide()
-            $(".myApp").hide()
-            $(".myReport").hide()
-            $(".myThesis").hide()
-            $(".mySoftwareWork").hide()
-            $(".myAward").show()
-        }else if ($("#mainType").val() == "0206") {
-            $(".myPatent").hide()
-            $(".myWriting").hide()
-            $(".myAward").hide()
-            $(".myReport").hide()
-            $(".myThesis").hide()
-            $(".mySoftwareWork").hide()
-            $(".myApp").show()
-        }else if ($("#mainType").val() == "0207") {
-            $(".myPatent").hide()
-            $(".myWriting").hide()
-            $(".myAward").hide()
-            $(".myApp").hide()
-            $(".myThesis").hide()
-            $(".mySoftwareWork").hide()
-            $(".myReport").show()
-        }
-    }*/
 
 </script>
 
 <!--论文-->
-<!--<script>
+<script>
     var addlay,editlay;
     var getbid = location.search;
     var bybid = "";
@@ -984,9 +908,16 @@
                                 dids+=data[i].uuid
                             }
                         }
-                        $.get(http+'/api/software/delete',{"uuid":dids},function () {
-                            loadTable();
-                        })
+                        layer.confirm('确认删除吗？', {title: '删除'}, function (index) {
+                            $.get(http+'/api/resultThesis/delete', {"uuid": dids}, function () {
+                                layui.use('layer', function(){
+                                    var layer = layui.layer;
+                                    layer.alert("<h3 style='color:black'>" + '删除成功! '  + "</h3>",{title:"温馨提示"});
+                                    loadTable()
+                                });
+                            });
+                            layer.close(index);
+                        });
                     }
                     break;
             }
@@ -998,7 +929,7 @@
             if (obj.event === 'del') {
                 layer.confirm('确认删除吗？', {title: '删除'}, function (index) {
                     obj.del();
-                    $.post(http+'/api/dc/thesisDeleteByUuid', {"uuid": data.uuid}, function () {
+                    $.get(http+'/api/resultThesis/delete', {"uuid": data.uuid}, function () {
                         layui.use('layer', function(){
                             var layer = layui.layer;
                             layer.alert("<h3 style='color:black'>" + '删除成功! '  + "</h3>",{title:"温馨提示"});
@@ -1123,7 +1054,7 @@
         });
     }
 
-</script>-->
+</script>
 
 <!--软著-->
 <!--<script>
@@ -1242,9 +1173,16 @@
                                 dids+=data[i].uuid
                             }
                         }
-                        $.get(http+'/api/software/delete',{"uuid":dids},function () {
-                            loadTable();
-                        })
+                        layer.confirm('确认删除吗？', {title: '删除'}, function (index) {
+                            $.get(http+'/api/resultSoftwareWork/delete', {"uuid": dids}, function () {
+                                layui.use('layer', function(){
+                                    var layer = layui.layer;
+                                    layer.alert("<h3 style='color:black'>" + '删除成功! '  + "</h3>",{title:"温馨提示"});
+                                    loadTable()
+                                });
+                            });
+                            layer.close(index);
+                        });
                     }
                     break;
             }
@@ -1256,7 +1194,7 @@
             if (obj.event === 'del') {
                 layer.confirm('确认删除吗？', {title: '删除'}, function (index) {
                     obj.del();
-                    $.post(http+'/api/dc/software_workDeleteByUuid', {"uuid": data.uuid}, function () {
+                    $.get(http+'/api/resultSoftwareWork/delete', {"uuid": data.uuid}, function () {
                         layui.use('layer', function(){
                             var layer = layui.layer;
                             layer.alert("<h3 style='color:black'>" + '删除成功! '  + "</h3>",{title:"温馨提示"});
@@ -1505,9 +1443,16 @@
                                 dids+=data[i].uuid
                             }
                         }
-                        $.get(http+'/api/software/delete',{"uuid":dids},function () {
-                            loadTable();
-                        })
+                       layer.confirm('确认删除吗？', {title: '删除'}, function (index) {
+                            $.get(http+'/api/resultPatent/delete', {"uuid": dids}, function () {
+                                layui.use('layer', function(){
+                                    var layer = layui.layer;
+                                    layer.alert("<h3 style='color:black'>" + '删除成功! '  + "</h3>",{title:"温馨提示"});
+                                    loadTable()
+                                });
+                            });
+                            layer.close(index);
+                        });
                     }
                     break;
             }
@@ -1519,7 +1464,7 @@
             if (obj.event === 'del') {
                 layer.confirm('确认删除吗？', {title: '删除'}, function (index) {
                     obj.del();
-                    $.post(http+'/api/dc/software_workDeleteByUuid', {"uuid": data.uuid}, function () {
+                    $.get(http+'/api/resultPatent/delete', {"uuid": data.uuid}, function () {
                         layui.use('layer', function(){
                             var layer = layui.layer;
                             layer.alert("<h3 style='color:black'>" + '删除成功! '  + "</h3>",{title:"温馨提示"});
@@ -1652,7 +1597,7 @@
 </script>-->
 
 <!--著作-->
-<script>
+<!--<script>
     var addlay,editlay;
     var getbid = location.search;
     var bybid = "";
@@ -1706,13 +1651,6 @@
             });
         }
         loadTable()
-        //模糊查询
-        function conditionSearch(){
-            $.get(http+"/api/dc/findThesis",{PATENT_NAME:pform.ptitle.value,AGENCY_COMPANY:pform.pagency.value},function (result) {
-                loadData(data.data);
-            })
-        }
-
 
         //重载
         $('#find').click(function () {
@@ -1775,21 +1713,25 @@
                                 dids+=data[i].uuid
                             }
                         }
-                        $.get(http+'/api/software/delete',{"uuid":dids},function () {
-                            loadTable();
+                        $.get(http+'/api/resultBook/delete',{"uuid":dids},function () {
+                            layui.use('layer', function(){
+                                var layer = layui.layer;
+                                layer.alert("<h3 style='color:black'>" + '删除成功! '  + "</h3>",{title:"温馨提示"});
+                                loadTable();
+                            });
                         })
                     }
                     break;
             }
         });
         //单个删除/下载
-        table.on('tool(ATable)', function(obj) {
+        table.on('tool(WTable)', function(obj) {
             var data = obj.data;
             console.log(data)
             if (obj.event === 'del') {
                 layer.confirm('确认删除吗？', {title: '删除'}, function (index) {
                     obj.del();
-                    $.post(http+'/api/dc/writingsDeleteByUuid', {"uuid": data.uuid}, function () {
+                    $.get(http+'/api/resultBook/delete', {"uuid": data.uuid}, function () {
                         layui.use('layer', function(){
                             var layer = layui.layer;
                             layer.alert("<h3 style='color:black'>" + '删除成功! '  + "</h3>",{title:"温馨提示"});
@@ -1913,7 +1855,7 @@
         });
     }
 
-</script>
+</script>-->
 
 <!--获奖-->
 <!--<script>
@@ -2033,9 +1975,16 @@
                                 dids+=data[i].uuid
                             }
                         }
-                        $.post(http+'/api/dc/awardDeleteByUuid',{"uuid":dids},function () {
-                            loadTable();
-                        })
+                        layer.confirm('确认删除吗？', {title: '删除'}, function (index) {
+                            $.get(http+'/api/resultAward/delete', {"uuid": dids}, function () {
+                                layui.use('layer', function(){
+                                    var layer = layui.layer;
+                                    layer.alert("<h3 style='color:black'>" + '删除成功! '  + "</h3>",{title:"温馨提示"});
+                                    loadTable()
+                                });
+                            });
+                            layer.close(index);
+                        });
                     }
                     break;
             }
@@ -2047,7 +1996,7 @@
             if (obj.event === 'del') {
                 layer.confirm('确认删除吗？', {title: '删除'}, function (index) {
                     obj.del();
-                    $.post(http+'/api/dc/writingsDeleteByUuid', {"uuid": data.uuid}, function () {
+                    $.get(http+'/api/resultAward/delete', {"uuid": data.uuid}, function () {
                         layui.use('layer', function(){
                             var layer = layui.layer;
                             layer.alert("<h3 style='color:black'>" + '删除成功! '  + "</h3>",{title:"温馨提示"});
@@ -2262,9 +2211,16 @@
                                 dids+=data[i].uuid
                             }
                         }
-                        $.get(http+'/api/software/delete',{"uuid":dids},function () {
-                            loadTable();
-                        })
+                       layer.confirm('确认删除吗？', {title: '删除'}, function (index) {
+                            $.get(http+'/api/software/delete', {"uuid": dids}, function () {
+                                layui.use('layer', function(){
+                                    var layer = layui.layer;
+                                    layer.alert("<h3 style='color:black'>" + '删除成功! '  + "</h3>",{title:"温馨提示"});
+                                    loadTable()
+                                });
+                            });
+                            layer.close(index);
+                        });
                     }
                     break;
             }
@@ -2519,9 +2475,16 @@
                                 dids+=data[i].uuid
                             }
                         }
-                        $.get(http+'/api/resultReport/delete',{"uuid":dids},function () {
-                            loadTable();
-                        })
+                        layer.confirm('确认删除吗？', {title: '删除'}, function (index) {
+                            $.get(http+'/api/resultReport/delete', {"uuid": dids}, function () {
+                                layui.use('layer', function(){
+                                    var layer = layui.layer;
+                                    layer.alert("<h3 style='color:black'>" + '删除成功! '  + "</h3>",{title:"温馨提示"});
+                                    loadTable()
+                                });
+                            });
+                            layer.close(index);
+                        });
                     }
                     break;
             }
