@@ -47,7 +47,7 @@
                 </div>
             </form>
 
-            <div class="myThesis" style="display:block;">
+            <div class="myThesis" style="display:none;">
                 <fieldset class="layui-elem-field layui-field-title site-demo-button" style="margin-top: 20px;">
                     <legend>论文</legend>
                 </fieldset>
@@ -543,7 +543,7 @@
                 <table class="layui-table"  id='AWTable' lay-filter="AWTable" style="margin-top: -5px"></table>
 
             </div>
-            <div class="myApp" style="display: none">
+            <div class="myApp" style="display: block">
                 <fieldset class="layui-elem-field layui-field-title site-demo-button" style="margin-top: 30px;">
                     <legend>软件</legend>
                 </fieldset>
@@ -621,6 +621,26 @@
                             <button type="button" class="layui-btn layui-btn-radius layui-btn-normal" onclick="addDetail()">提交</button>
                         </div>
                     </form>
+                </div>
+                <div id="uploadAContainer" style="display: none;width: 400px" >
+                    <form class="layui-form" style="margin:30px" id="uploadADetail" name="uploadADetail">
+                        <div class="layui-form-item">
+                            <label class="layui-form-label" style="width: 90px">文件名称</label>
+                            <div class="layui-input-block">
+                                <input class="layui-input" type="text"  style="width: 300px" name="fileName" id="afileName" required="required">
+                            </div>
+                        </div>
+                        <div class="layui-form-item" style="display: none">
+                            <label class="layui-form-label" style="width: 90px">文件类型ID</label>
+                            <div class="layui-input-block">
+                                <input class="layui-input" type="text"   value="1205" name="fileTypeId" id="afileTypeId" required="required">
+                            </div>
+                        </div>
+                    </form>
+                    <div style="margin-left: 35px">
+                        <button type="button" class="layui-btn layui-btn-normal" id="achoosefile">选择文件</button>
+                        <button type="button" class="layui-btn" id="aupload" >开始上传</button>
+                    </div>
                 </div>
                 <table class="layui-table"  id='ATable' lay-filter="ATable" style="margin-top: -5px"></table>
             </div>
@@ -788,7 +808,7 @@
 </script>
 
 <!--论文-->
-<script>
+<!--<script>
     var addlay,editlay;
     var getbid = location.search;
     var bybid = "";
@@ -922,8 +942,8 @@
                     break;
             }
         });
-        //单个删除/下载
-        table.on('tool(ATable)', function(obj) {
+        //单个删除/下载/上传
+        table.on('tool(TTable)', function(obj) {
             var data = obj.data;
             console.log(data)
             if (obj.event === 'del') {
@@ -941,6 +961,11 @@
                     });
                     layer.close(index);
                 });
+            }
+            if(obj.event === 'upload'){
+                $.post(http+"/api/resultFile/uploadFile",{"uuid": data.uuid}, function () {
+
+                })
             }
             if(obj.event === 'download'){
                 layer.confirm('请选择下载文件！', {
@@ -1054,7 +1079,7 @@
         });
     }
 
-</script>
+</script>-->
 
 <!--软著-->
 <!--<script>
@@ -2095,8 +2120,8 @@
 </script>-->
 
 <!--软件-->
-<!--<script>
-    var addlay,editlay;
+<script>
+    var addlay,uploadlay;
     var getbid = location.search;
     var bybid = "";
     if(getbid){
@@ -2231,7 +2256,7 @@
             console.log(data)
             if (obj.event === 'del') {
                 layer.confirm('确认删除吗？', {title: '删除'}, function (index) {
-                    obj.del();
+                    /*obj.del();*/
                     $.get(http+'/api/software/delete', {"uuid": data.uuid}, function () {
                         layui.use('layer', function(){
                             var layer = layui.layer;
@@ -2245,30 +2270,73 @@
                     layer.close(index);
                 });
             }
-                     if(obj.event === 'download'){
-                             layer.confirm('请选择下载文件！', {
-                                 title: "Tips" ,btnAlign: 'c',
-                                 btn: ['设计文档下载', '相关文件下载','取消']
-                                 ,btn3: function(index, layero){
-                                     close()
-                                 }
-                             }, function(index, layero){
-                                 $.get(http+'/api/software/downLoadFile', {"uuid": data.uuid,fileTypeId:"1205"}, function (result) {
-                                    if(result.status =="success"){
-                                        var layer = layui.layer;
-                                        layer.alert("<h3 style='color:black'>" + '已开始下载! '  + "</h3>",{title:"温馨提示"});
-                                    }
-                                 })
-                             }, function(index){
-                                 //按钮二的回调
-                                 $.get(http+'/api/software/downLoadFile', {"uuid": data.uuid,fileTypeId:"1204"}, function (result) {
-                                     if(result.status =="success"){
-                                         var layer = layui.layer;
-                                         layer.alert("<h3 style='color:black'>" + '已开始下载! '  + "</h3>",{title:"温馨提示"});
-                                     }
-                                 })
-                             });
-                         }
+            if (obj.event === 'upload') {
+                uploadlay = layer.open({
+                    type: 1,
+                    title: '上传软件文件',
+                    area: ['40%', '40%'],
+                    content: $('#uploadAContainer'),
+                    end: function () {
+
+                    }
+                });
+                //文件上传
+                $("#aupload").on('click',function () {
+                    file.config.data = {
+                        uuid:data.uuid,
+                        fileName:uploadADetail.fileName.value,
+                        fileTypeId:uploadADetail.fileTypeId.value
+                    }
+                })
+
+                var upload = layui.upload,
+                    element = layui.element;
+                element.init();
+
+                file = upload.render({
+                    elem: '#achoosefile'
+                    ,url: http + "/api/resultFile/uploadFile"
+                    ,accept: 'file' //允许上传的文件类型
+                    ,auto: false
+                    //,multiple: true
+                    ,bindAction: '#aupload'
+                    ,done: function(res){
+                        layui.use('layer', function(){
+                            var layer = layui.layer;
+                            layer.alert("<h2 style='color:black'>" + '上传成功！' + "</h2>",{title: "Tips"});
+                            setTimeout(function(){
+                                //刷新
+                                location.reload();
+                            },1000);
+                        });
+                        console.log(res)  //返回对象数据
+                    }
+                })
+            }
+            if(obj.event === 'download'){
+                layer.confirm('请选择下载文件！', {
+                    title: "Tips" ,btnAlign: 'c',
+                    btn: ['设计文档下载', '相关文件下载','取消']
+                    ,btn3: function(index, layero){
+                        close()
+                    }
+                }, function(index, layero){
+                    $.get(http+'/api/software/downLoadFile', {"uuid": data.uuid,fileTypeId:"1205"}, function (result) {
+                        if(result.status =="success"){
+                            var layer = layui.layer;
+                            layer.alert("<h3 style='color:black'>" + '已开始下载! '  + "</h3>",{title:"温馨提示"});
+                        }
+                    })
+                }, function(index){
+                    //按钮二的回调
+                    $.get(http+'/api/software/downLoadFile', {"uuid": data.uuid,fileTypeId:"1204"}, function (result) {
+                        if(result.status =="success"){
+                            var layer = layui.layer;
+                            layer.alert("<h3 style='color:black'>" + '已开始下载! '  + "</h3>",{title:"温馨提示"});
+                        }
+                    })
+                });
+            }
         });
     });
 
@@ -2355,7 +2423,7 @@
         });
     }
 
-</script>-->
+</script>
 
 <!--报告-->
 <!--
