@@ -846,6 +846,7 @@
         var form = layui.form;
         form.render();
     });
+    //作者信息生成
     function generateWriter() {
         $.get(http+"/api/authorManager/findAuthor",function (result) {
             var idstr = ''
@@ -864,6 +865,8 @@
         })
     }
     generateWriter()
+
+    //如果是管理员则生成，否则disabled
     layui.use('form', function(){//需要渲染form才能在界面显示
         var form = layui.form;
         $.post(http+"/api/manager/queryAllUser",function (result) {
@@ -901,6 +904,7 @@
             $("select[name='mainTaskType']").find("option[value='"+result.data[1].did+"']").attr("selected",true);
             form.render('select');
         })
+
         $.post(http+"/api/DetailType/findByBID",{bid:"06"},function (result) {
             var typestr = ''
             var ops = '<option value='+result.data[0].did+'>'+ result.data[0].dname +'</option> '
