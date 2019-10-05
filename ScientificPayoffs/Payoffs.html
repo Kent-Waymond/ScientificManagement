@@ -47,7 +47,7 @@
                 </div>
             </form>
 
-            <div class="myThesis" style="display:none;">
+            <div class="myThesis" style="display:block;">
                 <fieldset class="layui-elem-field layui-field-title site-demo-button" style="margin-top: 20px;">
                     <legend>论文</legend>
                 </fieldset>
@@ -163,9 +163,21 @@
                         <button type="button" class="layui-btn" id="tupload" >开始上传</button>
                     </div>
                 </div>
+                <div id="fileTContainer" style="display: none;width:480px" >
+                    <table class="layui-table" id="myTtable" style="margin-left: 15px;">
+                        <thead>
+                        <tr >
+                            <th lay-data="{field:'stock',sort: true}" style="text-align: center;">文件名</th>
+                            <th lay-data="{field:'stock',sort: true}" style="text-align: center;">文件类型</th>
+                        </tr>
+                        </thead>
+                        <tbody align="center" id="myTbody">
+                        </tbody>
+                    </table>
+                </div>
                 <table class="layui-table"  id='TTable' lay-filter="TTable" style="margin-top: -5px"></table>
             </div>
-            <div class="mySoftwareWork" style="display:none;">
+            <div class="mySoftwareWork" style="display:block;">
                 <fieldset class="layui-elem-field layui-field-title site-demo-button" style="margin-top: 30px;">
                     <legend>软著</legend>
                 </fieldset>
@@ -257,9 +269,21 @@
                         <button type="button" class="layui-btn" id="supload" >开始上传</button>
                     </div>
                 </div>
+                <div id="fileSContainer" style="display: none;width:480px" >
+                    <table class="layui-table" id="myStable" style="margin-left: 15px;">
+                        <thead>
+                        <tr >
+                            <th lay-data="{field:'stock',sort: true}" style="text-align: center;">文件名</th>
+                            <th lay-data="{field:'stock',sort: true}" style="text-align: center;">文件类型</th>
+                        </tr>
+                        </thead>
+                        <tbody align="center" id="mySbody">
+                        </tbody>
+                    </table>
+                </div>
                 <table class="layui-table"  id='STable' lay-filter="STable" style="margin-top: -5px"></table>
             </div>
-            <div class="myPatent" style="display:none;">
+            <div class="myPatent" style="display:block;">
                 <fieldset class="layui-elem-field layui-field-title site-demo-button" style="margin-top: 30px;">
                     <legend>专利</legend>
                 </fieldset>
@@ -427,20 +451,21 @@
                     </div>
                 </div>
                 <div id="filePContainer" style="display: none;width: 400px" >
-                    <table class="layui-table" id="mytable" style="margin-left: 55px;">
+                    <table class="layui-table" id="myPtable" style="margin-left: 55px;">
                         <thead>
                         <tr >
                             <th lay-data="{field:'stock',sort: true}" style="text-align: center;">文件名</th>
                             <th style="text-align: center;" >操作</th>
                         </tr>
                         </thead>
-                        <tbody align="center" id="mybody">
+                        <tbody align="center" id="myPbody">
                         </tbody>
                     </table>
                 </div>
+
                 <table class="layui-table"  id='PTable' lay-filter="PTable" style="margin-top: -5px"></table>
             </div>
-            <div class="myWriting" style="display:none;">
+            <div class="myWriting" style="display:block;">
                 <fieldset class="layui-elem-field layui-field-title site-demo-button" style="margin-top: 30px;">
                     <legend>书籍</legend>
                 </fieldset>
@@ -520,7 +545,7 @@
                 </div>
                 <table class="layui-table"  id='WTable' lay-filter="WTable" style="margin-top: -5px"></table>
             </div>
-            <div class="myAward" style="display:none;">
+            <div class="myAward" style="display:block;">
                 <fieldset class="layui-elem-field layui-field-title site-demo-button" style="margin-top: 30px;">
                     <legend>奖项</legend>
                 </fieldset>
@@ -637,6 +662,18 @@
                         <button type="button" class="layui-btn" id="awupload" >开始上传</button>
                     </div>
                 </div>
+                <div id="fileAWContainer" style="display: none;width:480px" >
+                    <table class="layui-table" id="myAWtable" style="margin-left: 15px;">
+                        <thead>
+                        <tr >
+                            <th lay-data="{field:'stock',sort: true}" style="text-align: center;">文件名</th>
+                            <th lay-data="{field:'stock',sort: true}" style="text-align: center;">文件类型</th>
+                        </tr>
+                        </thead>
+                        <tbody align="center" id="myAWbody">
+                        </tbody>
+                    </table>
+                </div>
                 <table class="layui-table"  id='AWTable' lay-filter="AWTable" style="margin-top: -5px"></table>
 
             </div>
@@ -745,7 +782,6 @@
                         <tr >
                             <th lay-data="{field:'stock',sort: true}" style="text-align: center;">文件名</th>
                             <th lay-data="{field:'stock',sort: true}" style="text-align: center;">文件类型</th>
-                            <th style="text-align: center;" >操作</th>
                         </tr>
                         </thead>
                         <tbody align="center" id="myAbody">
@@ -754,7 +790,7 @@
                 </div>
                 <table class="layui-table"  id='ATable' lay-filter="ATable" style="margin-top: -5px"></table>
             </div>
-            <div class="myReport" style="display:none;">
+            <div class="myReport" style="display:block;">
                 <fieldset class="layui-elem-field layui-field-title site-demo-button" style="margin-top: 30px;">
                     <legend>报告</legend>
                 </fieldset>
@@ -847,19 +883,31 @@
                         <button type="button" class="layui-btn" id="rupload" >开始上传</button>
                     </div>
                 </div>
+                <div id="fileRContainer" style="display: none;width:480px" >
+                    <table class="layui-table" id="myRtable" style="margin-left: 15px;">
+                        <thead>
+                        <tr >
+                            <th lay-data="{field:'stock',sort: true}" style="text-align: center;">文件名</th>
+                            <th lay-data="{field:'stock',sort: true}" style="text-align: center;">文件类型</th>
+                        </tr>
+                        </thead>
+                        <tbody align="center" id="myRbody">
+                        </tbody>
+                    </table>
+                </div>
                 <table class="layui-table"  id='RTable' lay-filter="RTable" style="margin-top: -5px"></table>
             </div>
         </div>
     </div>
 </div>
 
-<!--<script type="text/html" id="handle">
+<script type="text/html" id="handle">
     <a class="layui-btn layui-btn-xs layui-btn-blue" lay-event="upload" id="upload">上传</a>
     <a class="layui-btn layui-btn-xs layui-bg-orange" lay-event="download" id="download">下载</a>
     <a class="layui-btn layui-btn-xs layui-btn-danger" lay-event="del" id="del">删除</a>
-</script>-->
+</script>
 
-<script type="text/html" id="handle">
+<script type="text/html" id="file">
     <a class="layui-btn layui-btn-xs layui-btn-blue" lay-event="filework" id="filework">相关文件</a>
 </script>
 
@@ -946,7 +994,7 @@
         })
     });
 
-    function uploadFile(container,detail,uploadbtn,choosebtn,uuid) {
+   /* function uploadFile(container,detail,uploadbtn,choosebtn,uuid) {
         uploadlay = layer.open({
             type: 1,
             title: '上传文件',
@@ -992,14 +1040,13 @@
                 console.log(res)  //返回对象数据
             }
         })
-    }
+    }*/
 
 </script>
 
 <!--论文-->
-<!--
 <script>
-    var addlay,uploadlay;
+    var addlay,uploadlay,filelay;
     var getbid = location.search;
     var bybid = "";
     if(getbid){
@@ -1024,12 +1071,13 @@
                 data: data,
                 cols: [[
                     {type: 'checkbox'},
-                    {field: 'thesisName', title: '论文名称'},
-                    {field: 'projectName', title: '项目名称'},
-                    {field: 'periodicalName', title: '期刊名称'},
-                    {field: 'periodicalType', title: '期刊类型'},
-                    {field: 'publishedTime', title: '发表时间'},
-                    {field: 'writers', title: '作者'}, //暂未显示
+                    {field: 'thesisName', title: '论文名称', align: 'center'},
+                    {field: 'projectName', title: '项目名称', align: 'center'},
+                    {field: 'periodicalName', title: '期刊名称', align: 'center'},
+                    {field: 'periodicalType', title: '期刊类型', align: 'center'},
+                    {field: 'publishedTime', title: '发表时间', align: 'center'},
+                    {field: 'writers', title: '作者', align: 'center'},
+                    {fixed: 'right', title: '文件', templet: '#file', align: 'center'},
                     {fixed: 'right', title: '操作', templet: '#handle', align: 'center'}
                 ]],
                 page: true,
@@ -1136,6 +1184,28 @@
         table.on('tool(TTable)', function(obj) {
             var data = obj.data;
             console.log(data)
+            if(obj.event === 'filework'){
+                filelay = layer.open({
+                    type: 1,
+                    title: '相关文件',
+                    area: ['40%', '60%'],
+                    content: $('#fileTContainer'),
+                });
+                console.log(data.uuid)
+                $.get(http+"/api/resultFile/findFiles",{resultId:data.uuid},function(result) {
+                    console.log(result)
+                    var str = ''
+                    console.log(result.data.length)
+                    for (var i=0;i<result.data.length;i++){
+                        str += '<tr>';
+                        var tds =  '<td>' + result.data[i].fileName + '</td>'
+                            + '<td>' + result.data[i].fileType + '</td>';
+                        str += tds ;
+                        str += '</tr>';
+                    }
+                    $("#myTbody").html(str)
+                });
+            }
             if (obj.event === 'del') {
                 layer.confirm('确认删除吗？', {title: '删除'}, function (index) {
                     obj.del();
@@ -1308,11 +1378,10 @@
     }
 
 </script>
--->
 
 <!--软著-->
-<!--<script>
-    var addlay,uploadlay;
+<script>
+    var addlay,uploadlay,filelay;
     var getbid = location.search;
     var bybid = "";
     if(getbid){
@@ -1337,12 +1406,13 @@
                 data: data,
                 cols: [[
                     {type: 'checkbox'},
-                    {field: 'softwareWorkName', title: '软著名称'},
-                    {field: 'projectName', title: '项目名称'},
-                    {field: 'authorizationNum', title: '授权号'},
-                    {field: 'authorizationTime', title: '授权日期', sort: true},
-                    {field: 'applicationNum', title: '申请号'},
-                    {field: 'writers', title: '作者'},
+                    {field: 'softwareWorkName', title: '软著名称', align: 'center'},
+                    {field: 'projectName', title: '项目名称', align: 'center'},
+                    {field: 'authorizationNum', title: '授权号', align: 'center'},
+                    {field: 'authorizationTime', title: '授权日期', sort: true, align: 'center'},
+                    {field: 'applicationNum', title: '申请号', align: 'center'},
+                    {field: 'writers', title: '作者', align: 'center'},
+                    {fixed: 'right', title: '文件', templet: '#file', align: 'center'},
                     {fixed: 'right', title: '操作', templet: '#handle', align: 'center'}
                 ]],
                 page: true,
@@ -1445,6 +1515,28 @@
         table.on('tool(STable)', function(obj) {
             var data = obj.data;
             console.log(data)
+            if(obj.event === 'filework'){
+                filelay = layer.open({
+                    type: 1,
+                    title: '相关文件',
+                    area: ['40%', '60%'],
+                    content: $('#fileSContainer'),
+                });
+                console.log(data.uuid)
+                $.get(http+"/api/resultFile/findFiles",{resultId:data.uuid},function(result) {
+                    console.log(result)
+                    var str = ''
+                    console.log(result.data.length)
+                    for (var i=0;i<result.data.length;i++){
+                        str += '<tr>';
+                        var tds =  '<td>' + result.data[i].fileName + '</td>'
+                            + '<td>' + result.data[i].fileType + '</td>';
+                        str += tds ;
+                        str += '</tr>';
+                    }
+                    $("#mySbody").html(str)
+                });
+            }
             if (obj.event === 'del') {
                 layer.confirm('确认删除吗？', {title: '删除'}, function (index) {
                     obj.del();
@@ -1607,10 +1699,10 @@
         });
     }
 
-</script>-->
+</script>
 
 <!--专利-->
-<!--<script>
+<script>
     var addlay,uploadlay,filelay;
     var getbid = location.search;
     var bybid = "";
@@ -1636,17 +1728,17 @@
                 data: data,
                 cols: [[
                     {type: 'checkbox'},
-                    {field: 'patentName', title: '专利名称'},
-                    {field: 'projectName', title: '项目名称'},
-                    {field: 'writers', title: '作者'},
-                    {field: 'applicationTime', title: '申请日期', sort: true},
-                    {field: 'acceptanceTime', title: '受理日期', sort: true},
-                    {field: 'authorizationTime', title: '授权日期', sort: true},
-                    {field: 'patentStatus', title: '状态'},
-                    {field: 'agencyCompany', title: '代理公司'},
+                    {field: 'patentName', title: '专利名称', align: 'center'},
+                    {field: 'projectName', title: '项目名称', align: 'center'},
+                    {field: 'writers', title: '作者', align: 'center'},
+                    {field: 'applicationTime', title: '申请日期', sort: true, align: 'center'},
+                    {field: 'acceptanceTime', title: '受理日期', sort: true, align: 'center'},
+                    {field: 'authorizationTime', title: '授权日期', sort: true, align: 'center'},
+                    {field: 'patentStatus', title: '状态', align: 'center'},
+                    {field: 'agencyCompany', title: '代理公司', align: 'center'},
+                    {fixed: 'right', title: '文件', templet: '#file', align: 'center'},
                     {fixed: 'right', title: '操作', templet: '#handle', align: 'center'}
                 ]],
-                page: true,
                 toolbar: '#myPToolbar',
 
             })
@@ -1750,15 +1842,23 @@
             if(obj.event === 'filework'){
                 filelay = layer.open({
                     type: 1,
-                    title: '专利文件操作',
+                    title: '相关文件',
                     area: ['40%', '60%'],
                     content: $('#filePContainer'),
-                    end: function () {
-
-                    }
                 });
+                console.log(data.uuid)
                 $.get(http+"/api/resultFile/findFiles",{resultId:data.uuid},function(result) {
-
+                    console.log(result)
+                    var str = ''
+                    console.log(result.data.length)
+                    for (var i=0;i<result.data.length;i++){
+                        str += '<tr>';
+                        var tds =  '<td>' + result.data[i].fileName + '</td>'
+                            + '<td>' + result.data[i].fileType + '</td>';
+                        str += tds ;
+                        str += '</tr>';
+                    }
+                    $("#myPbody").html(str)
                 });
             }
 /*            if (obj.event === 'del') {
@@ -1946,10 +2046,10 @@
         });
     }
 
-</script>-->
+</script>
 
 <!--著作-->
-<!--<script>
+<script>
     var addlay,editlay;
     var getbid = location.search;
     var bybid = "";
@@ -2183,11 +2283,11 @@
         });
     }
 
-</script>-->
+</script>
 
 <!--获奖-->
-<!--<script>
-    var addlay,uploadlay;
+<script>
+    var addlay,uploadlay,filelay;
     var getbid = location.search;
     var bybid = "";
     if(getbid){
@@ -2218,6 +2318,7 @@
                     {field: 'writingsType', title: '类型'},
                     {field: 'publishHouse', title: '出版社'},
                     {field: 'version', title: '版本'},
+                    {fixed: 'right', title: '文件', templet: '#file', align: 'center'},
                     {fixed: 'right', title: '操作', templet: '#handle', align: 'center'}
                 ]],
                 page: true,
@@ -2321,6 +2422,28 @@
         table.on('tool(AWTable)', function(obj) {
             var data = obj.data;
             console.log(data)
+            if(obj.event === 'filework'){
+                filelay = layer.open({
+                    type: 1,
+                    title: '相关文件',
+                    area: ['40%', '60%'],
+                    content: $('#fileAWContainer'),
+                });
+                console.log(data.uuid)
+                $.get(http+"/api/resultFile/findFiles",{resultId:data.uuid},function(result) {
+                    console.log(result)
+                    var str = ''
+                    console.log(result.data.length)
+                    for (var i=0;i<result.data.length;i++){
+                        str += '<tr>';
+                        var tds =  '<td>' + result.data[i].fileName + '</td>'
+                            + '<td>' + result.data[i].fileType + '</td>';
+                        str += tds ;
+                        str += '</tr>';
+                    }
+                    $("#myAWbody").html(str)
+                });
+            }
             if (obj.event === 'del') {
                 layer.confirm('确认删除吗？', {title: '删除'}, function (index) {
                     obj.del();
@@ -2341,7 +2464,7 @@
                 layer.confirm('是否下载?', {
                     title: "Tips" ,btnAlign: 'c',
                     btn: [ '获奖扫描件下载','取消']
-                    ,btn3: function(index, layero){
+                    ,btn2: function(index, layero){
                         layer.close()
                     }
                 }, function(index, layero){
@@ -2432,7 +2555,7 @@
         });
     }
 
-</script>-->
+</script>
 
 <!--软件-->
 <script>
@@ -2461,11 +2584,11 @@
                 data: data,
                 cols: [[
                     {type: 'checkbox'},
-                    {field: 'softwareName', title: '名称'},
-                    {field: 'writers', title: '作者'},
-                    {field: 'publishTime', title: '时间', sort: true},
-                    {field: 'webSite', title: '网址'},
-                    {field: '', title: '设计文档'},  //暂未显示
+                    {field: 'softwareName', title: '名称', align: 'center'},
+                    {field: 'writers', title: '作者', align: 'center'},
+                    {field: 'publishTime', title: '时间', sort: true, align: 'center'},
+                    {field: 'webSite', title: '网址', align: 'center'},
+                    {fixed: 'right', title: '文件', templet: '#file', align: 'center'},
                     {fixed: 'right', title: '操作', templet: '#handle', align: 'center'}
                 ]],
                 toolbar: '#myAToolbar',
@@ -2572,12 +2695,9 @@
             if(obj.event === 'filework'){
                 filelay = layer.open({
                     type: 1,
-                    title: '软件文件操作',
+                    title: '相关文件',
                     area: ['40%', '60%'],
                     content: $('#fileAContainer'),
-                    end: function () {
-
-                    }
                 });
                 console.log(data.uuid)
                 $.get(http+"/api/resultFile/findFiles",{resultId:data.uuid},function(result) {
@@ -2587,20 +2707,20 @@
                     for (var i=0;i<result.data.length;i++){
                         str += '<tr>';
                         var tds =  '<td>' + result.data[i].fileName + '</td>'
-                            + '<td>' + result.data[i].fileType + '</td>'
-                            + '<td><button data-method="notice" onclick="uploadFile(`uploadAContainer`+,+`uploadADetail`+,+`aupload`+,+`achoosefile`+,+`'+result.data[i].fileId+'`)" class="layui-btn " ><i class="layui-icon layui-icon-upload-circle"></i>上传</button>' +
+                            + '<td>' + result.data[i].fileType + '</td>';
+                            /*+ '<td><button data-method="notice" onclick="uploadFile(`uploadAContainer`+,+`uploadADetail`+,+`aupload`+,+`achoosefile`+,+`'+result.data[i].fileId+'`);layer.close(filelay)" class="layui-btn " ><i class="layui-icon layui-icon-upload-circle"></i>上传</button>' +
                             '<button data-method="notice" onclick="downloadDir(`\'+result.data.dirs[i].dirId+\'`)" class="layui-btn layui-btn-normal layui-btn-mini download" ><i class="layui-icon layui-icon-download-circle"></i>下载</button>' +
                             '<button data-method="notice" onclick="downloadDir(`\'+result.data.dirs[i].dirId+\'`)" class=" layui-btn layui-btn-danger layui-btn-mini delete" ><i class="layui-icon layui-icon-delete"></i>删除</button>' +
-                            '</td>';
+                            '</td>'*/
                         str += tds ;
                         str += '</tr>';
                     }
                     $("#myAbody").html(str)
                 });
             }
-/*            if (obj.event === 'del') {
+            if (obj.event === 'del') {
                 layer.confirm('确认删除吗？', {title: '删除'}, function (index) {
-                    /!*obj.del();*!/
+                    /*obj.del();*/
                     $.get(http+'/api/software/delete', {uuid: data.uuid}, function () {
                         layui.use('layer', function(){
                             var layer = layui.layer;
@@ -2615,7 +2735,52 @@
                 });
             }
             if (obj.event === 'upload') {
+                uploadlay = layer.open({
+                    type: 1,
+                    title: '上传软件文件',
+                    area: ['40%', '40%'],
+                    content: $('#uploadAContainer'),
+                    end: function () {
+                    }
+                });
+                //文件上传
+                $("#aupload").on('click',function () {
+                    file.config.data = {
+                        uuid:data.uuid,
+                        fileName:uploadRDetail.fileName.value,
+                        fileTypeId:uploadRDetail.fileTypeId.value
+                    }
+                })
 
+                var upload = layui.upload,
+                    element = layui.element;
+                element.init();
+
+                file = upload.render({
+                    elem: '#achoosefile'
+                    ,url: http + "/api/resultFile/uploadFile"
+                    ,accept: 'file' //允许上传的文件类型
+                    ,auto: false
+                    ,bindAction: '#aupload'
+                    ,done: function(res){
+                        layui.use('layer', function(){
+                            console.log(res.code)
+                            if(res.code==0){
+                                var layer = layui.layer;
+                                return layer.msg("上传失败！")
+                            }else{
+                                var layer = layui.layer;
+                                layer.alert("<h2 style='color:black'>" + '上传成功！' + "</h2>",{title: "Tips"});
+                                setTimeout(function(){
+                                    //刷新
+                                    location.reload();
+                                },1000);
+                            }
+                        });
+                        console.log(res)  //返回对象数据
+                    }
+                })
+            }
             if(obj.event === 'download'){
                 layer.confirm('请选择下载文件！', {
                     title: "Tips" ,btnAlign: 'c',
@@ -2639,7 +2804,7 @@
                         }
                     })
                 });
-            }*/
+            }
         });
     });
 
@@ -2729,8 +2894,8 @@
 </script>
 
 <!--报告-->
-<!--<script>
-    var addlay,uploadlay;
+<script>
+    var addlay,uploadlay,filelay;
     var getbid = location.search;
     var bybid = "";
     if(getbid){
@@ -2755,9 +2920,10 @@
                 data: data,
                 cols: [[
                     {type: 'checkbox'},
-                    {field: 'reportName', title: '名称'},
-                    {field: 'writerInfos', title: '撰写人'},
-                    {field: 'writeTime', title: '撰写时间'},
+                    {field: 'reportName', title: '名称', align: 'center'},
+                    {field: 'writerInfos', title: '撰写人', align: 'center'},
+                    {field: 'writeTime', title: '撰写时间', align: 'center'},
+                    {fixed: 'right', title: '文件', templet: '#file', align: 'center'},
                     {fixed: 'right', title: '操作', templet: '#handle', align: 'center'}
                 ]],
                 page: true,
@@ -2863,6 +3029,28 @@
         table.on('tool(RTable)', function(obj) {
             var data = obj.data;
             console.log(data)
+            if(obj.event === 'filework'){
+                filelay = layer.open({
+                    type: 1,
+                    title: '相关文件',
+                    area: ['40%', '60%'],
+                    content: $('#fileRContainer'),
+                });
+                console.log(data.uuid)
+                $.get(http+"/api/resultFile/findFiles",{resultId:data.uuid},function(result) {
+                    console.log(result)
+                    var str = ''
+                    console.log(result.data.length)
+                    for (var i=0;i<result.data.length;i++){
+                        str += '<tr>';
+                        var tds =  '<td>' + result.data[i].fileName + '</td>'
+                            + '<td>' + result.data[i].fileType + '</td>';
+                        str += tds ;
+                        str += '</tr>';
+                    }
+                    $("#myRbody").html(str)
+                });
+            }
             if (obj.event === 'del') {
                 layer.confirm('确认删除吗？', {title: '删除'}, function (index) {
                     obj.del();
@@ -3032,7 +3220,7 @@
         });
     }
 
-</script>-->
+</script>
 
 
 </body>
