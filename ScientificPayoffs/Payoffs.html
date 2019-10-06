@@ -1265,7 +1265,7 @@
                     }
                 })
             }
-            if(obj.event === 'download'){
+            /*if(obj.event === 'download'){
                 layer.confirm('请选择下载文件！', {
                     title: "Tips" ,btnAlign: 'c',
                     btn: ['设计文档下载', '相关文件下载','取消']
@@ -1282,6 +1282,22 @@
                 }, function(index){
                     //按钮二的回调
                     $.get(http+'/api/software/downLoadFile', {fileId:data.uuid}, function (result) {
+                        if(result.status =="success"){
+                            var layer = layui.layer;
+                            layer.alert("<h3 style='color:black'>" + '已开始下载! '  + "</h3>",{title:"温馨提示"});
+                        }
+                    })
+                });
+            }*/
+            if(obj.event === 'download'){
+                layer.confirm('是否下载？', {
+                    title: "Tips" ,btnAlign: 'c',
+                    btn: ['下载','取消']
+                    ,btn2: function(index, layero){
+                        layer.close()
+                    }
+                }, function(index, layero){
+                    $.get(http+'/api/resultFile/downLoadAllFiles', {resultId:data.uuid}, function (result) {
                         if(result.status =="success"){
                             var layer = layui.layer;
                             layer.alert("<h3 style='color:black'>" + '已开始下载! '  + "</h3>",{title:"温馨提示"});
@@ -1604,7 +1620,7 @@
                         layer.close()
                     }
                 }, function(index, layero){
-                    $.get(http+'/api/software/downLoadFile', {fileId:data.uuid}, function (result) {
+                    $.get(http+'/api/resultFile/downLoadAllFiles', {resultId:data.uuid}, function (result) {
                         if(result.status =="success"){
                             var layer = layui.layer;
                             layer.alert("<h3 style='color:black'>" + '已开始下载! '  + "</h3>",{title:"温馨提示"});
@@ -1861,7 +1877,7 @@
                     $("#myPbody").html(str)
                 });
             }
-/*            if (obj.event === 'del') {
+            if (obj.event === 'del') {
                 layer.confirm('确认删除吗？', {title: '删除'}, function (index) {
                     obj.del();
                     $.get(http+'/api/resultPatent/delete', {uuid:data.uuid}, function () {
@@ -1924,7 +1940,7 @@
                     }
                 })
             }
-            if(obj.event === 'download'){
+            /*if(obj.event === 'download'){
                 layer.confirm('请选择下载文件！', {
                     title: "Tips" ,
                     btnAlign: 'c',
@@ -1957,6 +1973,22 @@
                         })
                     });
             }*/
+            if(obj.event === 'download'){
+                layer.confirm('是否下载？', {
+                    title: "Tips" ,btnAlign: 'c',
+                    btn: ['下载','取消']
+                    ,btn2: function(index, layero){
+                        layer.close()
+                    }
+                }, function(index, layero){
+                    $.get(http+'/api/resultFile/downLoadAllFiles', {resultId:data.uuid}, function (result) {
+                        if(result.status =="success"){
+                            var layer = layui.layer;
+                            layer.alert("<h3 style='color:black'>" + '已开始下载! '  + "</h3>",{title:"温馨提示"});
+                        }
+                    })
+                });
+            }
         });
     });
     //添加作者信息
@@ -2460,15 +2492,16 @@
                     layer.close(index);
                 });
             }
+
             if(obj.event === 'download'){
                 layer.confirm('是否下载?', {
                     title: "Tips" ,btnAlign: 'c',
-                    btn: [ '获奖扫描件下载','取消']
+                    btn: [ '下载','取消']
                     ,btn2: function(index, layero){
                         layer.close()
                     }
                 }, function(index, layero){
-                    $.get(http+'/api/resultFile/downLoadFile', {fileId: data.uuid}, function (result) {
+                    $.get(http+'/api/resultFile/downLoadAllFiles', {resultId: data.uuid}, function (result) {
                         if(result.status =="success"){
                             var layer = layui.layer;
                             layer.alert("<h3 style='color:black'>" + '已开始下载! '  + "</h3>",{title:"温馨提示"});
@@ -2781,7 +2814,7 @@
                     }
                 })
             }
-            if(obj.event === 'download'){
+            /*if(obj.event === 'download'){
                 layer.confirm('请选择下载文件！', {
                     title: "Tips" ,btnAlign: 'c',
                     btn: ['设计文档下载', '相关文件下载','取消']
@@ -2802,6 +2835,20 @@
                             var layer = layui.layer;
                             layer.alert("<h3 style='color:black'>" + '已开始下载! '  + "</h3>",{title:"温馨提示"});
                         }
+                    })
+                });
+            }*/
+            if(obj.event === 'download'){
+                layer.confirm('是否下载？', {
+                    title: "Tips" ,btnAlign: 'c',
+                    btn: ['下载','取消']
+                    ,btn2: function(index, layero){
+                        layer.close()
+                    }
+                }, function(index){
+                    $.get(http+'/api/resultFile/downLoadAllFiles', {resultId:data.uuid}, function (result) {
+                            var layer = layui.layer;
+                            layer.alert("<h3 style='color:black'>" + '已开始下载! '  + "</h3>",{title:"温馨提示"});
                     })
                 });
             }
@@ -3012,7 +3059,7 @@
                             }
                         }
                         layer.confirm('确认删除吗？', {title: '删除'}, function (index) {
-                            $.get(http+'/api/resultReport/delete', {"uuid": dids}, function () {
+                            $.get(http+'/api/resultReport/delete', {uuid: dids}, function () {
                                 layui.use('layer', function(){
                                     var layer = layui.layer;
                                     layer.alert("<h3 style='color:black'>" + '删除成功! '  + "</h3>",{title:"温馨提示"});
@@ -3110,7 +3157,7 @@
                     }
                 })
             }
-            if(obj.event === 'download'){
+            /*if(obj.event === 'download'){
                 layer.confirm('请选择下载文件！', {
                     title: "Tips" ,btnAlign: 'c',
                     btn: ['设计文档下载', '相关文件下载','取消']
@@ -3131,6 +3178,20 @@
                             var layer = layui.layer;
                             layer.alert("<h3 style='color:black'>" + '已开始下载! '  + "</h3>",{title:"温馨提示"});
                         }
+                    })
+                });
+            }*/
+            if(obj.event === 'download'){
+                layer.confirm('是否下载？', {
+                    title: "Tips" ,btnAlign: 'c',
+                    btn: ['下载','取消']
+                    ,btn2: function(index){
+                        layer.close()
+                    }
+                }, function(index){
+                    $.get(http+'/api/resultFile/downLoadAllFiles', {resultId:data.uuid}, function (result) {
+                            var layer = layui.layer;
+                            layer.alert("<h3 style='color:black'>" + '已开始下载! '  + "</h3>",{title:"温馨提示"});
                     })
                 });
             }
